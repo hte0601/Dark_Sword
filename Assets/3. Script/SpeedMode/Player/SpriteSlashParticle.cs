@@ -8,7 +8,7 @@ public class SpriteSlashParticle : MonoBehaviour
 
     private MeshRenderer rendererMy;
 
-    void Start()
+    void Awake()
     {
         rendererMy = GetComponent<MeshRenderer>();
         rendererMy.sortingOrder = 2;
@@ -24,7 +24,6 @@ public class SpriteSlashParticle : MonoBehaviour
     {
         for(int i = 0; i < frames.Length; i++)
         {
-            //여기 왜 오류나는지 모르겠음 ㅠ
             rendererMy.sharedMaterial.SetTexture("_MainTex", frames[i]);
             yield return new WaitForSeconds(1 / fps);
         }

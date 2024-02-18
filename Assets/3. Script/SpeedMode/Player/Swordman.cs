@@ -10,7 +10,7 @@ public class Swordman : MonoBehaviour
     private Animator m_Anim;
 
     //viewing direction
-    private bool NowViewingRight;
+    // private bool NowViewingRight;
 
     //status
     public int health;
@@ -25,7 +25,7 @@ public class Swordman : MonoBehaviour
         m_Anim = transform.Find("model").GetComponent<Animator>();
         m_rigidbody = transform.GetComponent<Rigidbody2D>();
 
-        NowViewingRight = true;
+        // NowViewingRight = true;
 
         SetStatus(1, 1, 0f);
     }
