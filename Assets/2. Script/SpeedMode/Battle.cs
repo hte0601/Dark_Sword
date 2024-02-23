@@ -16,7 +16,7 @@ public class Battle : MonoBehaviour
 
     public static void CreateEnemy()
     {
-        Enemy enemy = PoolingEnemy.GetEnemy();
+        Enemy enemy = ObjectPool.GetEnemy();
         EnemyList.Add(enemy);
         enemy.setOrder(EnemyList.Count - 1);
         enemy.EmergeEnemy();
@@ -41,7 +41,7 @@ public class Battle : MonoBehaviour
 
     void KillEnemy()
     {
-        PoolingEnemy.ReturnObject(EnemyList[0]);
+        ObjectPool.ReturnObjectOld(EnemyList[0]);
         battle.RemoveEnemyList();
         CreateEnemy();
     }
@@ -74,7 +74,7 @@ public class Battle : MonoBehaviour
     public static void ClearEnemy()
     {
         for (int i = 0; i < EnemyList.Count; i++)
-            PoolingEnemy.ReturnObject(EnemyList[i]);
+            ObjectPool.ReturnObjectOld(EnemyList[i]);
         EnemyList.Clear();
     }
 }

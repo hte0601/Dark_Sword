@@ -32,7 +32,7 @@ public class Enemy : MonoBehaviour
 
     public void HideEnemy()
     {
-        transform.SetParent(PoolingEnemy.poolingEnemy.transform);
+        transform.SetParent(ObjectPool.objectPool.transform);
         gameObject.SetActive(false);
     }
 
