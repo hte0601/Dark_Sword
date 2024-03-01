@@ -4,6 +4,8 @@ using UnityEngine;
 using Lofle;
 using System;
 
+#pragma warning disable CS0414
+
 namespace Lofle
 {
 	public class BaseStateMachine<MACHINE, BASE_STATE_TYPE> : BaseState<MACHINE, BASE_STATE_TYPE>.Permission
