@@ -151,7 +151,7 @@ AudioMixerController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: MainMix
+  m_Name: MainMixer
   m_OutputGroup: {fileID: 0}
   m_MasterGroup: {fileID: 24300002}
   m_Snapshots:
@@ -162,11 +162,11 @@ AudioMixerController:
   m_UpdateMode: 0
   m_ExposedParameters:
   - guid: ddbb5627aac504344be6711d8ce99b1b
-    name: BGMVolume
+    name: BGMMix
   - guid: b1c9d082d3d309e44b1ece6bb15033ca
-    name: Volume
+    name: MasterMix
   - guid: 91d9962916981ba43b998dd26ddf2444
-    name: SFXVolume
+    name: SFXMix
   m_AudioMixerGroupViews:
   - guids:
     - 0d28746abe0aa80469b2f0951edcb20d
