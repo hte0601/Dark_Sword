@@ -130,7 +130,7 @@ public class GameManager : MonoBehaviour
     {
         if(GM.scoreUpdate && score > bestScore)
         {
-            SoundManager.PlayBestScoreUpdate();
+            SpeedSoundManager.PlayBestScoreUpdate();
             GM.scoreUpdate = false;
         }
     }
@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
         GM.scoreBoard.SetActive(false);
         GM.notice.SetActive(true);
 
-        SoundManager.PlayGameOverSound();
+        SpeedSoundManager.PlayGameOverSound();
         ParticleManager.CreateBrokenHeartParticle();
     }
 
@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
         scoreBoard.SetActive(true);
         Swordman.setPlayerState(0);
         GM.nowScore.text = "0";
-        SoundManager.BGMStart();
+        SpeedSoundManager.BGMStart();
         StartCoroutine("StartStage");
     }
 

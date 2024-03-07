@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
 
     void Die()
     {
-        SoundManager.EnemySound();
+        SpeedSoundManager.EnemySound();
         SetState(0);
     }
 }

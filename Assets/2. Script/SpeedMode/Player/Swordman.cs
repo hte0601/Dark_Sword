@@ -107,7 +107,7 @@ public class Swordman : MonoBehaviour
                 else if(getPlayerState() == 2)
                 {
                     ParticleManager.CreateDefenseParticle();
-                    SoundManager.PlayerSound("defense"); //막았을 때만 소리가 나기 위해 여기 존재
+                    SpeedSoundManager.PlayerSound("defense"); //막았을 때만 소리가 나기 위해 여기 존재
                 }
                 else if(getPlayerState() == 3)
                 {
@@ -129,11 +129,11 @@ public class Swordman : MonoBehaviour
         {
             case 1:
                 ParticleManager.CreateSlashParticle();
-                SoundManager.PlayerSound("slash");
+                SpeedSoundManager.PlayerSound("slash");
                 break;
             case 3:
                 ParticleManager.CreatePierceParticle();
-                SoundManager.PlayerSound("pierce");
+                SpeedSoundManager.PlayerSound("pierce");
                 break;
         }
     }

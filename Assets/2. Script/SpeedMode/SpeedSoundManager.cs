@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SoundManager : MonoBehaviour
+public class SpeedSoundManager : MonoBehaviour
 {
-    public static SoundManager sm;
+    public static SpeedSoundManager sm;
 
     //BGM source
     public AudioSource BGM;
