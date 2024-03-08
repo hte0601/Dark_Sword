@@ -21,4 +21,23 @@ public class SoundManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    private void Start()
+    {
+        InitVolume();
+    }
+
+    private void InitVolume()
+    {
+        if (GameSetting.volume.IsMuted)
+        {
+            mainMixer.SetFloat("MasterMix", -80);
+        }
+        else
+        {
+            mainMixer.SetFloat("MasterMix", GameSetting.volume.MasterMix);
+        }
+        mainMixer.SetFloat("BGMMix", GameSetting.volume.BGMMix);
+        mainMixer.SetFloat("SFXMix", GameSetting.volume.SFXMix);
+    }
 }

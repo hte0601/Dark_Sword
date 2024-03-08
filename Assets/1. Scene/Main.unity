@@ -671,8 +671,9 @@ GameObject:
   - component: {fileID: 243096941}
   - component: {fileID: 243096943}
   - component: {fileID: 243096942}
+  - component: {fileID: 243096944}
   m_Layer: 5
-  m_Name: BattleBoard
+  m_Name: BattleModeBoard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -738,6 +739,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 243096940}
   m_CullTransparentMesh: 0
+--- !u!114 &243096944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 243096940}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fff042fc4d4a9664690473722fcaf309, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &243370433
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,7 +765,7 @@ GameObject:
   - component: {fileID: 243370436}
   - component: {fileID: 243370435}
   m_Layer: 5
-  m_Name: BattleModeNewButton
+  m_Name: NewBattleButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -795,9 +808,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1451556823}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: BattleBorderNewButton
+        - m_Target: {fileID: 243096944}
+          m_TargetAssemblyTypeName: BattleModeBoardsUI, Assembly-CSharp
+          m_MethodName: OnNewBattleButtonPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1221,7 +1234,7 @@ GameObject:
   - component: {fileID: 516212276}
   - component: {fileID: 516212275}
   m_Layer: 5
-  m_Name: BattleModeContinueButton
+  m_Name: ContinueBattleButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1264,9 +1277,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1451556823}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: BattleBorderContinueButton
+        - m_Target: {fileID: 243096944}
+          m_TargetAssemblyTypeName: BattleModeBoardsUI, Assembly-CSharp
+          m_MethodName: OnContinueBattleButtonPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1538,8 +1551,7 @@ RectTransform:
   m_Children:
   - {fileID: 676513930}
   - {fileID: 95193570}
-  - {fileID: 2120398051}
-  - {fileID: 1567593033}
+  - {fileID: 1923433443}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1559,7 +1571,7 @@ GameObject:
   - component: {fileID: 603582498}
   - component: {fileID: 603582497}
   m_Layer: 5
-  m_Name: Text
+  m_Name: MadeByText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1581,8 +1593,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 711, y: 333.5}
+  m_AnchoredPosition: {x: 0, y: 10}
+  m_SizeDelta: {x: 700, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &603582497
 MonoBehaviour:
@@ -1606,11 +1618,11 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 13d0c2df3e4677240a0b85331f3c8a40, type: 3}
-    m_FontSize: 71
+    m_FontSize: 72
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 71
+    m_MinSize: 7
+    m_MaxSize: 72
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -2205,11 +2217,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1767503898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 319, y: 147}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -40, y: -40}
   m_SizeDelta: {x: 80, y: 80}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &755471043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2227,9 +2239,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1451556823}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: OptionExitButton
+        - m_Target: {fileID: 1767503901}
+          m_TargetAssemblyTypeName: GameSettingBoardUI, Assembly-CSharp
+          m_MethodName: OnExitButtonPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -2945,7 +2957,7 @@ GameObject:
   - component: {fileID: 1012117620}
   - component: {fileID: 1012117619}
   m_Layer: 5
-  m_Name: Text (1)
+  m_Name: FontText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2967,8 +2979,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -146}
-  m_SizeDelta: {x: 711, y: 333.5}
+  m_AnchoredPosition: {x: 0, y: -155}
+  m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1012117619
 MonoBehaviour:
@@ -2992,10 +3004,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 13d0c2df3e4677240a0b85331f3c8a40, type: 3}
-    m_FontSize: 29
+    m_FontSize: 32
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 3
     m_MaxSize: 71
     m_Alignment: 4
     m_AlignByGeometry: 0
@@ -3011,6 +3023,156 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1012117617}
+  m_CullTransparentMesh: 0
+--- !u!1 &1056056110
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1056056111}
+  - component: {fileID: 1056056115}
+  - component: {fileID: 1056056114}
+  - component: {fileID: 1056056113}
+  - component: {fileID: 1056056112}
+  m_Layer: 5
+  m_Name: ExitButton
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1056056111
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056056110}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1997586805}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -40, y: -40}
+  m_SizeDelta: {x: 80, y: 80}
+  m_Pivot: {x: 1, y: 1}
+--- !u!114 &1056056112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056056110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1997586808}
+          m_TargetAssemblyTypeName: InfoBoardUI, Assembly-CSharp
+          m_MethodName: OnExitButtonPointerDown
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+--- !u!114 &1056056113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056056110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1056056114}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1056056114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056056110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 11277a3f23988ec47908362d708edaa8, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1056056115
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1056056110}
   m_CullTransparentMesh: 0
 --- !u!1 &1075022959
 GameObject:
@@ -4334,7 +4496,7 @@ RectTransform:
   - {fileID: 1314524697}
   - {fileID: 1314524577}
   - {fileID: 1314530039}
-  m_Father: {fileID: 1630411120}
+  m_Father: {fileID: 1767503898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -5141,9 +5303,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17a823fcecb81f438666ed5ad92c4e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  infoborder: {fileID: 1997586804}
-  optionborder: {fileID: 1767503897}
-  Battleborder: {fileID: 243096940}
 --- !u!1001 &1457042955
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5419,13 +5578,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 930503775}
-  m_Father: {fileID: 594474850}
+  m_Father: {fileID: 1923433443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: 200, y: 44}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 30, y: 0}
   m_SizeDelta: {x: 338, y: 112}
-  m_Pivot: {x: 0.5, y: 0}
+  m_Pivot: {x: 0, y: 0}
 --- !u!114 &1567593034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5481,9 +5640,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1451556823}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: TouchDownBattleModeButton
+        - m_Target: {fileID: 1923433444}
+          m_TargetAssemblyTypeName: GameModeButtonsUI, Assembly-CSharp
+          m_MethodName: OnBattleModeButtonPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5537,60 +5696,6 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!1 &1630411119
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1630411120}
-  - component: {fileID: 1630411121}
-  m_Layer: 5
-  m_Name: VolumeSetting
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1630411120
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630411119}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6254071037193298881}
-  - {fileID: 1314531743}
-  - {fileID: 1917328500}
-  m_Father: {fileID: 1767503898}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1630411121
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1630411119}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 91f005550a0131541b0efc85b1ed1209, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MasterVolumeSlider: {fileID: 6254071037161337097}
-  BGMVolumeSlider: {fileID: 1336048471}
-  SFXVolumeSlider: {fileID: 1940934332}
 --- !u!850595691 &1652358212
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -5689,11 +5794,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 243096941}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 319, y: 147}
+  m_AnchorMin: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: -40, y: -40}
   m_SizeDelta: {x: 80, y: 80}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 1}
 --- !u!114 &1725909543
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5711,9 +5816,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1451556823}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: BattleBorderExitButtion
+        - m_Target: {fileID: 243096944}
+          m_TargetAssemblyTypeName: BattleModeBoardsUI, Assembly-CSharp
+          m_MethodName: OnExitButtonPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -5984,6 +6089,7 @@ GameObject:
   - component: {fileID: 1767503898}
   - component: {fileID: 1767503900}
   - component: {fileID: 1767503899}
+  - component: {fileID: 1767503901}
   m_Layer: 5
   m_Name: GameSettingBoard
   m_TagString: Untagged
@@ -6003,7 +6109,9 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1630411120}
+  - {fileID: 6254071037193298881}
+  - {fileID: 1314531743}
+  - {fileID: 1917328500}
   - {fileID: 755471042}
   - {fileID: 1834085047}
   m_Father: {fileID: 676513930}
@@ -6051,6 +6159,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1767503897}
   m_CullTransparentMesh: 0
+--- !u!114 &1767503901
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1767503897}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91f005550a0131541b0efc85b1ed1209, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MasterVolumeSlider: {fileID: 6254071037161337097}
+  BGMVolumeSlider: {fileID: 1336048471}
+  SFXVolumeSlider: {fileID: 1940934332}
 --- !u!1 &1778989371
 GameObject:
   m_ObjectHideFlags: 0
@@ -6147,7 +6270,7 @@ GameObject:
   - component: {fileID: 1783685284}
   - component: {fileID: 1783685283}
   m_Layer: 5
-  m_Name: Text (2)
+  m_Name: VersionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6169,8 +6292,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -105}
-  m_SizeDelta: {x: 711, y: 333.5}
+  m_AnchoredPosition: {x: 54, y: -105}
+  m_SizeDelta: {x: 300, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1783685283
 MonoBehaviour:
@@ -6194,18 +6317,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 13d0c2df3e4677240a0b85331f3c8a40, type: 3}
-    m_FontSize: 29
+    m_FontSize: 32
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 3
     m_MaxSize: 71
-    m_Alignment: 4
+    m_Alignment: 3
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\uBC84\uC804 : 0.4v"
+  m_Text: "\uBC84\uC804 : 0.00"
 --- !u!222 &1783685284
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6226,7 +6349,7 @@ GameObject:
   - component: {fileID: 1834085049}
   - component: {fileID: 1834085048}
   m_Layer: 5
-  m_Name: SettingText
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6478,7 +6601,7 @@ RectTransform:
   - {fileID: 1917336562}
   - {fileID: 1917335626}
   - {fileID: 1917327132}
-  m_Father: {fileID: 1630411120}
+  m_Father: {fileID: 1767503898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -6774,6 +6897,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1922377551}
   m_CullTransparentMesh: 0
+--- !u!1 &1923433442
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1923433443}
+  - component: {fileID: 1923433444}
+  m_Layer: 5
+  m_Name: GameModeButtons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1923433443
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923433442}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2120398051}
+  - {fileID: 1567593033}
+  m_Father: {fileID: 594474850}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 45}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1923433444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1923433442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d788ac686627034a8cb761ba070029b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1931217872
 GameObject:
   m_ObjectHideFlags: 0
@@ -7103,6 +7276,7 @@ GameObject:
   - component: {fileID: 1997586805}
   - component: {fileID: 1997586807}
   - component: {fileID: 1997586806}
+  - component: {fileID: 1997586808}
   m_Layer: 5
   m_Name: InfoBoard
   m_TagString: Untagged
@@ -7123,8 +7297,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 603582496}
-  - {fileID: 1012117618}
   - {fileID: 1783685282}
+  - {fileID: 1012117618}
+  - {fileID: 1056056111}
   m_Father: {fileID: 676513930}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -7170,6 +7345,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1997586804}
   m_CullTransparentMesh: 0
+--- !u!114 &1997586808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997586804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f65323d8b0b2e2941a72238bbd9944de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  versionText: {fileID: 1783685283}
 --- !u!1 &2029651206
 GameObject:
   m_ObjectHideFlags: 0
@@ -7521,13 +7709,13 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 684296873}
-  m_Father: {fileID: 594474850}
+  m_Father: {fileID: 1923433443}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -200, y: 100}
+  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
+  m_AnchoredPosition: {x: -30, y: 0}
   m_SizeDelta: {x: 338, y: 112}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0}
 --- !u!114 &2120398052
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7583,9 +7771,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1451556823}
-          m_TargetAssemblyTypeName: 
-          m_MethodName: TouchDownSpeedModeButton
+        - m_Target: {fileID: 1923433444}
+          m_TargetAssemblyTypeName: GameModeButtonsUI, Assembly-CSharp
+          m_MethodName: OnSpeedModeButtonPointerDown
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -8111,7 +8299,7 @@ RectTransform:
   - {fileID: 6254071037193290823}
   - {fileID: 6254071037193291775}
   - {fileID: 6254071037193300137}
-  m_Father: {fileID: 1630411120}
+  m_Father: {fileID: 1767503898}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}

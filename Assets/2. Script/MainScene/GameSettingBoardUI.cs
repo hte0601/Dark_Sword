@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
-public class VolumeSettingUI : MonoBehaviour
+public class GameSettingBoardUI : MonoBehaviour
 {
     [Header("Volume Slider")]
     [SerializeField] private Slider MasterVolumeSlider;
@@ -70,5 +70,10 @@ public class VolumeSettingUI : MonoBehaviour
                 MasterVolumeSlider.value = GameSetting.volume.MasterVolume;
             }
         }
+    }
+
+    public void OnExitButtonPointerDown()
+    {
+        MainSceneBoardsUI.instance.SetBoardUIActive(BoardUI.GameSetting, true);
     }
 }
