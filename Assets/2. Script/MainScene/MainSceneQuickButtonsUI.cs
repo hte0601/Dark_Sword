@@ -63,11 +63,11 @@ public class MainSceneQuickButtonsUI : MonoBehaviour
 
     public void OnInfoButtonPointerDown()
     {
-        MainSceneBoardsUI.instance.SetBoardUIActive(BoardUI.Info, true);
+        MainSceneBoardsUI.instance.OpenBoardUI(BoardUI.Info, true);
     }
 
     public void OnGameSettingButtonPointerDown()
     {
-        MainSceneBoardsUI.instance.SetBoardUIActive(BoardUI.GameSetting, true);
+        MainSceneBoardsUI.instance.OpenBoardUI(BoardUI.GameSetting, true);
     }
 }

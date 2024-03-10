@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.SceneManagement;
 
 public class MainScene : MonoBehaviour
 {
@@ -19,15 +17,12 @@ public class MainScene : MonoBehaviour
 
     void Update()
     {
-        GameQuit();
+        QuitGame();
     }
 
-    void GameQuit()
+    void QuitGame()
     {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            if (Input.GetKey(KeyCode.Escape))
-                Application.Quit();
-        }
+        if (Input.GetKey(KeyCode.Escape))
+            Application.Quit();
     }
 }

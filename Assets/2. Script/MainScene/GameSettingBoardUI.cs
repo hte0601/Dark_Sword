@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -74,6 +73,6 @@ public class GameSettingBoardUI : MonoBehaviour
 
     public void OnExitButtonPointerDown()
     {
-        MainSceneBoardsUI.instance.SetBoardUIActive(BoardUI.GameSetting, true);
+        MainSceneBoardsUI.instance.CloseBoardUI(gameObject);
     }
 }

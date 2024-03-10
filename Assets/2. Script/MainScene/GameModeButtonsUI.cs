@@ -12,6 +12,6 @@ public class GameModeButtonsUI : MonoBehaviour
 
     public void OnBattleModeButtonPointerDown() 
     {
-        MainSceneBoardsUI.instance.SetBoardUIActive(BoardUI.Battle, true);
+        MainSceneBoardsUI.instance.OpenBoardUI(BoardUI.Battle, true);
     }
 }

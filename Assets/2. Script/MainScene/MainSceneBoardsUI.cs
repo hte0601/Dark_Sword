@@ -28,7 +28,7 @@ public class MainSceneBoardsUI : MonoBehaviour
         boardUIDict.Add(BoardUI.Battle, battleBoard);
     }
 
-    public void SetBoardUIActive(BoardUI board, bool isToggle = false)
+    public void OpenBoardUI(BoardUI board, bool isToggle = false)
     {
         if (currentBoard == BoardUI.None)
         {
@@ -48,5 +48,25 @@ public class MainSceneBoardsUI : MonoBehaviour
             currentBoard = board;
             boardUIDict[board].SetActive(true);
         }
+    }
+
+    public void CloseBoardUI(BoardUI board)
+    {
+        if (currentBoard == board)
+        {
+            currentBoard = BoardUI.None;
+        }
+
+        boardUIDict[board].SetActive(false);
+    }
+
+    public void CloseBoardUI(GameObject board)
+    {
+        if (boardUIDict[currentBoard] == board)
+        {
+            currentBoard = BoardUI.None;
+        }
+
+        board.SetActive(false);
     }
 }

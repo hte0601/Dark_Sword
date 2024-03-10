@@ -14,6 +14,6 @@ public class InfoBoardUI : MonoBehaviour
 
     public void OnExitButtonPointerDown()
     {
-        MainSceneBoardsUI.instance.SetBoardUIActive(BoardUI.Info, true);
+        MainSceneBoardsUI.instance.CloseBoardUI(gameObject);
     }
 }

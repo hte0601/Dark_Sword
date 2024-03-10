@@ -18,6 +18,6 @@ public class BattleModeBoardUI : MonoBehaviour
 
     public void OnExitButtonPointerDown()
     {
-        MainSceneBoardsUI.instance.SetBoardUIActive(BoardUI.Battle, true);
+        MainSceneBoardsUI.instance.CloseBoardUI(gameObject);
     }
 }
