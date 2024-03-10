@@ -5,42 +5,18 @@ using UnityEngine;
 public class Swordman : MonoBehaviour
 {   
     public static Swordman swordman;
-    public Rigidbody2D m_rigidbody;
-    private CapsuleCollider2D m_CapsulleCollider;
     private Animator m_Anim;
-
-    //viewing direction
-    // private bool NowViewingRight;
-
-    //status
-    public int health;
-    private int damage;
-    private float speed;
 
     private void Start()
     {
         swordman = this;
 
-        m_CapsulleCollider  = transform.GetComponent<CapsuleCollider2D>();
         m_Anim = transform.Find("model").GetComponent<Animator>();
-        m_rigidbody = transform.GetComponent<Rigidbody2D>();
-
-        // NowViewingRight = true;
-
-        SetStatus(1, 1, 0f);
-    }
-
-    void SetStatus(int hp, int dmg, float speed)
-    {
-        health = hp;
-        damage = dmg;
-        this.speed = speed;
     }
 
     private void Update()
     {
         if (getPlayerState() == 4) return;
-        //if (m_Anim.GetCurrentAnimatorStateInfo(0).IsName("Die")) return;
 
         if (Input.anyKeyDown)
         {
