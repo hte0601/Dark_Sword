@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameManager : MonoBehaviour 
+public class GameManager : MonoBehaviour
 {
     public static GameManager GM;
 
@@ -70,7 +70,7 @@ public class GameManager : MonoBehaviour
         time = timeWrapper;
         bestScore = PlayerPrefs.GetInt("SpeedBestScore", 0);
     }
-	
+
     void Start()
     {
         notice.SetActive(false);
@@ -81,17 +81,17 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKey(KeyCode.Escape))
+        if (Input.GetKey(KeyCode.Escape))
             ExitGame();
     }
 
     IEnumerator StartStage()
     {
         Init();
-        while(!isStart)
+        while (!isStart)
             yield return null;
 
-        while(true)
+        while (true)
         {
             //timer down
             time.value -= timeSpeed * Time.deltaTime;
@@ -107,15 +107,15 @@ public class GameManager : MonoBehaviour
             yield return null;
 
             //속도증가
-            if (timeCount >= TERM_TIME_SPEED) 
+            if (timeCount >= TERM_TIME_SPEED)
             {
                 timeCount -= TERM_TIME_SPEED;
-                if(timeSpeed < MAX_TIME_SPEED)
+                if (timeSpeed < MAX_TIME_SPEED)
                     timeSpeed += INCREASE_TIME_SPEED;
             }
 
             //공격 고블린 비율 증가
-            if (rateCount >= TERM_ATTACK_GOBLINE_RATE) 
+            if (rateCount >= TERM_ATTACK_GOBLINE_RATE)
             {
                 rateCount -= TERM_ATTACK_GOBLINE_RATE;
                 if (AttackGoblinRate < MAX_ATTACK_GOBLINE_RATE)
@@ -128,7 +128,7 @@ public class GameManager : MonoBehaviour
 
     void CheckBestScore()
     {
-        if(GM.scoreUpdate && score > bestScore)
+        if (GM.scoreUpdate && score > bestScore)
         {
             SpeedSoundManager.PlayBestScoreUpdate();
             GM.scoreUpdate = false;
@@ -145,7 +145,7 @@ public class GameManager : MonoBehaviour
         RedGoblinRate = RED_GOBLINE_RATE;
         score = 0;
         expectScore = 0;
-        
+
         isArrowDrawed = false;
         isStart = false;
         GM.scoreUpdate = true;
@@ -168,7 +168,7 @@ public class GameManager : MonoBehaviour
 
     public static void GameOver()
     {
-        Swordman.setPlayerState(4);
+        SpeedSwordman.setPlayerState(4);
 
         if (score > bestScore)
         {
@@ -191,7 +191,7 @@ public class GameManager : MonoBehaviour
         Battle.ClearEnemy();
         notice.SetActive(false);
         scoreBoard.SetActive(true);
-        Swordman.setPlayerState(0);
+        SpeedSwordman.setPlayerState(0);
         GM.nowScore.text = "0";
         SpeedSoundManager.BGMStart();
         StartCoroutine("StartStage");

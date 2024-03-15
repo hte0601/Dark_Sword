@@ -1,17 +1,39 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Swordman : MonoBehaviour
-{   
-    public static Swordman swordman;
-    private Animator m_Anim;
+public class SpeedSwordman : MonoBehaviour
+{
+    public static SpeedSwordman swordman;
+    private Animator animator;
+    private int attackCombo = 1;
 
-    private void Start()
+    public int AttackCombo
+    {
+        get => attackCombo;
+        private set => attackCombo = value;
+    }
+
+    public State CurrentState
+    {
+        get => (State)animator.GetInteger("State");
+        private set => animator.SetInteger("State", (int)value);
+    }
+
+    public enum State
+    {
+        Die = -2,
+        Groggy = -1,
+        Idle = 0,
+        Attack = 1,
+        Guard = 2,
+        Skill = 3,
+    }
+
+    private void Awake()
     {
         swordman = this;
-
-        m_Anim = transform.Find("model").GetComponent<Animator>();
+        animator = transform.Find("model").GetComponent<Animator>();
     }
 
     private void Update()
@@ -27,6 +49,32 @@ public class Swordman : MonoBehaviour
         }
         else
             setPlayerState(0);
+    }
+
+    private void HandleInput(State input)
+    {
+        if (CurrentState == State.Idle)
+        {
+            if (input == State.Attack)
+            {
+
+            }
+            else if (input == State.Guard)
+            {
+
+            }
+            else if (input == State.Skill)
+            {
+
+            }
+        }
+        else if (CurrentState == State.Guard)
+        {
+            if (input == State.Attack)
+            {
+
+            }
+        }
     }
 
     private void SelectAnimation()
@@ -74,18 +122,18 @@ public class Swordman : MonoBehaviour
         {
             GameManager.isStart = true;
             //올바른 입력을 했을 경우
-            if(Battle.getEnemyAction() == getPlayerState())
+            if (Battle.getEnemyAction() == getPlayerState())
             {
-                if(getPlayerState() == 1)
+                if (getPlayerState() == 1)
                 {
                     ParticleManager.CreateHitParticle();
                 }
-                else if(getPlayerState() == 2)
+                else if (getPlayerState() == 2)
                 {
                     ParticleManager.CreateDefenseParticle();
                     SpeedSoundManager.PlayerSound("defense"); //막았을 때만 소리가 나기 위해 여기 존재
                 }
-                else if(getPlayerState() == 3)
+                else if (getPlayerState() == 3)
                 {
                     ParticleManager.CreateRedEnemyHitParticle();
                 }
@@ -116,11 +164,11 @@ public class Swordman : MonoBehaviour
 
     private int getPlayerState()
     {
-        return m_Anim.GetInteger("State");
+        return animator.GetInteger("State");
     }
 
     public static void setPlayerState(int state)
     {
-        swordman.m_Anim.SetInteger("State", state);
+        swordman.animator.SetInteger("State", state);
     }
 }
