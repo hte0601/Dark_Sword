@@ -33,7 +33,7 @@ public class Battle : MonoBehaviour
     {
         EnemyList[0].onDamage(dmg);
 
-        if(EnemyList[0].health <= 0)
+        if(EnemyList[0].currentHealth <= 0)
             battle.KillEnemy();
         else
             DisarmEnemy();

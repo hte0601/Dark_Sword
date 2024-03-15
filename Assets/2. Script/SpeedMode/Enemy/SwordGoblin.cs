@@ -1,5 +1,5 @@
-﻿
-public class FireGoblin : Enemy
+
+public class SwordGoblin : Enemy
 {
     protected override void Awake()
     {

@@ -7,16 +7,16 @@ public class ObjectPool : MonoBehaviour
     public static ObjectPool objectPool;
 
     //object polling
-    [SerializeField]
-    private SpearGoblin spearGoblin;
-    private Queue<Enemy> spearGoblinQueue = new Queue<Enemy>();
+    [SerializeField] private SwordGoblin swordGoblin;
+    private Queue<Enemy> swordGoblinQueue = new Queue<Enemy>();
 
-    [SerializeField]
-    private FireGoblin fireGoblin;
+    [SerializeField] private FireGoblin fireGoblin;
     private Queue<Enemy> fireGoblinQueue = new Queue<Enemy>();
 
-    [SerializeField]
-    private GameObject arrow;
+    [SerializeField] private SpearGoblin spearGoblin;
+    private Queue<Enemy> spearGoblinQueue = new Queue<Enemy>();
+
+    [SerializeField] private GameObject arrow;
 
     //enemy create
     private void Awake()
@@ -136,13 +136,11 @@ public class ObjectPool : MonoBehaviour
 
             if (Random.Range(0f, 1.0f) > GameManager.AttackGoblinRate)
             {
-                enemy.SetStatus(1, 1, 10f);
                 enemy.SetState(1);
                 GameManager.expectScore += 1;
             }
             else
             {
-                enemy.SetStatus(2, 1, 10f);
                 enemy.SetState(2);
                 GameManager.expectScore += 2;
             }
@@ -155,7 +153,6 @@ public class ObjectPool : MonoBehaviour
             else
                 enemy = objectPool.CreateFireGoblin();
 
-            enemy.SetStatus(1, 1, 10f);
             enemy.SetState(3);
             GameManager.expectScore += 1;
         }

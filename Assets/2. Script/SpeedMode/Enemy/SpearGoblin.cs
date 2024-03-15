@@ -1,7 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿
 public class SpearGoblin : Enemy
 {
+    protected override void Awake()
+    {
+        base.Awake();
+
+        maxHealth = 2;
+    }
 }
