@@ -11,7 +11,7 @@ public class MainScene : MonoBehaviour
 #endif
 
 #if UNITY_EDITOR
-        Application.targetFrameRate = -1;
+        Application.targetFrameRate = 75;
 #endif
     }
 
