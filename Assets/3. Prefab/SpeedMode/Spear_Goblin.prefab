@@ -25,8 +25,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1251161693514334}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.2747589, w: 0.9615132}
-  m_LocalPosition: {x: -0.095, y: 0.187, z: -2}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0.100000024}
   m_LocalScale: {x: 0.6, y: 0.6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2fbf9f0a02ea4414ea9485f2004169ee, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 2bf4b6d96e1584148acdf69dab492872, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -94,7 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4973543038031740}
   m_Layer: 9
-  m_Name: WeaponSocket
+  m_Name: Goblin_Hand_Front
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,14 +108,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1357980534652498}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: 0.4028323, w: 0.91527385}
-  m_LocalPosition: {x: -0.068, y: -0.091, z: -2}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.059, y: 0, z: -0.100000024}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4736756787249976}
-  m_Father: {fileID: 4250308909875068}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 47.511}
+  m_Father: {fileID: 3991866034829806388}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1390979362414388
 GameObject:
   m_ObjectHideFlags: 0
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 4921291542433260}
   - component: {fileID: 212230044860212974}
   m_Layer: 9
-  m_Name: GreenGoblin_Leg_L
+  m_Name: Goblin_Leg_L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -189,7 +189,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2475975dd85fabf4886c86ec03de522f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f2e6e2d6fb550c24680802e1ef9a661b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 4198187751278596}
   - component: {fileID: 2153889790495122248}
   m_Layer: 9
-  m_Name: GreenGoblin_Spear
+  m_Name: Spear_Goblin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -245,8 +245,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2855d7106f2c9c648830216ee673931c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  objectType: 0
   animator: {fileID: 95253068682388352}
-  health: 0
+  currentHealth: 0
 --- !u!1 &1450146216767072
 GameObject:
   m_ObjectHideFlags: 0
@@ -258,7 +259,7 @@ GameObject:
   - component: {fileID: 4233964005859064}
   - component: {fileID: 212244371888933612}
   m_Layer: 9
-  m_Name: GreenGoblin_Head
+  m_Name: Goblin_Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -321,7 +322,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 43e3e8bab1d5dc54da2b0a58ed885163, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3d13e3687e86ecb41b70f8180aab4271, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -343,7 +344,7 @@ GameObject:
   - component: {fileID: 4250308909875068}
   - component: {fileID: 212010073633406584}
   m_Layer: 9
-  m_Name: GreenGoblin_Body
+  m_Name: Goblin_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -363,7 +364,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4233964005859064}
-  - {fileID: 4973543038031740}
+  - {fileID: 3991866034829806388}
   m_Father: {fileID: 4383575337733088}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &212010073633406584
@@ -407,7 +408,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: d5c92561ca4b2f541955b17528671b4d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bea8954e2fe75714ebaf5e31acb9fbf1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -429,7 +430,7 @@ GameObject:
   - component: {fileID: 4184317426595760}
   - component: {fileID: 212935899346656444}
   m_Layer: 9
-  m_Name: GreenGoblin_Leg-R
+  m_Name: Goblin_Leg-R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -444,7 +445,7 @@ Transform:
   m_GameObject: {fileID: 1711905781662688}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.113, y: -0.22399998, z: 1}
+  m_LocalPosition: {x: -0.113, y: -0.22399998, z: 1.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -491,7 +492,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 2475975dd85fabf4886c86ec03de522f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f2e6e2d6fb550c24680802e1ef9a661b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -528,7 +529,7 @@ Transform:
   m_GameObject: {fileID: 1715352912810092}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.06100122, y: 0.12699986, z: -0.1}
+  m_LocalPosition: {x: 0.061, y: 0.127, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -575,7 +576,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 0da680809d2a51445ab6b0247a5b4213, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 24584ea77446c394ca7ebed6b360ba49, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -642,3 +643,35 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &4705433779505022611
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3991866034829806388}
+  m_Layer: 9
+  m_Name: Goblin_Arms
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3991866034829806388
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4705433779505022611}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4973543038031740}
+  m_Father: {fileID: 4250308909875068}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
