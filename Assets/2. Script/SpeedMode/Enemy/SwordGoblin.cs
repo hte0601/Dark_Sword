@@ -1,10 +1,13 @@
 
-public class SwordGoblin : Enemy
+namespace SpeedMode
 {
-    protected override void Awake()
+    public class SwordGoblin : Enemy
     {
-        base.Awake();
+        protected override void Awake()
+        {
+            base.Awake();
 
-        maxHealth = 1;
+            maxHealth = 1;
+        }
     }
 }

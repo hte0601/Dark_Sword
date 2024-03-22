@@ -2,79 +2,82 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Battle : MonoBehaviour
+namespace SpeedMode
 {
-    public static Battle battle;
-    public static List<Enemy> EnemyList = new List<Enemy>();
-
-    public static float maxGap = 1f;
-
-    void Awake()
+    public class Battle : MonoBehaviour
     {
-        battle = this;
-    }
+        public static Battle battle;
+        public static List<Enemy> EnemyList = new List<Enemy>();
 
-    public static void CreateEnemy()
-    {
-        Enemy enemy = ObjectPool.GetEnemy();
-        EnemyList.Add(enemy);
-        enemy.setOrder(EnemyList.Count - 1);
-        enemy.EmergeEnemy();
-    }
+        public static float maxGap = 1f;
 
-    //모든 몬스터의 순서를 재설정함
-    void setEnemyOrder()
-    {
-        for (int i = 0; i < EnemyList.Count; i++)
-            EnemyList[i].setOrder(i);
-    }
+        void Awake()
+        {
+            battle = this;
+        }
 
-    public static void EnemyDamaged(int dmg)
-    {
-        EnemyList[0].onDamage(dmg);
+        public static void CreateEnemy()
+        {
+            Enemy enemy = ObjectPool.GetEnemy();
+            EnemyList.Add(enemy);
+            enemy.setOrder(EnemyList.Count - 1);
+            enemy.EmergeEnemy();
+        }
 
-        if(EnemyList[0].currentHealth <= 0)
-            battle.KillEnemy();
-        else
-            DisarmEnemy();
-    }
+        //모든 몬스터의 순서를 재설정함
+        void setEnemyOrder()
+        {
+            for (int i = 0; i < EnemyList.Count; i++)
+                EnemyList[i].setOrder(i);
+        }
 
-    void KillEnemy()
-    {
-        ObjectPool.ReturnObjectOld(EnemyList[0]);
-        battle.RemoveEnemyList();
-        CreateEnemy();
-    }
+        public static void EnemyDamaged(int dmg)
+        {
+            EnemyList[0].onDamage(dmg);
 
-    public static void DisarmEnemy()
-    {
-        EnemyList[0].animator.SetInteger("Action", 1);
-    }
+            if (EnemyList[0].currentHealth <= 0)
+                battle.KillEnemy();
+            else
+                DisarmEnemy();
+        }
 
-    void RemoveEnemyList()
-    {
-        EnemyList.RemoveAt(0);
-        battle.setEnemyOrder();
-    }
+        void KillEnemy()
+        {
+            ObjectPool.ReturnObjectOld(EnemyList[0]);
+            battle.RemoveEnemyList();
+            CreateEnemy();
+        }
 
-    public static bool IsEnemyInRange()
-    {
-        if (EnemyList.Count > 0)
-            if (EnemyList[0].gameObject.transform.position.x < GameManager.battlePos.x + maxGap)
-                return true;
+        public static void DisarmEnemy()
+        {
+            EnemyList[0].animator.SetInteger("Action", 1);
+        }
 
-        return false;
-    }
+        void RemoveEnemyList()
+        {
+            EnemyList.RemoveAt(0);
+            battle.setEnemyOrder();
+        }
 
-    public static int getEnemyAction()
-    {
-        return EnemyList[0].animator.GetInteger("Action");
-    }
+        public static bool IsEnemyInRange()
+        {
+            if (EnemyList.Count > 0)
+                if (EnemyList[0].gameObject.transform.position.x < GameManager.battlePos.x + maxGap)
+                    return true;
 
-    public static void ClearEnemy()
-    {
-        for (int i = 0; i < EnemyList.Count; i++)
-            ObjectPool.ReturnObjectOld(EnemyList[i]);
-        EnemyList.Clear();
+            return false;
+        }
+
+        public static int getEnemyAction()
+        {
+            return EnemyList[0].animator.GetInteger("Action");
+        }
+
+        public static void ClearEnemy()
+        {
+            for (int i = 0; i < EnemyList.Count; i++)
+                ObjectPool.ReturnObjectOld(EnemyList[i]);
+            EnemyList.Clear();
+        }
     }
 }

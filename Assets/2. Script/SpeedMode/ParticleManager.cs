@@ -2,62 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ParticleManager : MonoBehaviour
+namespace SpeedMode
 {
-    public static ParticleManager pm;
-    
-    //Player particle
-    public GameObject attackParticle;
-    public GameObject pierceParticle;
-    public ParticleSystem defenseParticle;
-    public ParticleSystem redEnemyHit;
-    public ParticleSystem enemyHit;
-    public ParticleSystem brokenHeart;
-
-    void Start()
+    public class ParticleManager : MonoBehaviour
     {
-        pm = this;
-        pm.playerParticleHide();
-    }
+        public static ParticleManager pm;
 
-    void playerParticleHide()
-    {
-        defenseParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        redEnemyHit.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        enemyHit.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-        brokenHeart.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
-    }
+        //Player particle
+        public GameObject attackParticle;
+        public GameObject pierceParticle;
+        public ParticleSystem defenseParticle;
+        public ParticleSystem redEnemyHit;
+        public ParticleSystem enemyHit;
+        public ParticleSystem brokenHeart;
 
-    //Player particle
-    public static void CreateSlashParticle()
-    {
-        pm.attackParticle.SetActive(true);
-    }
+        void Start()
+        {
+            pm = this;
+            pm.playerParticleHide();
+        }
 
-    public static void CreatePierceParticle()
-    {
-        pm.pierceParticle.SetActive(true);
-    }
+        void playerParticleHide()
+        {
+            defenseParticle.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            redEnemyHit.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            enemyHit.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+            brokenHeart.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+        }
 
-    public static void CreateDefenseParticle()
-    {
-        pm.defenseParticle.Play();
-    }
+        //Player particle
+        public static void CreateSlashParticle()
+        {
+            pm.attackParticle.SetActive(true);
+        }
 
-    //Enemy Particle
-    public static void CreateHitParticle()
-    {
-        pm.enemyHit.Play();
-    }
+        public static void CreatePierceParticle()
+        {
+            pm.pierceParticle.SetActive(true);
+        }
 
-    public static void CreateRedEnemyHitParticle()
-    {
-        pm.redEnemyHit.Play();
-    }
+        public static void CreateDefenseParticle()
+        {
+            pm.defenseParticle.Play();
+        }
 
-    //effect Particle
-    public static void CreateBrokenHeartParticle()
-    {
-        pm.brokenHeart.Play();
+        //Enemy Particle
+        public static void CreateHitParticle()
+        {
+            pm.enemyHit.Play();
+        }
+
+        public static void CreateRedEnemyHitParticle()
+        {
+            pm.redEnemyHit.Play();
+        }
+
+        //effect Particle
+        public static void CreateBrokenHeartParticle()
+        {
+            pm.brokenHeart.Play();
+        }
     }
 }
