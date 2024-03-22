@@ -18,6 +18,67 @@ public class ObjectPool : MonoBehaviour
 
     [SerializeField] private GameObject arrow;
 
+
+    private Dictionary<ObjectType, Pool> objectDict = new();
+
+    public enum ObjectType
+    {
+        SwordGoblin,
+        FireGoblin,
+        SpearGoblin
+    }
+
+    private class Pool
+    {
+        private ObjectType objectType;
+        private PoolableObject objectPrefab;
+        private Queue<PoolableObject> objectQueue = new();
+        private int PreCreateNumber;
+
+        public Pool(ObjectType objectType, PoolableObject objectPrefab, int preCreateNumber)
+        {
+            this.objectType = objectType;
+            this.objectPrefab = objectPrefab;
+            this.PreCreateNumber = preCreateNumber;
+
+            for (int i = 0; i < PreCreateNumber; i++)
+            {
+                objectQueue.Enqueue(CreateObject());
+            }
+        }
+
+        public PoolableObject GetObject()
+        {
+            PoolableObject obj;
+
+            if (objectQueue.Count > 0)
+                obj = objectQueue.Dequeue();
+            else
+                obj = CreateObject();
+
+            obj.transform.SetParent(null);
+
+            return obj;
+        }
+
+        public void ReturnObject(PoolableObject obj)
+        {
+            obj.gameObject.SetActive(false);
+            obj.transform.SetParent(objectPool.transform);
+
+            objectQueue.Enqueue(obj);
+        }
+
+        private PoolableObject CreateObject()
+        {
+            PoolableObject obj = Instantiate(objectPrefab, Vector3.zero, Quaternion.identity, objectPool.transform);
+            obj.gameObject.SetActive(false);
+            obj.objectType = objectType;
+
+            return obj;
+        }
+    }
+
     //enemy create
     private void Awake()
     {
