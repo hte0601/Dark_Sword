@@ -16017,6 +16017,52 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &532865566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 532865568}
+  - component: {fileID: 532865567}
+  m_Layer: 0
+  m_Name: EnemyManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &532865567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532865566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f33cf5c126de2b4cbe14b250a5072eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enemyObjectPool: {fileID: 1781057855}
+--- !u!4 &532865568
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 532865566}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1781057854}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &536854373
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18238,9 +18284,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b9aad164372ca449ab5aa222e2d6c8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spearGoblin: {fileID: 2153889790495122248, guid: d128b58df92d9be4884284539fa6a0c7,
-    type: 3}
+  swordGoblin: {fileID: 0}
   fireGoblin: {fileID: 1713176084668379879, guid: ef0cea3198b585541a43c04d95004cf3,
+    type: 3}
+  spearGoblin: {fileID: 2153889790495122248, guid: d128b58df92d9be4884284539fa6a0c7,
     type: 3}
   arrow: {fileID: 4399267810891249561, guid: 03196e320abe261499cfd3c369b123a7, type: 3}
 --- !u!4 &980978943
@@ -18463,7 +18510,6 @@ GameObject:
   - component: {fileID: 1091095261}
   - component: {fileID: 1091095260}
   - component: {fileID: 1091095262}
-  - component: {fileID: 1091095265}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -18573,18 +18619,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1091095265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1091095259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f33cf5c126de2b4cbe14b250a5072eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1108597233
 GameObject:
   m_ObjectHideFlags: 0
@@ -20585,6 +20619,57 @@ MonoBehaviour:
   speed: 1.1
   startPosition: 29.5
   endPosition: -29.5
+--- !u!1 &1781057853
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1781057854}
+  - component: {fileID: 1781057855}
+  m_Layer: 0
+  m_Name: EnemyObjectPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1781057854
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781057853}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 532865568}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1781057855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1781057853}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6e835d2ab1c3f147bd92071bf418ebf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swordGoblin: {fileID: 2729697488982929349, guid: 4ef76bdec78badd4ea31efe779be88fd,
+    type: 3}
+  fireGoblin: {fileID: 1713176084668379879, guid: ef0cea3198b585541a43c04d95004cf3,
+    type: 3}
+  spearGoblin: {fileID: 2153889790495122248, guid: d128b58df92d9be4884284539fa6a0c7,
+    type: 3}
+  arrow: {fileID: 0}
 --- !u!1 &1814112173
 GameObject:
   m_ObjectHideFlags: 0
@@ -47453,8 +47538,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f929248d997d24fa80adaa46f30d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_rigidbody: {fileID: 0}
-  health: 0
 --- !u!1 &2549417691061063429
 GameObject:
   m_ObjectHideFlags: 0
@@ -57641,3 +57724,4 @@ SceneRoots:
   - {fileID: 436247346}
   - {fileID: 849038547}
   - {fileID: 2143803349}
+  - {fileID: 532865568}

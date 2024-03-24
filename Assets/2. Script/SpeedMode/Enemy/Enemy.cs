@@ -4,8 +4,20 @@ using UnityEngine;
 
 namespace SpeedMode
 {
-    public class Enemy : PoolableObject
+    public class Enemy : MonoBehaviour
     {
+        public enum Type
+        {
+            SwordGoblin,
+            FireGoblin,
+            EliteGoblin,
+            SpearGoblin
+        }
+
+        public Type enemyType;
+
+        public bool isHead = false;
+
         public Animator animator;
 
         protected int state;
@@ -15,7 +27,7 @@ namespace SpeedMode
         public int currentHealth;
         protected float moveSpeed;
 
-        protected Transform frontEnemyTransform;
+        public Transform frontEnemyTransform;
 
         protected virtual void Awake()
         {
