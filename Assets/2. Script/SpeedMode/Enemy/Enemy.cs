@@ -31,7 +31,7 @@ namespace SpeedMode
 
         protected virtual void Awake()
         {
-            moveSpeed = ModeData.balance.ENEMY_MOVE_SPEED;
+            moveSpeed = ModeData.BalanceData.ENEMY_MOVE_SPEED;
         }
 
         protected virtual void OnEnable()
@@ -47,7 +47,7 @@ namespace SpeedMode
                 transform.position = Vector3.MoveTowards(transform.position, GameManager.battlePos, moveSpeed * Time.deltaTime);
             //그렇지 않을 경우 자기 앞에 있는 enemy의 위치에 x좌표 +2한 위치로 이동
             else
-                transform.position = Vector3.MoveTowards(transform.position, Battle.EnemyList[order - 1].gameObject.transform.position + ModeData.balance.ENEMY_ENEMY_GAP, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, Battle.EnemyList[order - 1].gameObject.transform.position + ModeData.BalanceData.ENEMY_ENEMY_GAP, moveSpeed * Time.deltaTime);
         }
 
         public void HideEnemy()
