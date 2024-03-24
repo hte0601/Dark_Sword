@@ -153,7 +153,7 @@ namespace SpeedMode
             GM.scoreUpdate = true;
 
             for (int i = 0; i < 12; i++)
-                Battle.CreateEnemy();
+                Battle.instance.CreateEnemy();
         }
 
         public static void TimeUp()
@@ -170,7 +170,7 @@ namespace SpeedMode
 
         public static void GameOver()
         {
-            Swordman.setPlayerState(4);
+            // Swordman.setPlayerState(4);
 
             if (score > bestScore)
             {
@@ -193,7 +193,7 @@ namespace SpeedMode
             Battle.ClearEnemy();
             notice.SetActive(false);
             scoreBoard.SetActive(true);
-            Swordman.setPlayerState(0);
+            // Swordman.setPlayerState(0);
             GM.nowScore.text = "0";
             SoundManager.BGMStart();
             StartCoroutine("StartStage");

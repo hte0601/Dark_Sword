@@ -6,78 +6,92 @@ namespace SpeedMode
 {
     public class Battle : MonoBehaviour
     {
-        public static Battle battle;
-        public static List<Enemy> EnemyList = new List<Enemy>();
+        public static Battle instance;
+        [SerializeField] private EnemyObjectPool enemyObjectPool;
 
-        public static float maxGap = 1f;
+        private List<Enemy> enemyList = new();
+        private Wave currentWave;
+        private Enemy.Type currentEliteEnemy;
 
-        void Awake()
+        private const float MAX_GAP = 1f;
+
+        private void Awake()
         {
-            battle = this;
+            instance = this;
+            currentWave = ModeData.WaveData.waves[16];
+            currentEliteEnemy = Enemy.Type.SpearGoblin;
         }
 
-        public static void CreateEnemy()
+        public bool IsEnemyInRange()
         {
-            Enemy enemy = ObjectPool.GetEnemy();
-            EnemyList.Add(enemy);
-            enemy.setOrder(EnemyList.Count - 1);
-            enemy.EmergeEnemy();
-        }
-
-        //모든 몬스터의 순서를 재설정함
-        void setEnemyOrder()
-        {
-            for (int i = 0; i < EnemyList.Count; i++)
-                EnemyList[i].setOrder(i);
-        }
-
-        public static void EnemyDamaged(int dmg)
-        {
-            EnemyList[0].onDamage(dmg);
-
-            if (EnemyList[0].currentHealth <= 0)
-                battle.KillEnemy();
-            else
-                DisarmEnemy();
-        }
-
-        void KillEnemy()
-        {
-            ObjectPool.ReturnObjectOld(EnemyList[0]);
-            battle.RemoveEnemyList();
-            CreateEnemy();
-        }
-
-        public static void DisarmEnemy()
-        {
-            EnemyList[0].animator.SetInteger("Action", 1);
-        }
-
-        void RemoveEnemyList()
-        {
-            EnemyList.RemoveAt(0);
-            battle.setEnemyOrder();
-        }
-
-        public static bool IsEnemyInRange()
-        {
-            if (EnemyList.Count > 0)
-                if (EnemyList[0].gameObject.transform.position.x < GameManager.battlePos.x + maxGap)
+            if (enemyList.Count > 0)
+                if (enemyList[0].transform.position.x < GameManager.battlePos.x + MAX_GAP)
                     return true;
 
             return false;
         }
 
-        public static int getEnemyAction()
+        public bool FightEnemy(Swordman.State input, out bool isEnemyDead)
         {
-            return EnemyList[0].animator.GetInteger("Action");
+            if (input == enemyList[0].CorrectInput)
+            {
+                isEnemyDead = enemyList[0].Damage(1);
+
+                if (isEnemyDead)
+                {
+                    RemoveEnemy();
+                    CreateEnemy();
+                }
+
+                return true;
+            }
+            else
+            {
+                isEnemyDead = false;
+                return false;
+            }
         }
 
+        public void CreateEnemy()
+        {
+            Enemy.Type enemyType = currentWave.RandomEnemy();
+
+            if (enemyType == Enemy.Type.EliteEnemy)
+                enemyType = currentEliteEnemy;
+
+            Enemy enemy = enemyObjectPool.GetEnemy(enemyType);
+            enemy.transform.position = GameManager.createPos;
+
+            if (enemyList.Count == 0)
+            {
+                enemy.isHead = true;
+                enemy.frontEnemyTransform = null;
+            }
+            else
+            {
+                enemy.isHead = false;
+                enemy.frontEnemyTransform = enemyList[^1].transform;
+            }
+
+            enemyList.Add(enemy);
+        }
+
+        private void RemoveEnemy()
+        {
+            enemyObjectPool.ReturnEnemy(enemyList[0]);
+            enemyList.RemoveAt(0);
+
+            enemyList[0].isHead = true;
+            enemyList[0].frontEnemyTransform = null;
+        }
+
+
+        // 수정 필요
         public static void ClearEnemy()
         {
-            for (int i = 0; i < EnemyList.Count; i++)
-                ObjectPool.ReturnObjectOld(EnemyList[i]);
-            EnemyList.Clear();
+            // for (int i = 0; i < EnemyListOld.Count; i++)
+            //     ObjectPool.ReturnObjectOld(EnemyListOld[i]);
+            // EnemyListOld.Clear();
         }
     }
 }

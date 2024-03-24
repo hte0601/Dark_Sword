@@ -40,7 +40,7 @@ namespace SpeedMode
                 return Enemy.Type.FireGoblin;
             }
 
-            return Enemy.Type.EliteGoblin;
+            return Enemy.Type.EliteEnemy;
         }
     }
 }

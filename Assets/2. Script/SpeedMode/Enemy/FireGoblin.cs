@@ -7,7 +7,8 @@ namespace SpeedMode
         {
             base.Awake();
 
-            maxHealth = 1;
+            MAX_HEALTH = 1;
+            correctInput.Add(1, Swordman.State.Guard);
         }
     }
 }

@@ -6,9 +6,21 @@ namespace SpeedMode
 {
     public class Swordman : MonoBehaviour
     {
+        public enum State
+        {
+            Die = -2,
+            Groggy = -1,
+            Idle = 0,
+            Attack = 1,
+            Guard = 2,
+            Skill = 3,
+        }
+
         public static Swordman swordman;
+        private Battle enemyManager;
         private Animator animator;
         private int attackCombo = 1;
+        private Coroutine nowCoroutine;
 
         public int AttackCombo
         {
@@ -22,15 +34,6 @@ namespace SpeedMode
             private set => animator.SetInteger("State", (int)value);
         }
 
-        public enum State
-        {
-            Die = -2,
-            Groggy = -1,
-            Idle = 0,
-            Attack = 1,
-            Guard = 2,
-            Skill = 3,
-        }
 
         private void Awake()
         {
@@ -38,19 +41,41 @@ namespace SpeedMode
             animator = transform.Find("model").GetComponent<Animator>();
         }
 
+        private void Start()
+        {
+            enemyManager = Battle.instance;
+        }
+
         private void Update()
         {
-            if (getPlayerState() == 4) return;
-
             if (Input.anyKeyDown)
             {
-                if (Input.GetKey(KeyCode.Mouse0))
-                    return;
-                SelectAnimation();
-                SelectAttack();
+                if (Input.GetKey(KeyCode.A))
+                    HandleInput(State.Attack);
+
+                if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.L))
+                    HandleInput(State.Guard);
+
+                if (Input.GetKey(KeyCode.D))
+                    HandleInput(State.Skill);
             }
-            else
-                setPlayerState(0);
+        }
+
+        // 수정 필요
+        // for moblie
+        public void Attack()
+        {
+            HandleInput(State.Attack);
+        }
+
+        public void Defense()
+        {
+            HandleInput(State.Guard);
+        }
+
+        public void Pierce()
+        {
+            HandleInput(State.Skill);
         }
 
         private void HandleInput(State input)
@@ -59,11 +84,13 @@ namespace SpeedMode
             {
                 if (input == State.Attack)
                 {
-
+                    CurrentState = State.Attack;
+                    nowCoroutine = StartCoroutine(AttackAnimation());
                 }
                 else if (input == State.Guard)
                 {
-
+                    CurrentState = State.Guard;
+                    nowCoroutine = StartCoroutine(GuardAnimation());
                 }
                 else if (input == State.Skill)
                 {
@@ -79,99 +106,120 @@ namespace SpeedMode
             }
         }
 
-        private void SelectAnimation()
-        {
-            if (Input.GetKey(KeyCode.A))
-            {
-                setPlayerState(1);
-            }
-            else if (Input.GetKey(KeyCode.S))
-            {
-                setPlayerState(2);
-            }
-            else if (Input.GetKey(KeyCode.D))
-            {
-                setPlayerState(3);
-            }
-        }
 
-        //for moblie
-        public void Attack()
-        {
-            if (getPlayerState() == 4) return;
-            setPlayerState(1);
-            SelectAttack();
-        }
+        // private void SelectAttack()
+        // {
+        //     //적이 범위에 있을 경우
+        //     if (Battle.IsEnemyInRangeOld())
+        //     {
+        //         GameManager.isStart = true;
+        //         //올바른 입력을 했을 경우
+        //         if (Battle.getEnemyAction() == getPlayerState())
+        //         {
+        //             if (getPlayerState() == 1)
+        //             {
+        //                 ParticleManager.CreateHitParticle();
+        //             }
+        //             else if (getPlayerState() == 2)
+        //             {
+        //                 ParticleManager.CreateDefenseParticle();
+        //                 SoundManager.PlayerSound("defense"); //막았을 때만 소리가 나기 위해 여기 존재
+        //             }
+        //             else if (getPlayerState() == 3)
+        //             {
+        //                 ParticleManager.CreateRedEnemyHitParticle();
+        //             }
+        //             Battle.EnemyDamaged(1);
+        //             GameManager.TimeUp();
+        //         }
+        //         //잘못된 입력을 했을 경우
+        //         else
+        //         {
+        //             GameManager.setTime(0);
+        //             return;
+        //         }
+        //     }
 
-        public void Defense()
-        {
-            if (getPlayerState() == 4) return;
-            setPlayerState(2);
-            SelectAttack();
-        }
+        //     //공격 이펙트 및 사운드 출력
+        //     switch (getPlayerState())
+        //     {
+        //         case 1:
+        //             ParticleManager.CreateSlashParticle();
+        //             SoundManager.PlayerSound("slash");
+        //             break;
+        //         case 3:
+        //             ParticleManager.CreatePierceParticle();
+        //             SoundManager.PlayerSound("pierce");
+        //             break;
+        //     }
+        // }
 
-        public void Pierce()
-        {
-            if (getPlayerState() == 4) return;
-            setPlayerState(3);
-            SelectAttack();
-        }
 
-        private void SelectAttack()
+        IEnumerator AttackAnimation()
         {
-            //적이 범위에 있을 경우
-            if (Battle.IsEnemyInRange())
+            while (!IsAnimation("Attack"))
+                yield return null;
+
+            while (GetNormalizedTime() < 0.3f)
+                yield return null;
+
+            if (enemyManager.IsEnemyInRange())
             {
                 GameManager.isStart = true;
-                //올바른 입력을 했을 경우
-                if (Battle.getEnemyAction() == getPlayerState())
+
+                // 입력 성공
+                if (enemyManager.FightEnemy(State.Attack, out bool isEnemyDead))
                 {
-                    if (getPlayerState() == 1)
-                    {
-                        ParticleManager.CreateHitParticle();
-                    }
-                    else if (getPlayerState() == 2)
-                    {
-                        ParticleManager.CreateDefenseParticle();
-                        SoundManager.PlayerSound("defense"); //막았을 때만 소리가 나기 위해 여기 존재
-                    }
-                    else if (getPlayerState() == 3)
-                    {
-                        ParticleManager.CreateRedEnemyHitParticle();
-                    }
-                    Battle.EnemyDamaged(1);
-                    GameManager.TimeUp();
+                    ParticleManager.CreateHitParticle();
                 }
-                //잘못된 입력을 했을 경우
+                // 입력 실패
                 else
                 {
-                    GameManager.setTime(0);
-                    return;
+                    // yield break;
                 }
             }
 
-            //공격 이펙트 및 사운드 출력
-            switch (getPlayerState())
+            ParticleManager.CreateSlashParticle();
+            SoundManager.PlayerSound("slash");
+
+            while (GetNormalizedTime() < 0.8f)
+                yield return null;
+
+            CurrentState = State.Idle;
+        }
+
+        IEnumerator GuardAnimation()
+        {
+            while (!IsAnimation("Guard"))
+                yield return null;
+
+            while (GetNormalizedTime() < 0.3f)
+                yield return null;
+
+            if (enemyManager.IsEnemyInRange())
             {
-                case 1:
-                    ParticleManager.CreateSlashParticle();
-                    SoundManager.PlayerSound("slash");
-                    break;
-                case 3:
-                    ParticleManager.CreatePierceParticle();
-                    SoundManager.PlayerSound("pierce");
-                    break;
+                GameManager.isStart = true;
+
+                // 입력 성공
+                if (enemyManager.FightEnemy(State.Guard, out bool isEnemyDead))
+                {
+                    ParticleManager.CreateDefenseParticle();
+                    SoundManager.PlayerSound("defense");
+                }
+                // 입력 실패
+                else
+                {
+                    // yield break;
+                }
             }
+
+            while (GetNormalizedTime() < 0.8f)
+                yield return null;
+
+            CurrentState = State.Idle;
         }
 
-        private int getPlayerState()
-        {
-            return animator.GetInteger("State");
-        }
-
-        public static void setPlayerState(int state)
-        {
-            swordman.animator.SetInteger("State", state);
-        }
+        private bool IsAnimation(string animation) => animator.GetCurrentAnimatorStateInfo(0).IsName(animation);
+        private float GetNormalizedTime() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
     }
 }

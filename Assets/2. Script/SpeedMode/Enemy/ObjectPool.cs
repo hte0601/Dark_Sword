@@ -199,12 +199,12 @@ namespace SpeedMode
 
                 if (Random.Range(0f, 1.0f) > GameManager.AttackGoblinRate)
                 {
-                    enemy.SetState(1);
+                    // enemy.SetState(1);
                     GameManager.expectScore += 1;
                 }
                 else
                 {
-                    enemy.SetState(2);
+                    // enemy.SetState(2);
                     GameManager.expectScore += 2;
                 }
             }
@@ -216,7 +216,7 @@ namespace SpeedMode
                 else
                     enemy = objectPool.CreateFireGoblin();
 
-                enemy.SetState(3);
+                // enemy.SetState(3);
                 GameManager.expectScore += 1;
             }
 
@@ -239,7 +239,7 @@ namespace SpeedMode
         public static void ReturnObjectOld(Enemy obj)
         {
             objectPool.EraseBestScoreArrow(obj);
-            obj.HideEnemy();
+            // obj.HideEnemy();
 
             if (obj is SpearGoblin)
             {
