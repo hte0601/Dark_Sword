@@ -4,9 +4,9 @@ using UnityEngine;
 
 namespace SpeedMode
 {
-    public class Battle : MonoBehaviour
+    public class EnemyManager : MonoBehaviour
     {
-        public static Battle instance;
+        public static EnemyManager instance;
         [SerializeField] private EnemyObjectPool enemyObjectPool;
 
         private List<Enemy> enemyList = new();

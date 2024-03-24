@@ -17,7 +17,7 @@ namespace SpeedMode
         }
 
         public static Swordman swordman;
-        private Battle enemyManager;
+        private EnemyManager enemyManager;
         private Animator animator;
         private int attackCombo = 1;
         private Coroutine nowCoroutine;
@@ -43,7 +43,7 @@ namespace SpeedMode
 
         private void Start()
         {
-            enemyManager = Battle.instance;
+            enemyManager = EnemyManager.instance;
         }
 
         private void Update()

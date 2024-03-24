@@ -153,7 +153,7 @@ namespace SpeedMode
             GM.scoreUpdate = true;
 
             for (int i = 0; i < 12; i++)
-                Battle.instance.CreateEnemy();
+                EnemyManager.instance.CreateEnemy();
         }
 
         public static void TimeUp()
@@ -190,7 +190,7 @@ namespace SpeedMode
 
         public void RestartGame()
         {
-            Battle.ClearEnemy();
+            EnemyManager.ClearEnemy();
             notice.SetActive(false);
             scoreBoard.SetActive(true);
             // Swordman.setPlayerState(0);
@@ -201,7 +201,7 @@ namespace SpeedMode
 
         public void ExitGame()
         {
-            Battle.ClearEnemy();
+            EnemyManager.ClearEnemy();
             SceneManager.LoadScene("Main");
             notice.SetActive(false);
         }
