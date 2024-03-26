@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ namespace SpeedMode
         private Enemy.Type currentEliteEnemy;
 
         private const float MAX_GAP = 1f;
+
+        public event Action<Enemy.Type, bool, bool> FightEnemyEvent;
 
         private void Awake()
         {
@@ -33,8 +36,12 @@ namespace SpeedMode
 
         public bool FightEnemy(Swordman.State input, out bool isEnemyDead)
         {
+            Enemy.Type enemyType = enemyList[0].enemyType;
+            bool isInputCorrect;
+
             if (input == enemyList[0].CorrectInput)
             {
+                isInputCorrect = true;
                 isEnemyDead = enemyList[0].Damage(1);
 
                 if (isEnemyDead)
@@ -42,14 +49,15 @@ namespace SpeedMode
                     RemoveEnemy();
                     CreateEnemy();
                 }
-
-                return true;
             }
             else
             {
+                isInputCorrect = false;
                 isEnemyDead = false;
-                return false;
             }
+
+            FightEnemyEvent?.Invoke(enemyType, isInputCorrect, isEnemyDead);
+            return isInputCorrect;
         }
 
         public void CreateEnemy()

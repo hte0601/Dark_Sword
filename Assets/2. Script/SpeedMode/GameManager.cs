@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 namespace SpeedMode
 {
@@ -66,25 +67,68 @@ namespace SpeedMode
         //Guide UI
         public GameObject guide;
 
-        void Awake()
+
+        private int _currentCombo;
+        private float _scoreMultiplier;
+
+        public int CurrentCombo
+        {
+            get => _currentCombo;
+            private set
+            {
+                _currentCombo = value;
+                ScoreMultiplier = _currentCombo;
+                OnComboValueChanged?.Invoke(_currentCombo, ScoreMultiplier);
+            }
+        }
+
+        public float ScoreMultiplier
+        {
+            get => _scoreMultiplier;
+            private set => _scoreMultiplier = 1 + (int)(value / 100) * 0.1f;
+        }
+
+        public event Action<int, float> OnComboValueChanged;
+
+        private void Awake()
         {
             GM = this;
             time = timeWrapper;
             bestScore = PlayerPrefs.GetInt("SpeedBestScore", 0);
         }
 
-        void Start()
+        private void Start()
         {
             notice.SetActive(false);
             GM.nowScore.text = score.ToString();
             GM.nowBestScoreText.text = bestScore.ToString();
             StartCoroutine("StartStage");
+
+            EnemyManager.instance.FightEnemyEvent += HandleFightEnemyEvent;
         }
 
-        void Update()
+        private void Update()
         {
             if (Input.GetKey(KeyCode.Escape))
                 ExitGame();
+        }
+
+        private void HandleFightEnemyEvent(Enemy.Type enemyType, bool isInputCorrect, bool isEnemyDead)
+        {
+            if (isInputCorrect)
+            {
+                time.value += BONUS_TIME_VALUE;
+
+                CurrentCombo += 1;
+                score += (int)(10 * ScoreMultiplier);
+                nowScore.text = score.ToString();
+            }
+            else
+            {
+                time.value = MAX_TIME;
+
+                CurrentCombo = 0;
+            }
         }
 
         IEnumerator StartStage()
@@ -154,14 +198,16 @@ namespace SpeedMode
 
             for (int i = 0; i < 12; i++)
                 EnemyManager.instance.CreateEnemy();
+
+            CurrentCombo = 0;
         }
 
-        public static void TimeUp()
-        {
-            time.value += BONUS_TIME_VALUE;
-            score += 1;
-            GM.nowScore.text = score.ToString();
-        }
+        // public static void TimeUp()
+        // {
+        //     time.value += BONUS_TIME_VALUE;
+        //     score += 1;
+        //     GM.nowScore.text = score.ToString();
+        // }
 
         public static void setTime(float time)
         {
