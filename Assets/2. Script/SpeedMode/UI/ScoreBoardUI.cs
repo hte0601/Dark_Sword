@@ -12,10 +12,10 @@ namespace SpeedMode
 
         private void Start()
         {
-            UpdateCurrentScoreText(GameManager.GM.CurrentScore);
+            UpdateCurrentScoreText(GameManager.instance.CurrentScore);
             UpdateBestScoreText(SaveData.instance.playData.BestScore);
 
-            GameManager.GM.OnScoreValueChanged += UpdateCurrentScoreText;
+            GameManager.instance.OnScoreValueChanged += UpdateCurrentScoreText;
             SaveData.instance.playData.OnBestScoreValueChanged += UpdateBestScoreText;
         }
 

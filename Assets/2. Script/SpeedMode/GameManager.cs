@@ -9,7 +9,7 @@ namespace SpeedMode
 {
     public class GameManager : MonoBehaviour
     {
-        public static GameManager GM;
+        public static GameManager instance;
 
         //balance
         private const float MAX_TIME = 100f; //시간의 최대치
@@ -29,9 +29,6 @@ namespace SpeedMode
         public static Vector3 createPos = new Vector3(12f, -3.6f, 0);
         public static Vector3 battlePos = new Vector3(-7f, -3.6f, 0);
 
-        //Timer
-        public static Slider time;
-        public Slider timeWrapper;
         private float timeSpeed;
         private float timeCount;
 
@@ -53,12 +50,28 @@ namespace SpeedMode
 
         private PlayData playdata;
 
+        private float _timer = MAX_TIME;
         private int _currentScore = 0;
         private int _currentCombo = 0;
         private float _scoreMultiplier;
 
+        public event Action<float> OnTimerValueChanged;
         public event Action<int> OnScoreValueChanged;
         public event Action<int, float> OnComboValueChanged;
+
+        public float Timer
+        {
+            get => _timer;
+            private set
+            {
+                if (value > MAX_TIME)
+                    _timer = MAX_TIME;
+                else
+                    _timer = value;
+
+                OnTimerValueChanged?.Invoke(_timer);
+            }
+        }
 
         public int CurrentScore
         {
@@ -90,8 +103,7 @@ namespace SpeedMode
 
         private void Awake()
         {
-            GM = this;
-            time = timeWrapper;
+            instance = this;
         }
 
         private void Start()
@@ -113,14 +125,14 @@ namespace SpeedMode
         {
             if (isInputCorrect)
             {
-                time.value += BONUS_TIME_VALUE;
+                Timer += BONUS_TIME_VALUE;
 
                 CurrentCombo += 1;
                 CurrentScore += (int)(10 * ScoreMultiplier);
             }
             else
             {
-                time.value = MAX_TIME;
+                Timer = MAX_TIME;
 
                 CurrentCombo = 0;
             }
@@ -144,10 +156,10 @@ namespace SpeedMode
             while (true)
             {
                 //timer down
-                time.value -= timeSpeed * Time.deltaTime;
+                Timer -= timeSpeed * Time.deltaTime;
                 timeCount += 1f * Time.deltaTime;
 
-                if (time.value <= 0)
+                if (Timer <= 0)
                 {
                     GameOver();
                     yield break;
@@ -167,7 +179,7 @@ namespace SpeedMode
 
         private void Init()
         {
-            time.value = MAX_TIME;
+            Timer = MAX_TIME;
             timeSpeed = MIN_TIME_SPEED;
             timeCount = 0f;
             CurrentScore = 0;
@@ -190,25 +202,20 @@ namespace SpeedMode
         //     GM.nowScore.text = score.ToString();
         // }
 
-        public static void setTime(float time)
-        {
-            GameManager.time.value = time;
-        }
-
         public static void GameOver()
         {
             // Swordman.setPlayerState(4);
 
-            if (GM.CurrentScore > GM.playdata.BestScore)
+            if (instance.CurrentScore > instance.playdata.BestScore)
             {
-                GM.playdata.BestScore = GM.CurrentScore;
-                GM.playdata.Save();
+                instance.playdata.BestScore = instance.CurrentScore;
+                instance.playdata.Save();
             }
 
-            GM.bestScoreText.text = GM.playdata.BestScore.ToString();
-            GM.scoreText.text = GM.CurrentScore.ToString();
-            GM.scoreBoard.SetActive(false);
-            GM.notice.SetActive(true);
+            instance.bestScoreText.text = instance.playdata.BestScore.ToString();
+            instance.scoreText.text = instance.CurrentScore.ToString();
+            instance.scoreBoard.SetActive(false);
+            instance.notice.SetActive(true);
 
             SoundManager.PlayGameOverSound();
             ParticleManager.CreateBrokenHeartParticle();
