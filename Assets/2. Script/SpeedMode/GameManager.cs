@@ -42,34 +42,42 @@ namespace SpeedMode
         private float timeCount;
         private float rateCount;
 
-        //score
-        public static int score;
-        public static int bestScore;
-
         //draw arrow
         public static int expectScore;
         public static bool isArrowDrawed;
 
         //other value
         public static bool isStart;
-        private bool scoreUpdate;
         public static float AttackGoblinRate;
         public static float RedGoblinRate;
 
         //GameOver
         public GameObject notice;
         public GameObject scoreBoard;
-        public Text nowScore;
         public Text scoreText;
         public Text bestScoreText;
-        public Text nowBestScoreText;
 
         //Guide UI
         public GameObject guide;
 
+        private PlayData playdata;
 
-        private int _currentCombo;
+        private int _currentScore = 0;
+        private int _currentCombo = 0;
         private float _scoreMultiplier;
+
+        public event Action<int> OnScoreValueChanged;
+        public event Action<int, float> OnComboValueChanged;
+
+        public int CurrentScore
+        {
+            get => _currentScore;
+            private set
+            {
+                _currentScore = value;
+                OnScoreValueChanged?.Invoke(_currentScore);
+            }
+        }
 
         public int CurrentCombo
         {
@@ -88,22 +96,19 @@ namespace SpeedMode
             private set => _scoreMultiplier = 1 + (int)(value / 100) * 0.1f;
         }
 
-        public event Action<int, float> OnComboValueChanged;
 
         private void Awake()
         {
             GM = this;
             time = timeWrapper;
-            bestScore = PlayerPrefs.GetInt("SpeedBestScore", 0);
         }
 
         private void Start()
         {
             notice.SetActive(false);
-            GM.nowScore.text = score.ToString();
-            GM.nowBestScoreText.text = bestScore.ToString();
             StartCoroutine("StartStage");
 
+            playdata = SaveData.instance.playData;
             EnemyManager.instance.FightEnemyEvent += HandleFightEnemyEvent;
         }
 
@@ -120,14 +125,22 @@ namespace SpeedMode
                 time.value += BONUS_TIME_VALUE;
 
                 CurrentCombo += 1;
-                score += (int)(10 * ScoreMultiplier);
-                nowScore.text = score.ToString();
+                CurrentScore += (int)(10 * ScoreMultiplier);
             }
             else
             {
                 time.value = MAX_TIME;
 
                 CurrentCombo = 0;
+            }
+        }
+
+        private void OnBestScoreBroken(int currentScore)
+        {
+            if (currentScore > playdata.BestScore)
+            {
+                SoundManager.PlayBestScoreUpdate();
+                OnScoreValueChanged -= OnBestScoreBroken;
             }
         }
 
@@ -167,17 +180,6 @@ namespace SpeedMode
                     if (AttackGoblinRate < MAX_ATTACK_GOBLINE_RATE)
                         AttackGoblinRate += INCREASE_ATTACK_GOBLINE_RATE;
                 }
-
-                GM.CheckBestScore();
-            }
-        }
-
-        void CheckBestScore()
-        {
-            if (GM.scoreUpdate && score > bestScore)
-            {
-                SoundManager.PlayBestScoreUpdate();
-                GM.scoreUpdate = false;
             }
         }
 
@@ -189,17 +191,17 @@ namespace SpeedMode
             rateCount = 0f;
             AttackGoblinRate = MIN_ATTACK_GOBLINE_RATE;
             RedGoblinRate = RED_GOBLINE_RATE;
-            score = 0;
+            CurrentScore = 0;
             expectScore = 0;
 
             isArrowDrawed = false;
             isStart = false;
-            GM.scoreUpdate = true;
 
             for (int i = 0; i < 12; i++)
                 EnemyManager.instance.CreateEnemy();
 
             CurrentCombo = 0;
+            OnScoreValueChanged += OnBestScoreBroken;
         }
 
         // public static void TimeUp()
@@ -218,15 +220,14 @@ namespace SpeedMode
         {
             // Swordman.setPlayerState(4);
 
-            if (score > bestScore)
+            if (GM.CurrentScore > GM.playdata.BestScore)
             {
-                bestScore = score;
-                PlayerPrefs.SetInt("SpeedBestScore", score);
-                PlayerPrefs.Save();
+                GM.playdata.BestScore = GM.CurrentScore;
+                GM.playdata.Save();
             }
 
-            GM.bestScoreText.text = bestScore.ToString();
-            GM.scoreText.text = score.ToString();
+            GM.bestScoreText.text = GM.playdata.BestScore.ToString();
+            GM.scoreText.text = GM.CurrentScore.ToString();
             GM.scoreBoard.SetActive(false);
             GM.notice.SetActive(true);
 
@@ -240,7 +241,6 @@ namespace SpeedMode
             notice.SetActive(false);
             scoreBoard.SetActive(true);
             // Swordman.setPlayerState(0);
-            GM.nowScore.text = "0";
             SoundManager.BGMStart();
             StartCoroutine("StartStage");
         }

@@ -225,14 +225,14 @@ namespace SpeedMode
 
         void DrawBestScoreArrow(Enemy enemy)
         {
-            if (!GameManager.isArrowDrawed && GameManager.expectScore > GameManager.bestScore)
-            {
-                Vector3 UIposition = enemy.gameObject.transform.position + new Vector3(0, 2, 0);
-                var bestScoreUI = Instantiate(arrow, UIposition, Quaternion.Euler(0, 0, 180));
-                bestScoreUI.transform.SetParent(enemy.gameObject.transform);
+            // if (!GameManager.isArrowDrawed && GameManager.expectScore > GameManager.bestScore)
+            // {
+            //     Vector3 UIposition = enemy.gameObject.transform.position + new Vector3(0, 2, 0);
+            //     var bestScoreUI = Instantiate(arrow, UIposition, Quaternion.Euler(0, 0, 180));
+            //     bestScoreUI.transform.SetParent(enemy.gameObject.transform);
 
-                GameManager.isArrowDrawed = true;
-            }
+            //     GameManager.isArrowDrawed = true;
+            // }
         }
 
         //Enqueue enemy for reuse
