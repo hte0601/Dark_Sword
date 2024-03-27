@@ -169,60 +169,6 @@ namespace SpeedMode
         // 이 아래 코드들은 전부 삭제하거나 옮겨야 함
         // 오브젝트 풀의 역할은 오브젝트를 미리 준비시키고, 필요할 때 넘겨주고 다 쓰면 돌려받는 것이 끝임
 
-        //enemy info send GameManager.cs
-        //if queue is full, create more enemy
-        public static Enemy GetEnemy()
-        {
-            Enemy enemy = objectPool.RandomEnemy();
-            objectPool.DrawBestScoreArrow(enemy);
-            objectPool.SetEnemyStartPosition(enemy);
-
-            return enemy;
-        }
-
-        void SetEnemyStartPosition(Enemy enemy)
-        {
-            enemy.transform.position = GameManager.createPos;
-        }
-
-        private Enemy RandomEnemy()
-        {
-            Enemy enemy;
-
-            if (Random.Range(0f, 1.0f) > GameManager.RedGoblinRate)
-            {
-                //초록 고블린
-                if (objectPool.spearGoblinQueue.Count > 0)
-                    enemy = objectPool.spearGoblinQueue.Dequeue();
-                else
-                    enemy = objectPool.CreateSpearGoblin();
-
-                if (Random.Range(0f, 1.0f) > GameManager.AttackGoblinRate)
-                {
-                    // enemy.SetState(1);
-                    GameManager.expectScore += 1;
-                }
-                else
-                {
-                    // enemy.SetState(2);
-                    GameManager.expectScore += 2;
-                }
-            }
-            else
-            {
-                //빨간 고블린
-                if (objectPool.fireGoblinQueue.Count > 0)
-                    enemy = objectPool.fireGoblinQueue.Dequeue();
-                else
-                    enemy = objectPool.CreateFireGoblin();
-
-                // enemy.SetState(3);
-                GameManager.expectScore += 1;
-            }
-
-            return enemy;
-        }
-
         void DrawBestScoreArrow(Enemy enemy)
         {
             // if (!GameManager.isArrowDrawed && GameManager.expectScore > GameManager.bestScore)
@@ -233,22 +179,6 @@ namespace SpeedMode
 
             //     GameManager.isArrowDrawed = true;
             // }
-        }
-
-        //Enqueue enemy for reuse
-        public static void ReturnObjectOld(Enemy obj)
-        {
-            objectPool.EraseBestScoreArrow(obj);
-            // obj.HideEnemy();
-
-            if (obj is SpearGoblin)
-            {
-                objectPool.spearGoblinQueue.Enqueue(obj);
-            }
-            else if (obj is FireGoblin)
-            {
-                objectPool.fireGoblinQueue.Enqueue(obj);
-            }
         }
 
         void EraseBestScoreArrow(Enemy obj)

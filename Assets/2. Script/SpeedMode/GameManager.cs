@@ -24,12 +24,6 @@ namespace SpeedMode
          * 초당 4번 이상 입력에 성공할 경우 게임을 무한히 진행할 수 있음
          * 게임속도가 최대까지 증가하는데 1분 20초가 걸림 */
 
-        private const float RED_GOBLINE_RATE = 0.35f; //전체 enemy 중 빨간 고블린의 비율
-        private const float MIN_ATTACK_GOBLINE_RATE = 0.05f; //초록 고블린 중 공격 고블린의 비율 - 시작값
-        private const float MAX_ATTACK_GOBLINE_RATE = 0.2f; //초록 고블린 중 공격 고블린의 비율 - 최댓값
-        private const float INCREASE_ATTACK_GOBLINE_RATE = 0.025f; //term마다 증가하는 공격 고블린의 비율
-        private const float TERM_ATTACK_GOBLINE_RATE = 10f; //공격 고블린의 비율이 증가하는 주기 (단위 초)
-                                                            //공격 고블린의 비율이 최대까지 증가하는데 1분이 걸림
 
         //position
         public static Vector3 createPos = new Vector3(12f, -3.6f, 0);
@@ -40,7 +34,6 @@ namespace SpeedMode
         public Slider timeWrapper;
         private float timeSpeed;
         private float timeCount;
-        private float rateCount;
 
         //draw arrow
         public static int expectScore;
@@ -48,8 +41,6 @@ namespace SpeedMode
 
         //other value
         public static bool isStart;
-        public static float AttackGoblinRate;
-        public static float RedGoblinRate;
 
         //GameOver
         public GameObject notice;
@@ -155,7 +146,6 @@ namespace SpeedMode
                 //timer down
                 time.value -= timeSpeed * Time.deltaTime;
                 timeCount += 1f * Time.deltaTime;
-                rateCount += 1f * Time.deltaTime;
 
                 if (time.value <= 0)
                 {
@@ -172,14 +162,6 @@ namespace SpeedMode
                     if (timeSpeed < MAX_TIME_SPEED)
                         timeSpeed += INCREASE_TIME_SPEED;
                 }
-
-                //공격 고블린 비율 증가
-                if (rateCount >= TERM_ATTACK_GOBLINE_RATE)
-                {
-                    rateCount -= TERM_ATTACK_GOBLINE_RATE;
-                    if (AttackGoblinRate < MAX_ATTACK_GOBLINE_RATE)
-                        AttackGoblinRate += INCREASE_ATTACK_GOBLINE_RATE;
-                }
             }
         }
 
@@ -188,9 +170,6 @@ namespace SpeedMode
             time.value = MAX_TIME;
             timeSpeed = MIN_TIME_SPEED;
             timeCount = 0f;
-            rateCount = 0f;
-            AttackGoblinRate = MIN_ATTACK_GOBLINE_RATE;
-            RedGoblinRate = RED_GOBLINE_RATE;
             CurrentScore = 0;
             expectScore = 0;
 

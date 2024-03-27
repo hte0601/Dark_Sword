@@ -20,13 +20,6 @@ namespace SpeedMode
             public const float ENEMY_MOVE_SPEED = 12f; // 적의 이동 속도
 
             // 적 간격 1.65, 이동 속도 10 기준 이론상 1초에 최대 6.06마리의 적을 처치할 수 있음
-
-            public const float RED_GOBLINE_RATE = 0.35f; //전체 enemy 중 빨간 고블린의 비율
-            public const float MIN_ATTACK_GOBLINE_RATE = 0.05f; //초록 고블린 중 공격 고블린의 비율 - 시작값
-            public const float MAX_ATTACK_GOBLINE_RATE = 0.2f; //초록 고블린 중 공격 고블린의 비율 - 최댓값
-            public const float INCREASE_ATTACK_GOBLINE_RATE = 0.025f; //term마다 증가하는 공격 고블린의 비율
-            public const float TERM_ATTACK_GOBLINE_RATE = 10f; //공격 고블린의 비율이 증가하는 주기 (단위 초)
-                                                               //공격 고블린의 비율이 최대까지 증가하는데 1분이 걸림
         }
 
         public static class WaveData
