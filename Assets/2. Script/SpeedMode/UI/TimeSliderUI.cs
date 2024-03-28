@@ -9,10 +9,14 @@ namespace SpeedMode
     {
         [SerializeField] private Slider timeSlider;
 
+        private void Awake()
+        {
+            timeSlider.maxValue = ModeData.TimerData.MAX_TIME;
+            timeSlider.value = ModeData.TimerData.MAX_TIME;
+        }
+
         private void Start()
         {
-            UpdateTimeSlider(GameManager.instance.Timer);
-
             GameManager.instance.OnTimerValueChanged += UpdateTimeSlider;
         }
 

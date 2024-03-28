@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,27 +14,30 @@ namespace SpeedMode
         private Wave currentWave;
         private Enemy.Type currentEliteEnemy;
 
-        private const float MAX_GAP = 1f;
+        private int remainingEnemyNumber;
 
-        public event Action<Enemy.Type, bool, bool> FightEnemyEvent;
+        public event Action<Enemy.Type, bool, bool> BattleEnemyEvent;
 
         private void Awake()
         {
             instance = this;
-            currentWave = ModeData.WaveData.waves[16];
+
+            currentWave = ModeData.WaveData.waves[8];
             currentEliteEnemy = Enemy.Type.SpearGoblin;
+
+            remainingEnemyNumber = currentWave.ENEMY_NUMBER;
         }
 
-        public bool IsEnemyInRange()
+        public bool IsEnemyInRange(float battleRange)
         {
             if (enemyList.Count > 0)
-                if (enemyList[0].transform.position.x < GameManager.battlePos.x + MAX_GAP)
+                if (enemyList[0].transform.position.x < battleRange)
                     return true;
 
             return false;
         }
 
-        public bool FightEnemy(Swordman.State input, out bool isEnemyDead)
+        public bool BattleEnemy(Swordman.State input, out bool isEnemyDead)
         {
             Enemy.Type enemyType = enemyList[0].enemyType;
             bool isInputCorrect;
@@ -45,10 +48,7 @@ namespace SpeedMode
                 isEnemyDead = enemyList[0].Damage(1);
 
                 if (isEnemyDead)
-                {
                     RemoveEnemy();
-                    CreateEnemy();
-                }
             }
             else
             {
@@ -56,19 +56,21 @@ namespace SpeedMode
                 isEnemyDead = false;
             }
 
-            FightEnemyEvent?.Invoke(enemyType, isInputCorrect, isEnemyDead);
+            BattleEnemyEvent?.Invoke(enemyType, isInputCorrect, isEnemyDead);
             return isInputCorrect;
         }
 
         public void CreateEnemy()
         {
+            remainingEnemyNumber -= 1;
+
             Enemy.Type enemyType = currentWave.RandomEnemy();
 
             if (enemyType == Enemy.Type.EliteEnemy)
                 enemyType = currentEliteEnemy;
 
             Enemy enemy = enemyObjectPool.GetEnemy(enemyType);
-            enemy.transform.position = GameManager.createPos;
+            enemy.transform.position = ModeData.EnemyData.ENEMY_CREATE_POSITION;
 
             if (enemyList.Count == 0)
             {
@@ -91,6 +93,16 @@ namespace SpeedMode
 
             enemyList[0].isHead = true;
             enemyList[0].frontEnemyTransform = null;
+
+            if (remainingEnemyNumber > 0)
+            {
+                CreateEnemy();
+            }
+            // 웨이브의 마지막 적이었다면
+            else if (enemyList.Count == 0)
+            {
+                GameManager.instance.RaiseEndWaveEvent(currentWave.WAVE);
+            }
         }
 
 

@@ -16177,6 +16177,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f33cf5c126de2b4cbe14b250a5072eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  swordman: {fileID: 2549417691061063426}
   enemyObjectPool: {fileID: 1781057855}
 --- !u!4 &532865568
 Transform:
@@ -47949,7 +47950,7 @@ GameObject:
   - component: {fileID: 2549417691061063425}
   - component: {fileID: 2549417691061063426}
   m_Layer: 9
-  m_Name: Speed_SwordMan
+  m_Name: SwordMan
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

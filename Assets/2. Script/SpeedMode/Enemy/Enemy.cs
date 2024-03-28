@@ -43,7 +43,7 @@ namespace SpeedMode
 
         protected virtual void Awake()
         {
-            moveSpeed = ModeData.BalanceData.ENEMY_MOVE_SPEED;
+            moveSpeed = ModeData.EnemyData.ENEMY_MOVE_SPEED;
         }
 
         protected virtual void OnEnable()
@@ -55,10 +55,10 @@ namespace SpeedMode
         {
             //자기 자신이 가장 앞에 있는 enemy일 경우 battlePos로 이동
             if (isHead)
-                transform.position = Vector3.MoveTowards(transform.position, GameManager.battlePos, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, ModeData.EnemyData.ENEMY_MOVE_TARGET_POSITION, moveSpeed * Time.deltaTime);
             //그렇지 않을 경우 자기 앞에 있는 enemy의 위치에 x좌표 +2한 위치로 이동
             else
-                transform.position = Vector3.MoveTowards(transform.position, frontEnemyTransform.position + ModeData.BalanceData.ENEMY_ENEMY_GAP, moveSpeed * Time.deltaTime);
+                transform.position = Vector3.MoveTowards(transform.position, frontEnemyTransform.position + ModeData.EnemyData.ENEMY_ENEMY_GAP, moveSpeed * Time.deltaTime);
         }
 
         public bool Damage(int damage)

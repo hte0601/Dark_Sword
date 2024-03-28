@@ -11,31 +11,6 @@ namespace SpeedMode
     {
         public static GameManager instance;
 
-        //balance
-        private const float MAX_TIME = 100f; //시간의 최대치
-        private const float BONUS_TIME_VALUE = 15f; //입력에 성공했을 때 증가하는 시간
-        private const float MIN_TIME_SPEED = 20f; //게임속도 - 시작값 (단위는 1초동안 감소하는 시간의 양)
-        private const float MAX_TIME_SPEED = 60f; //게임속도 - 최댓값
-        private const float INCREASE_TIME_SPEED = 1f; //term마다 증가하는 게임속도
-        private const float TERM_TIME_SPEED = 2f; //게임속도가 증가하는 주기 (단위 초)
-
-        /* 고블린 간의 거리 간격이 2이고 속도가 10이므로 이론상 1초에 최대 5마리의 적을 처치할 수 있음
-         * 게임속도가 60f까지 올라가고 입력에 성공했을 때 증가하는 시간이 15f이므로
-         * 초당 4번 이상 입력에 성공할 경우 게임을 무한히 진행할 수 있음
-         * 게임속도가 최대까지 증가하는데 1분 20초가 걸림 */
-
-
-        //position
-        public static Vector3 createPos = new Vector3(12f, -3.6f, 0);
-        public static Vector3 battlePos = new Vector3(-7f, -3.6f, 0);
-
-        private float timeSpeed;
-        private float timeCount;
-
-        //draw arrow
-        public static int expectScore;
-        public static bool isArrowDrawed;
-
         //other value
         public static bool isStart;
 
@@ -49,8 +24,9 @@ namespace SpeedMode
         public GameObject guide;
 
         private PlayData playdata;
+        private Wave currentWave;
 
-        private float _timer = MAX_TIME;
+        private float _timer;
         private int _currentScore = 0;
         private int _currentCombo = 0;
         private float _scoreMultiplier;
@@ -59,13 +35,17 @@ namespace SpeedMode
         public event Action<int> OnScoreValueChanged;
         public event Action<int, float> OnComboValueChanged;
 
+        public event Action<int> ReadyWaveEvent;
+        public event Action<int> StartWaveEvent;
+        public event Action<int> EndWaveEvent;
+
         public float Timer
         {
             get => _timer;
             private set
             {
-                if (value > MAX_TIME)
-                    _timer = MAX_TIME;
+                if (value > ModeData.TimerData.MAX_TIME)
+                    _timer = ModeData.TimerData.MAX_TIME;
                 else
                     _timer = value;
 
@@ -104,6 +84,8 @@ namespace SpeedMode
         private void Awake()
         {
             instance = this;
+
+            currentWave = ModeData.WaveData.waves[8];  // 임시
         }
 
         private void Start()
@@ -112,7 +94,7 @@ namespace SpeedMode
             StartCoroutine("StartStage");
 
             playdata = SaveData.instance.playData;
-            EnemyManager.instance.FightEnemyEvent += HandleFightEnemyEvent;
+            EnemyManager.instance.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
 
         private void Update()
@@ -121,18 +103,35 @@ namespace SpeedMode
                 ExitGame();
         }
 
-        private void HandleFightEnemyEvent(Enemy.Type enemyType, bool isInputCorrect, bool isEnemyDead)
+        private void RaiseReadyWaveEvent(int wave)
+        {
+            currentWave = ModeData.WaveData.waves[wave];
+            ReadyWaveEvent?.Invoke(wave);
+        }
+
+        private void RaiseStartWaveEvent(int wave)
+        {
+            StartWaveEvent?.Invoke(wave);
+        }
+
+        public void RaiseEndWaveEvent(int wave)
+        {
+            EndWaveEvent?.Invoke(wave);
+        }
+
+
+        private void HandleBattleEnemyEvent(Enemy.Type enemyType, bool isInputCorrect, bool isEnemyDead)
         {
             if (isInputCorrect)
             {
-                Timer += BONUS_TIME_VALUE;
+                Timer += ModeData.TimerData.ADDITIONAL_TIME;
 
                 CurrentCombo += 1;
                 CurrentScore += (int)(10 * ScoreMultiplier);
             }
             else
             {
-                Timer = MAX_TIME;
+                // 타이머 회복 코드
 
                 CurrentCombo = 0;
             }
@@ -147,6 +146,8 @@ namespace SpeedMode
             }
         }
 
+
+
         IEnumerator StartStage()
         {
             Init();
@@ -156,8 +157,7 @@ namespace SpeedMode
             while (true)
             {
                 //timer down
-                Timer -= timeSpeed * Time.deltaTime;
-                timeCount += 1f * Time.deltaTime;
+                Timer -= currentWave.TIMER_SPEED * Time.deltaTime;
 
                 if (Timer <= 0)
                 {
@@ -166,33 +166,20 @@ namespace SpeedMode
                 }
 
                 yield return null;
-
-                //속도증가
-                if (timeCount >= TERM_TIME_SPEED)
-                {
-                    timeCount -= TERM_TIME_SPEED;
-                    if (timeSpeed < MAX_TIME_SPEED)
-                        timeSpeed += INCREASE_TIME_SPEED;
-                }
             }
         }
 
         private void Init()
         {
-            Timer = MAX_TIME;
-            timeSpeed = MIN_TIME_SPEED;
-            timeCount = 0f;
+            Timer = ModeData.TimerData.MAX_TIME;
             CurrentScore = 0;
-            expectScore = 0;
-
-            isArrowDrawed = false;
+            CurrentCombo = 0;
             isStart = false;
+
+            OnScoreValueChanged += OnBestScoreBroken;
 
             for (int i = 0; i < 12; i++)
                 EnemyManager.instance.CreateEnemy();
-
-            CurrentCombo = 0;
-            OnScoreValueChanged += OnBestScoreBroken;
         }
 
         // public static void TimeUp()

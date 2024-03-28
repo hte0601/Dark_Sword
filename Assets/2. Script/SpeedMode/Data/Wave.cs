@@ -6,18 +6,22 @@ namespace SpeedMode
 {
     public readonly struct Wave
     {
-        private readonly int ENEMY_NUMBER;
+        public readonly int WAVE;
+        public readonly float TIMER_SPEED;
 
+        public readonly int ENEMY_NUMBER;
         private readonly float SWORD_GOBLIN_RATE;
         private readonly float FIRE_GOBLIN_RATE;
         private readonly float ELITE_GOBLIN_RATE;
 
         private readonly float GOBLIN_RATE_SUM;
 
-        public Wave(int enemyNumber, float swordGoblinRate, float fireGoblinRate, float eliteGoblinRate)
+        public Wave(int wave, float timerSpeed, int enemyNumber, float swordGoblinRate, float fireGoblinRate, float eliteGoblinRate)
         {
-            ENEMY_NUMBER = enemyNumber;
+            WAVE = wave;
+            TIMER_SPEED = timerSpeed;
 
+            ENEMY_NUMBER = enemyNumber;
             SWORD_GOBLIN_RATE = swordGoblinRate;
             FIRE_GOBLIN_RATE = fireGoblinRate;
             ELITE_GOBLIN_RATE = eliteGoblinRate;

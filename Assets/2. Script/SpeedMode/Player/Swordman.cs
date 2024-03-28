@@ -16,9 +16,12 @@ namespace SpeedMode
             Skill = 3,
         }
 
-        public static Swordman swordman;
+        public static Swordman instance;
         private EnemyManager enemyManager;
         private Animator animator;
+
+        private float BATTLE_RANGE;
+
         private int attackCombo = 1;
         private Coroutine nowCoroutine;
 
@@ -37,8 +40,10 @@ namespace SpeedMode
 
         private void Awake()
         {
-            swordman = this;
+            instance = this;
             animator = transform.Find("model").GetComponent<Animator>();
+
+            BATTLE_RANGE = transform.position.x + ModeData.SwordmanData.MAX_BATTLE_RANGE;
         }
 
         private void Start()
@@ -163,12 +168,12 @@ namespace SpeedMode
             while (GetNormalizedTime() < 0.3f)
                 yield return null;
 
-            if (enemyManager.IsEnemyInRange())
+            if (enemyManager.IsEnemyInRange(BATTLE_RANGE))
             {
                 GameManager.isStart = true;
 
                 // 입력 성공
-                if (enemyManager.FightEnemy(State.Attack, out bool isEnemyDead))
+                if (enemyManager.BattleEnemy(State.Attack, out bool isEnemyDead))
                 {
                     ParticleManager.CreateHitParticle();
                 }
@@ -196,12 +201,12 @@ namespace SpeedMode
             while (GetNormalizedTime() < 0.3f)
                 yield return null;
 
-            if (enemyManager.IsEnemyInRange())
+            if (enemyManager.IsEnemyInRange(BATTLE_RANGE))
             {
                 GameManager.isStart = true;
 
                 // 입력 성공
-                if (enemyManager.FightEnemy(State.Guard, out bool isEnemyDead))
+                if (enemyManager.BattleEnemy(State.Guard, out bool isEnemyDead))
                 {
                     ParticleManager.CreateDefenseParticle();
                     SoundManager.PlayerSound("defense");
