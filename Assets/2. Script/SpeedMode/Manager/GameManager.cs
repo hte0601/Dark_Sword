@@ -11,9 +11,6 @@ namespace SpeedMode
     {
         public static GameManager instance;
 
-        //other value
-        public static bool isStart;
-
         //GameOver
         public GameObject notice;
         public GameObject scoreBoard;
@@ -27,6 +24,9 @@ namespace SpeedMode
         private Wave currentWave;
 
         private float _timer;
+        private bool isTimerWaitingInput = true;
+        private bool isTimerStopped = true;
+        private bool isGamePaused = false;
         private int _currentScore = 0;
         private int _currentCombo = 0;
         private float _scoreMultiplier;
@@ -84,17 +84,16 @@ namespace SpeedMode
         private void Awake()
         {
             instance = this;
-
-            currentWave = ModeData.WaveData.waves[8];  // 임시
         }
 
         private void Start()
         {
             notice.SetActive(false);
-            StartCoroutine("StartStage");
+            Init();
+            StartCoroutine(TimerCoroutine());
 
             playdata = SaveData.instance.playData;
-            EnemyManager.instance.BattleEnemyEvent += HandleBattleEnemyEvent;
+            Swordman.instance.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
 
         private void Update()
@@ -105,35 +104,60 @@ namespace SpeedMode
 
         private void RaiseReadyWaveEvent(int wave)
         {
+            Debug.Log(string.Format("{0}웨이브 준비", wave));
             currentWave = ModeData.WaveData.waves[wave];
+
             ReadyWaveEvent?.Invoke(wave);
+            StartCoroutine(WaitAndInvoke(1f, RaiseStartWaveEvent, wave));
         }
 
         private void RaiseStartWaveEvent(int wave)
         {
+            Debug.Log(string.Format("{0}웨이브 시작", wave));
+            isTimerStopped = false;
+            isTimerWaitingInput = true;
             StartWaveEvent?.Invoke(wave);
         }
 
         public void RaiseEndWaveEvent(int wave)
         {
+            // 코루틴으로 실행을 잠깐 지연시켜야 함
+            Debug.Log(string.Format("{0}웨이브 종료", wave));
+            isTimerStopped = true;
+            StartCoroutine(RestoreTimer());
+
             EndWaveEvent?.Invoke(wave);
+            StartCoroutine(WaitAndInvoke(1f, RaiseReadyWaveEvent, wave + 1));
         }
 
 
-        private void HandleBattleEnemyEvent(Enemy.Type enemyType, bool isInputCorrect, bool isEnemyDead)
+        private void HandleBattleEnemyEvent(BattleReport battleReport)
         {
-            if (isInputCorrect)
+            if (battleReport.result == BattleReport.Result.InputCorrect)
             {
+                if (battleReport.playerInput != Swordman.State.Skill)
+                    isTimerWaitingInput = false;
+
                 Timer += ModeData.TimerData.ADDITIONAL_TIME;
 
                 CurrentCombo += 1;
                 CurrentScore += (int)(10 * ScoreMultiplier);
             }
-            else
+            else if (battleReport.result == BattleReport.Result.SkillAutoCast)
             {
-                // 타이머 회복 코드
+                isTimerWaitingInput = true;
+            }
+            else if (battleReport.result == BattleReport.Result.SwordmanGroggy)
+            {
+                isTimerWaitingInput = true;
+                StartCoroutine(RestoreTimer());
 
                 CurrentCombo = 0;
+            }
+            else if (battleReport.result == BattleReport.Result.GameOver)
+            {
+                isTimerStopped = true;
+                GameOver();
             }
         }
 
@@ -147,62 +171,75 @@ namespace SpeedMode
         }
 
 
-
-        IEnumerator StartStage()
+        private IEnumerator TimerCoroutine()
         {
-            Init();
-            while (!isStart)
-                yield return null;
-
             while (true)
             {
+                while (isTimerWaitingInput || isTimerStopped || isGamePaused)
+                {
+                    yield return null;
+                }
+
                 //timer down
                 Timer -= currentWave.TIMER_SPEED * Time.deltaTime;
 
                 if (Timer <= 0)
                 {
-                    GameOver();
-                    yield break;
+                    // 한 번만 호출되게 작업해야함
+                    // GameOver();
                 }
 
                 yield return null;
             }
         }
 
+        private IEnumerator RestoreTimer()
+        {
+            yield return new WaitForSeconds(1f);
+
+            while (Timer < ModeData.TimerData.MAX_TIME)
+            {
+                Timer += ModeData.TimerData.MAX_TIME * Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        private IEnumerator WaitAndInvoke<T>(float waitSeconds, Action<T> function, T arg)
+        {
+            yield return new WaitForSeconds(waitSeconds);
+
+            function.Invoke(arg);
+        }
+
         private void Init()
         {
             Timer = ModeData.TimerData.MAX_TIME;
+            isTimerWaitingInput = true;
             CurrentScore = 0;
             CurrentCombo = 0;
-            isStart = false;
-
+            
+            // 베스트 스코어를 갱신하지 못 하고 게임이 다시 시작되면
+            // OnBestScoreBroken이 두 번 등록되는 문제가 있음
+            OnScoreValueChanged -= OnBestScoreBroken;
             OnScoreValueChanged += OnBestScoreBroken;
 
-            for (int i = 0; i < 12; i++)
-                EnemyManager.instance.CreateEnemy();
+            StartCoroutine(WaitAndInvoke(1f, RaiseReadyWaveEvent, 1));
         }
 
-        // public static void TimeUp()
-        // {
-        //     time.value += BONUS_TIME_VALUE;
-        //     score += 1;
-        //     GM.nowScore.text = score.ToString();
-        // }
-
-        public static void GameOver()
+        public void GameOver()
         {
             // Swordman.setPlayerState(4);
 
-            if (instance.CurrentScore > instance.playdata.BestScore)
+            if (CurrentScore > playdata.BestScore)
             {
-                instance.playdata.BestScore = instance.CurrentScore;
-                instance.playdata.Save();
+                playdata.BestScore = CurrentScore;
+                playdata.Save();
             }
 
-            instance.bestScoreText.text = instance.playdata.BestScore.ToString();
-            instance.scoreText.text = instance.CurrentScore.ToString();
-            instance.scoreBoard.SetActive(false);
-            instance.notice.SetActive(true);
+            bestScoreText.text = playdata.BestScore.ToString();
+            scoreText.text = CurrentScore.ToString();
+            scoreBoard.SetActive(false);
+            notice.SetActive(true);
 
             SoundManager.PlayGameOverSound();
             ParticleManager.CreateBrokenHeartParticle();
@@ -215,12 +252,11 @@ namespace SpeedMode
             scoreBoard.SetActive(true);
             // Swordman.setPlayerState(0);
             SoundManager.BGMStart();
-            StartCoroutine("StartStage");
+            Init();
         }
 
         public void ExitGame()
         {
-            EnemyManager.ClearEnemy();
             SceneManager.LoadScene("Main");
             notice.SetActive(false);
         }

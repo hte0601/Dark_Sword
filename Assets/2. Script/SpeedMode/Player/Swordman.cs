@@ -1,9 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace SpeedMode
 {
+    public struct BattleReport
+    {
+        public enum Result
+        {
+            InputCorrect,
+            SkillAutoCast,
+            SwordmanGroggy,
+            GameOver
+        }
+
+        public Enemy.Type enemyType;
+        public Swordman.State playerInput;
+        public Result result;
+        public bool isEnemyDead;
+    }
+
     public class Swordman : MonoBehaviour
     {
         public enum State
@@ -17,13 +34,18 @@ namespace SpeedMode
         }
 
         public static Swordman instance;
+
+        public event Action<BattleReport> BattleEnemyEvent;
+
         private EnemyManager enemyManager;
         private Animator animator;
 
-        private float BATTLE_RANGE;
-
-        private int attackCombo = 1;
         private Coroutine nowCoroutine;
+        private float battleRange;
+        private int skillAutoCastNumber = 0;  // 임시
+        private int currentHealth = 1;  // 임시
+        private int attackCombo = 1;
+
 
         public int AttackCombo
         {
@@ -43,7 +65,7 @@ namespace SpeedMode
             instance = this;
             animator = transform.Find("model").GetComponent<Animator>();
 
-            BATTLE_RANGE = transform.position.x + ModeData.SwordmanData.MAX_BATTLE_RANGE;
+            battleRange = transform.position.x + ModeData.SwordmanData.MAX_BATTLE_RANGE;
         }
 
         private void Start()
@@ -111,6 +133,43 @@ namespace SpeedMode
             }
         }
 
+        private BattleReport BattleEnemy(State playerInput)
+        {
+            Enemy enemy = enemyManager.GetHeadEnemy();
+
+            BattleReport battleReport = new()
+            {
+                enemyType = enemy.enemyType,
+                playerInput = playerInput,
+                isEnemyDead = false
+            };
+
+            // 입력 성공
+            if (playerInput == enemy.CorrectInput)
+            {
+                battleReport.result = BattleReport.Result.InputCorrect;
+                battleReport.isEnemyDead = enemy.Damage(1);
+            }
+            // 입력 실패, 스킬 자동 시전
+            else if (skillAutoCastNumber > 0)
+            {
+                battleReport.result = BattleReport.Result.SkillAutoCast;
+            }
+            // 입력 실패, 게임 오버
+            else if (currentHealth == 1)
+            {
+                battleReport.result = BattleReport.Result.GameOver;
+            }
+            // 입력 실패, 그로기
+            else 
+            {
+                battleReport.result = BattleReport.Result.SwordmanGroggy;
+            }
+
+            BattleEnemyEvent?.Invoke(battleReport);
+            return battleReport;
+        }
+
 
         // private void SelectAttack()
         // {
@@ -168,12 +227,12 @@ namespace SpeedMode
             while (GetNormalizedTime() < 0.3f)
                 yield return null;
 
-            if (enemyManager.IsEnemyInRange(BATTLE_RANGE))
+            if (enemyManager.IsEnemyInRange(battleRange))
             {
-                GameManager.isStart = true;
+                BattleReport battleReport = BattleEnemy(State.Attack);
 
                 // 입력 성공
-                if (enemyManager.BattleEnemy(State.Attack, out bool isEnemyDead))
+                if (battleReport.result == BattleReport.Result.InputCorrect)
                 {
                     ParticleManager.CreateHitParticle();
                 }
@@ -201,12 +260,12 @@ namespace SpeedMode
             while (GetNormalizedTime() < 0.3f)
                 yield return null;
 
-            if (enemyManager.IsEnemyInRange(BATTLE_RANGE))
+            if (enemyManager.IsEnemyInRange(battleRange))
             {
-                GameManager.isStart = true;
+                BattleReport battleReport = BattleEnemy(State.Guard);
 
                 // 입력 성공
-                if (enemyManager.BattleEnemy(State.Guard, out bool isEnemyDead))
+                if (battleReport.result == BattleReport.Result.InputCorrect)
                 {
                     ParticleManager.CreateDefenseParticle();
                     SoundManager.PlayerSound("defense");
