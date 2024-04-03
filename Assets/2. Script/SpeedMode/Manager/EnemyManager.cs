@@ -27,6 +27,7 @@ namespace SpeedMode
         {
             GameManager.instance.ReadyWaveEvent += HandleReadyWaveEvent;
             GameManager.instance.StartWaveEvent += HandleStartWaveEvent;
+            GameManager.instance.RestartGameEvent += HandleRestartGameEvent;
             Swordman.instance.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
 
@@ -40,6 +41,11 @@ namespace SpeedMode
         {
             for (int i = 0; i < ModeData.EnemyData.MAX_ENEMY_NUMBER; i++)
                 CreateEnemy();
+        }
+
+        private void HandleRestartGameEvent()
+        {
+            ClearEnemy();
         }
 
         public bool IsEnemyInRange(float battleRange)
@@ -111,13 +117,12 @@ namespace SpeedMode
             CreateEnemy();
         }
 
-
-        // 수정 필요
-        public static void ClearEnemy()
+        private void ClearEnemy()
         {
-            // for (int i = 0; i < EnemyListOld.Count; i++)
-            //     ObjectPool.ReturnObjectOld(EnemyListOld[i]);
-            // EnemyListOld.Clear();
+            for (int i = 0; i < enemyList.Count; i++)
+                enemyObjectPool.ReturnEnemy(enemyList[i]);
+
+            enemyList.Clear();
         }
     }
 }

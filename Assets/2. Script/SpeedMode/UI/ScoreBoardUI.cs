@@ -7,16 +7,33 @@ namespace SpeedMode
 {
     public class ScoreBoardUI : MonoBehaviour
     {
+        [SerializeField] private Text killCountText;
         [SerializeField] private Text currentScoreText;
         [SerializeField] private Text bestScoreText;
 
         private void Start()
         {
-            UpdateCurrentScoreText(GameManager.instance.CurrentScore);
+            GameManager gameManager = GameManager.instance;
+
+            UpdateKillCountText(gameManager.KillCount);
+            UpdateCurrentScoreText(gameManager.CurrentScore);
             UpdateBestScoreText(SaveData.instance.playData.BestScore);
 
-            GameManager.instance.OnScoreValueChanged += UpdateCurrentScoreText;
+            gameManager.GameOverEvent += HandleGameOverEvent;
+            gameManager.RestartGameEvent += HandleRestartGameEvent;
+
+            gameManager.OnKillCountValueChanged += UpdateKillCountText;
+            gameManager.OnScoreValueChanged += UpdateCurrentScoreText;
             SaveData.instance.playData.OnBestScoreValueChanged += UpdateBestScoreText;
+        }
+
+        private void HandleGameOverEvent() => gameObject.SetActive(false);
+
+        private void HandleRestartGameEvent() => gameObject.SetActive(true);
+
+        private void UpdateKillCountText(int killCount)
+        {
+            killCountText.text = killCount.ToString();
         }
 
         private void UpdateCurrentScoreText(int currentScore)

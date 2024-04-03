@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
 
@@ -11,15 +10,19 @@ namespace SpeedMode
     {
         public static GameManager instance;
 
-        //GameOver
-        public GameObject notice;
-        public GameObject scoreBoard;
-        public Text scoreText;
-        public Text bestScoreText;
+        public event Action<int> ReadyWaveEvent;
+        public event Action<int> StartWaveEvent;
+        public event Action<int> EndWaveEvent;
 
-        //Guide UI
-        public GameObject guide;
+        public event Action GameOverEvent;
+        public event Action RestartGameEvent;
 
+        public event Action<float> OnTimerValueChanged;
+        public event Action<int> OnScoreValueChanged;
+        public event Action<int, float> OnComboValueChanged;
+        public event Action<int> OnKillCountValueChanged;
+
+        [SerializeField] private GameObject gameOverBoard;
         private PlayData playdata;
         private Wave currentWave;
 
@@ -30,14 +33,7 @@ namespace SpeedMode
         private int _currentScore = 0;
         private int _currentCombo = 0;
         private float _scoreMultiplier;
-
-        public event Action<float> OnTimerValueChanged;
-        public event Action<int> OnScoreValueChanged;
-        public event Action<int, float> OnComboValueChanged;
-
-        public event Action<int> ReadyWaveEvent;
-        public event Action<int> StartWaveEvent;
-        public event Action<int> EndWaveEvent;
+        private int _killCount = 0;
 
         public float Timer
         {
@@ -80,6 +76,16 @@ namespace SpeedMode
             private set => _scoreMultiplier = 1 + (int)(value / 100) * 0.1f;
         }
 
+        public int KillCount
+        {
+            get => _killCount;
+            private set
+            {
+                _killCount = value;
+                OnKillCountValueChanged?.Invoke(_killCount);
+            }
+        }
+
 
         private void Awake()
         {
@@ -88,8 +94,7 @@ namespace SpeedMode
 
         private void Start()
         {
-            notice.SetActive(false);
-            Init();
+            Initialize();
             StartCoroutine(TimerCoroutine());
 
             playdata = SaveData.instance.playData;
@@ -101,6 +106,23 @@ namespace SpeedMode
             if (Input.GetKey(KeyCode.Escape))
                 ExitGame();
         }
+
+        private void Initialize()
+        {
+            Timer = ModeData.TimerData.MAX_TIME;
+            isTimerWaitingInput = true;
+            CurrentScore = 0;
+            CurrentCombo = 0;
+            KillCount = 0;
+
+            // 베스트 스코어를 갱신하지 못 하고 게임이 다시 시작되면
+            // OnBestScoreBroken이 두 번 등록되는 문제가 있음
+            OnScoreValueChanged -= OnBestScoreBroken;
+            OnScoreValueChanged += OnBestScoreBroken;
+
+            StartCoroutine(WaitAndInvoke(1f, RaiseReadyWaveEvent, 1));
+        }
+
 
         private void RaiseReadyWaveEvent(int wave)
         {
@@ -130,6 +152,34 @@ namespace SpeedMode
             StartCoroutine(WaitAndInvoke(1f, RaiseReadyWaveEvent, wave + 1));
         }
 
+        private void RaiseGameOverEvent()
+        {
+            // Swordman.setPlayerState(4);
+
+            if (CurrentScore > playdata.BestScore)
+            {
+                playdata.BestScore = CurrentScore;
+                playdata.Save();
+            }
+
+            SoundManager.PlayGameOverSound();
+            ParticleManager.CreateBrokenHeartParticle();
+
+            GameOverEvent?.Invoke();
+            gameOverBoard.SetActive(true);
+        }
+
+        // 버튼 이벤트에 연결됨
+        public void RaiseRestartGameEvent()
+        {
+            gameOverBoard.SetActive(false);
+            // Swordman.setPlayerState(0);
+            SoundManager.BGMStart();
+            Initialize();
+
+            RestartGameEvent?.Invoke();
+        }
+
 
         private void HandleBattleEnemyEvent(BattleReport battleReport)
         {
@@ -142,6 +192,9 @@ namespace SpeedMode
 
                 CurrentCombo += 1;
                 CurrentScore += (int)(10 * ScoreMultiplier);
+
+                if (battleReport.isEnemyDead)
+                    KillCount += 1;
             }
             else if (battleReport.result == BattleReport.Result.SkillAutoCast)
             {
@@ -157,7 +210,7 @@ namespace SpeedMode
             else if (battleReport.result == BattleReport.Result.GameOver)
             {
                 isTimerStopped = true;
-                GameOver();
+                RaiseGameOverEvent();
             }
         }
 
@@ -211,59 +264,15 @@ namespace SpeedMode
             function.Invoke(arg);
         }
 
-        private void Init()
-        {
-            Timer = ModeData.TimerData.MAX_TIME;
-            isTimerWaitingInput = true;
-            CurrentScore = 0;
-            CurrentCombo = 0;
-            
-            // 베스트 스코어를 갱신하지 못 하고 게임이 다시 시작되면
-            // OnBestScoreBroken이 두 번 등록되는 문제가 있음
-            OnScoreValueChanged -= OnBestScoreBroken;
-            OnScoreValueChanged += OnBestScoreBroken;
-
-            StartCoroutine(WaitAndInvoke(1f, RaiseReadyWaveEvent, 1));
-        }
-
-        public void GameOver()
-        {
-            // Swordman.setPlayerState(4);
-
-            if (CurrentScore > playdata.BestScore)
-            {
-                playdata.BestScore = CurrentScore;
-                playdata.Save();
-            }
-
-            bestScoreText.text = playdata.BestScore.ToString();
-            scoreText.text = CurrentScore.ToString();
-            scoreBoard.SetActive(false);
-            notice.SetActive(true);
-
-            SoundManager.PlayGameOverSound();
-            ParticleManager.CreateBrokenHeartParticle();
-        }
-
-        public void RestartGame()
-        {
-            EnemyManager.ClearEnemy();
-            notice.SetActive(false);
-            scoreBoard.SetActive(true);
-            // Swordman.setPlayerState(0);
-            SoundManager.BGMStart();
-            Init();
-        }
-
+        // 버튼 이벤트에 연결됨
         public void ExitGame()
         {
             SceneManager.LoadScene("Main");
-            notice.SetActive(false);
         }
 
         public void HideGuide()
         {
-            guide.SetActive(false);
+            gameOverBoard.SetActive(false);
         }
     }
 }
