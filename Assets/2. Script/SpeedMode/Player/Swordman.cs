@@ -44,19 +44,19 @@ namespace SpeedMode
         private float battleRange;
         private int skillAutoCastNumber = 0;  // 임시
         private int currentHealth = 1;  // 임시
-        private int attackCombo = 1;
-
-
-        public int AttackCombo
-        {
-            get => attackCombo;
-            private set => attackCombo = value;
-        }
+        private int _attackCombo = 0;
+        private bool canPierceCombo = false;
 
         public State CurrentState
         {
             get => (State)animator.GetInteger("State");
             private set => animator.SetInteger("State", (int)value);
+        }
+
+        public int AttackCombo
+        {
+            get => _attackCombo;
+            private set => _attackCombo = value % 2;
         }
 
 
@@ -112,24 +112,43 @@ namespace SpeedMode
                 if (input == State.Attack)
                 {
                     CurrentState = State.Attack;
-                    nowCoroutine = StartCoroutine(AttackAnimation());
+
+                    if (AttackCombo == 0)
+                    {
+                        animator.CrossFadeInFixedTime("Attack", 0.034f, 0);
+                        nowCoroutine = StartCoroutine(AttackAnimation());
+                    }
+                    else
+                    {
+                        animator.CrossFadeInFixedTime("Pierce", 0.034f, 0);
+                        nowCoroutine = StartCoroutine(PierceAnimation());
+                    }
+
+                    AttackCombo += 1;
                 }
                 else if (input == State.Guard)
                 {
                     CurrentState = State.Guard;
+                    animator.CrossFadeInFixedTime("Guard", 0.034f, 0);
                     nowCoroutine = StartCoroutine(GuardAnimation());
+                    AttackCombo = 0;
                 }
                 else if (input == State.Skill)
                 {
-
+                    AttackCombo = 0;
                 }
             }
-            else if (CurrentState == State.Guard)
+            else if (canPierceCombo && input == State.Attack)
             {
-                if (input == State.Attack)
-                {
+                CurrentState = State.Attack;
+                canPierceCombo = false;
+                animator.CrossFadeInFixedTime("Pierce", 0.034f, 0);
 
-                }
+                if (nowCoroutine != null)
+                    StopCoroutine(nowCoroutine);
+
+                nowCoroutine = StartCoroutine(PierceAnimation());
+                AttackCombo = 0;
             }
         }
 
@@ -148,7 +167,7 @@ namespace SpeedMode
             if (playerInput == enemy.CorrectInput)
             {
                 battleReport.result = BattleReport.Result.InputCorrect;
-                battleReport.isEnemyDead = enemy.Damage(1);
+                battleReport.isEnemyDead = enemy.TakeDamage(1);
             }
             // 입력 실패, 스킬 자동 시전
             else if (skillAutoCastNumber > 0)
@@ -156,12 +175,12 @@ namespace SpeedMode
                 battleReport.result = BattleReport.Result.SkillAutoCast;
             }
             // 입력 실패, 게임 오버
-            else if (currentHealth == 1)
+            else if (TakeDamage(1))
             {
                 battleReport.result = BattleReport.Result.GameOver;
             }
             // 입력 실패, 그로기
-            else 
+            else
             {
                 battleReport.result = BattleReport.Result.SwordmanGroggy;
             }
@@ -170,61 +189,33 @@ namespace SpeedMode
             return battleReport;
         }
 
+        private bool TakeDamage(int damage)
+        {
+            currentHealth -= damage;
 
-        // private void SelectAttack()
-        // {
-        //     //적이 범위에 있을 경우
-        //     if (Battle.IsEnemyInRangeOld())
-        //     {
-        //         GameManager.isStart = true;
-        //         //올바른 입력을 했을 경우
-        //         if (Battle.getEnemyAction() == getPlayerState())
-        //         {
-        //             if (getPlayerState() == 1)
-        //             {
-        //                 ParticleManager.CreateHitParticle();
-        //             }
-        //             else if (getPlayerState() == 2)
-        //             {
-        //                 ParticleManager.CreateDefenseParticle();
-        //                 SoundManager.PlayerSound("defense"); //막았을 때만 소리가 나기 위해 여기 존재
-        //             }
-        //             else if (getPlayerState() == 3)
-        //             {
-        //                 ParticleManager.CreateRedEnemyHitParticle();
-        //             }
-        //             Battle.EnemyDamaged(1);
-        //             GameManager.TimeUp();
-        //         }
-        //         //잘못된 입력을 했을 경우
-        //         else
-        //         {
-        //             GameManager.setTime(0);
-        //             return;
-        //         }
-        //     }
-
-        //     //공격 이펙트 및 사운드 출력
-        //     switch (getPlayerState())
-        //     {
-        //         case 1:
-        //             ParticleManager.CreateSlashParticle();
-        //             SoundManager.PlayerSound("slash");
-        //             break;
-        //         case 3:
-        //             ParticleManager.CreatePierceParticle();
-        //             SoundManager.PlayerSound("pierce");
-        //             break;
-        //     }
-        // }
+            if (currentHealth <= 0)
+            {
+                CurrentState = State.Die;
+                return true;
+            }
+            else
+            {
+                CurrentState = State.Groggy;
+                return false;
+            }
+        }
 
 
         IEnumerator AttackAnimation()
         {
-            while (!IsAnimation("Attack"))
+            yield return null;
+
+            while (animator.IsInTransition(0))
                 yield return null;
 
-            while (GetNormalizedTime() < 0.3f)
+            // Debug.Log(string.Format("트랜지션 종료 {0}", GetNormalizedTime()));
+
+            while (GetNormalizedTime() < 0.175f)
                 yield return null;
 
             if (enemyManager.IsEnemyInRange(battleRange))
@@ -239,14 +230,52 @@ namespace SpeedMode
                 // 입력 실패
                 else
                 {
-                    // yield break;
+                    yield break;
                 }
             }
+
+            // Debug.Log(string.Format("배틀 처리 완료 {0}", GetNormalizedTime()));
 
             ParticleManager.CreateSlashParticle();
             SoundManager.PlayerSound("slash");
 
-            while (GetNormalizedTime() < 0.8f)
+            while (GetNormalizedTime() < 0.475f)
+                yield return null;
+
+            CurrentState = State.Idle;
+        }
+
+        IEnumerator PierceAnimation()
+        {
+            yield return null;
+
+            while (animator.IsInTransition(0))
+                yield return null;
+
+            while (GetNormalizedTime() < 0.175f)
+                yield return null;
+
+            if (enemyManager.IsEnemyInRange(battleRange))
+            {
+                BattleReport battleReport = BattleEnemy(State.Attack);
+
+                // 입력 성공
+                if (battleReport.result == BattleReport.Result.InputCorrect)
+                {
+                    // 메소드명 변경 필요
+                    ParticleManager.CreateRedEnemyHitParticle();
+                }
+                // 입력 실패
+                else
+                {
+                    yield break;
+                }
+            }
+
+            ParticleManager.CreatePierceParticle();
+            SoundManager.PlayerSound("slash");
+
+            while (GetNormalizedTime() < 0.475f)
                 yield return null;
 
             CurrentState = State.Idle;
@@ -254,10 +283,12 @@ namespace SpeedMode
 
         IEnumerator GuardAnimation()
         {
-            while (!IsAnimation("Guard"))
+            yield return null;
+
+            while (animator.IsInTransition(0))
                 yield return null;
 
-            while (GetNormalizedTime() < 0.3f)
+            while (GetNormalizedTime() < 0.175f)
                 yield return null;
 
             if (enemyManager.IsEnemyInRange(battleRange))
@@ -269,21 +300,29 @@ namespace SpeedMode
                 {
                     ParticleManager.CreateDefenseParticle();
                     SoundManager.PlayerSound("defense");
+
+                    if (battleReport.enemyType == Enemy.Type.SpearGoblin)
+                        if (!battleReport.isEnemyDead)
+                        {
+                            canPierceCombo = true;
+                            AttackCombo = 1;
+                        }
                 }
                 // 입력 실패
                 else
                 {
-                    // yield break;
+                    yield break;
                 }
             }
 
-            while (GetNormalizedTime() < 0.8f)
+            while (GetNormalizedTime() < 0.475f)
                 yield return null;
 
+            canPierceCombo = false;
             CurrentState = State.Idle;
         }
 
-        private bool IsAnimation(string animation) => animator.GetCurrentAnimatorStateInfo(0).IsName(animation);
-        private float GetNormalizedTime() => animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        private bool IsAnimation(string animation, int layerIndex = 0) => animator.GetCurrentAnimatorStateInfo(layerIndex).IsName(animation);
+        private float GetNormalizedTime(int layerIndex = 0) => animator.GetCurrentAnimatorStateInfo(layerIndex).normalizedTime;
     }
 }
