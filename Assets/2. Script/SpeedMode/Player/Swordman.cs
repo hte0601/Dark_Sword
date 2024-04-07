@@ -38,14 +38,17 @@ namespace SpeedMode
         public event Action<BattleReport> BattleEnemyEvent;
 
         private EnemyManager enemyManager;
+        private UpgradeData upgrades;
         private Animator animator;
 
-        private Coroutine nowCoroutine;
+        private Coroutine nowAnimationCoroutine;
         private float battleRange;
-        private int skillAutoCastNumber = 0;  // 임시
-        private int currentHealth = 1;  // 임시
+
+        private int currentHealth;
         private int _attackCombo = 0;
         private bool canPierceCombo = false;
+        private int skillGauge;
+        private int skillAutoCastNumber;  // 임시
 
         public State CurrentState
         {
@@ -71,24 +74,41 @@ namespace SpeedMode
         private void Start()
         {
             enemyManager = EnemyManager.instance;
+            upgrades = SaveData.instance.upgrades;
+
+            GameManager.instance.RestartGameEvent += HandleRestartGameEvent;
+
+            Initialize();
         }
 
         private void Update()
         {
-            if (Input.anyKeyDown)
-            {
-                if (Input.GetKey(KeyCode.A))
-                    HandleInput(State.Attack);
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.J))
+                HandleInput(State.Attack);
 
-                if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.L))
-                    HandleInput(State.Guard);
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.K))
+                HandleInput(State.Guard);
 
-                if (Input.GetKey(KeyCode.D))
-                    HandleInput(State.Skill);
-            }
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.L))
+                HandleInput(State.Skill);
         }
 
-        // 수정 필요
+        private void Initialize()
+        {
+            currentHealth = upgrades.maxHealth;
+            skillAutoCastNumber = upgrades.skillAutoCastNumber;
+
+            AttackCombo = 0;
+            canPierceCombo = false;
+
+            CurrentState = State.Idle;
+        }
+
+        private void HandleRestartGameEvent()
+        {
+            Initialize();
+        }
+
         // for moblie
         public void Attack()
         {
@@ -105,7 +125,8 @@ namespace SpeedMode
             HandleInput(State.Skill);
         }
 
-        private void HandleInput(State input)
+        // 테스트를 위해 일단 public으로
+        public void HandleInput(State input)
         {
             if (CurrentState == State.Idle)
             {
@@ -116,12 +137,12 @@ namespace SpeedMode
                     if (AttackCombo == 0)
                     {
                         animator.CrossFadeInFixedTime("Attack", 0.034f, 0);
-                        nowCoroutine = StartCoroutine(AttackAnimation());
+                        nowAnimationCoroutine = StartCoroutine(AttackAnimation());
                     }
                     else
                     {
                         animator.CrossFadeInFixedTime("Pierce", 0.034f, 0);
-                        nowCoroutine = StartCoroutine(PierceAnimation());
+                        nowAnimationCoroutine = StartCoroutine(PierceAnimation());
                     }
 
                     AttackCombo += 1;
@@ -130,7 +151,7 @@ namespace SpeedMode
                 {
                     CurrentState = State.Guard;
                     animator.CrossFadeInFixedTime("Guard", 0.034f, 0);
-                    nowCoroutine = StartCoroutine(GuardAnimation());
+                    nowAnimationCoroutine = StartCoroutine(GuardAnimation());
                     AttackCombo = 0;
                 }
                 else if (input == State.Skill)
@@ -144,10 +165,8 @@ namespace SpeedMode
                 canPierceCombo = false;
                 animator.CrossFadeInFixedTime("Pierce", 0.034f, 0);
 
-                if (nowCoroutine != null)
-                    StopCoroutine(nowCoroutine);
-
-                nowCoroutine = StartCoroutine(PierceAnimation());
+                StopAnimationCoroutine();
+                nowAnimationCoroutine = StartCoroutine(PierceAnimation());
                 AttackCombo = 0;
             }
         }
@@ -167,41 +186,40 @@ namespace SpeedMode
             if (playerInput == enemy.CorrectInput)
             {
                 battleReport.result = BattleReport.Result.InputCorrect;
-                battleReport.isEnemyDead = enemy.TakeDamage(1);
+                battleReport.isEnemyDead = enemy.TakeDamage();
             }
-            // 입력 실패, 스킬 자동 시전
-            else if (skillAutoCastNumber > 0)
-            {
-                battleReport.result = BattleReport.Result.SkillAutoCast;
-            }
-            // 입력 실패, 게임 오버
-            else if (TakeDamage(1))
-            {
-                battleReport.result = BattleReport.Result.GameOver;
-            }
-            // 입력 실패, 그로기
             else
             {
-                battleReport.result = BattleReport.Result.SwordmanGroggy;
+                battleReport.result = TakeDamage();
             }
 
             BattleEnemyEvent?.Invoke(battleReport);
             return battleReport;
         }
 
-        private bool TakeDamage(int damage)
+        public BattleReport.Result TakeDamage(int damage = 1)
         {
+            StopAnimationCoroutine();
+
+            if (skillAutoCastNumber > 0)
+            {
+                // 스킬 자동 시전 처리
+                return BattleReport.Result.SkillAutoCast;
+            }
+
             currentHealth -= damage;
 
             if (currentHealth <= 0)
             {
+                currentHealth = 0;
                 CurrentState = State.Die;
-                return true;
+                return BattleReport.Result.GameOver;
             }
             else
             {
                 CurrentState = State.Groggy;
-                return false;
+                nowAnimationCoroutine = StartCoroutine(GroggyAnimation());
+                return BattleReport.Result.SwordmanGroggy;
             }
         }
 
@@ -320,6 +338,26 @@ namespace SpeedMode
 
             canPierceCombo = false;
             CurrentState = State.Idle;
+        }
+
+        IEnumerator GroggyAnimation()
+        {
+            yield return null;
+
+            while (animator.IsInTransition(0))
+                yield return null;
+
+            while (IsAnimation("Groggy") && !animator.IsInTransition(0))
+                yield return null;
+            
+            CurrentState = State.Idle;
+        }
+
+
+        private void StopAnimationCoroutine()
+        {
+            if (nowAnimationCoroutine != null)
+                StopCoroutine(nowAnimationCoroutine);
         }
 
         private bool IsAnimation(string animation, int layerIndex = 0) => animator.GetCurrentAnimatorStateInfo(layerIndex).IsName(animation);

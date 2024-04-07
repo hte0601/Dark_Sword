@@ -59,7 +59,10 @@ namespace SpeedMode
 
         public Enemy GetHeadEnemy()
         {
-            return enemyList[0];
+            if (enemyList.Count > 0)
+                return enemyList[0];
+            else
+                return null;
         }
 
         private void HandleBattleEnemyEvent(BattleReport battleReport)

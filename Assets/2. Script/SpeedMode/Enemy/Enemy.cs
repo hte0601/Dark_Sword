@@ -61,7 +61,7 @@ namespace SpeedMode
                 transform.position = Vector3.MoveTowards(transform.position, frontEnemyTransform.position + ModeData.EnemyData.ENEMY_ENEMY_GAP, moveSpeed * Time.deltaTime);
         }
 
-        public bool TakeDamage(int damage)
+        public bool TakeDamage(int damage = 1)
         {
             CurrentHealth -= damage;
 

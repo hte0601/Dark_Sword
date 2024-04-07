@@ -23,6 +23,7 @@ namespace SpeedMode
         public event Action<int> OnKillCountValueChanged;
 
         [SerializeField] private GameObject gameOverBoard;
+        private Swordman swordman;
         private PlayData playdata;
         private Wave currentWave;
 
@@ -42,6 +43,8 @@ namespace SpeedMode
             {
                 if (value > ModeData.TimerData.MAX_TIME)
                     _timer = ModeData.TimerData.MAX_TIME;
+                else if (value < 0f)
+                    _timer = 0f;
                 else
                     _timer = value;
 
@@ -97,8 +100,9 @@ namespace SpeedMode
             Initialize();
             StartCoroutine(TimerCoroutine());
 
+            swordman = Swordman.instance;
+            swordman.BattleEnemyEvent += HandleBattleEnemyEvent;
             playdata = SaveData.instance.playData;
-            Swordman.instance.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
 
         private void Update()
@@ -196,18 +200,26 @@ namespace SpeedMode
                 if (battleReport.isEnemyDead)
                     KillCount += 1;
             }
-            else if (battleReport.result == BattleReport.Result.SkillAutoCast)
+            else
+            {
+                OnSwordmanTakeDamage(battleReport.result);
+            }
+        }
+
+        private void OnSwordmanTakeDamage(BattleReport.Result result)
+        {
+            if (result == BattleReport.Result.SkillAutoCast)
             {
                 isTimerWaitingInput = true;
             }
-            else if (battleReport.result == BattleReport.Result.SwordmanGroggy)
+            else if (result == BattleReport.Result.SwordmanGroggy)
             {
                 isTimerWaitingInput = true;
                 StartCoroutine(RestoreTimer());
 
                 CurrentCombo = 0;
             }
-            else if (battleReport.result == BattleReport.Result.GameOver)
+            else if (result == BattleReport.Result.GameOver)
             {
                 isTimerStopped = true;
                 RaiseGameOverEvent();
@@ -233,14 +245,10 @@ namespace SpeedMode
                     yield return null;
                 }
 
-                //timer down
                 Timer -= currentWave.TIMER_SPEED * Time.deltaTime;
 
-                if (Timer <= 0)
-                {
-                    // 한 번만 호출되게 작업해야함
-                    // GameOver();
-                }
+                if (Timer == 0)
+                    OnSwordmanTakeDamage(swordman.TakeDamage());
 
                 yield return null;
             }

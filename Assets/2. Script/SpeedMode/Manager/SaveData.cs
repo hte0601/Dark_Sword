@@ -8,11 +8,13 @@ namespace SpeedMode
     {
         public static SaveData instance;
         public PlayData playData;
+        public UpgradeData upgrades;
 
         private void Awake()
         {
             instance = this;
             playData = SaveManager.Load<PlayData>(PlayData.KEY);
+            upgrades = SaveManager.Load<UpgradeData>(UpgradeData.KEY);
         }
     }
 }
