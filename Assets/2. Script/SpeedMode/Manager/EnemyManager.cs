@@ -65,6 +65,16 @@ namespace SpeedMode
                 return null;
         }
 
+        public List<Enemy> GetEnemies(int number)
+        {
+            List<Enemy> enemies = new();
+
+            for (int i = 0; i < Math.Min(number, enemyList.Count); i++)
+                enemies.Add(enemyList[i]);
+            
+            return enemies;
+        }
+
         private void HandleBattleEnemyEvent(BattleReport battleReport)
         {
             if (battleReport.isEnemyDead)
@@ -102,7 +112,6 @@ namespace SpeedMode
 
         private void RemoveEnemy()
         {
-            enemyObjectPool.ReturnEnemy(enemyList[0]);
             enemyList.RemoveAt(0);
 
             if (enemyList.Count > 0)

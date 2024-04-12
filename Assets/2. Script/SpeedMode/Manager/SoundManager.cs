@@ -34,11 +34,13 @@ namespace SpeedMode
         //Player sound
         public static void PlayerSound(string name)
         {
-            sm.playerMusicPlayer.Stop();
-            sm.playerMusicPlayer.clip = sm.selectSound(name);
-            sm.playerMusicPlayer.loop = false;
-            sm.playerMusicPlayer.time = 0;
-            sm.playerMusicPlayer.Play();
+            // sm.playerMusicPlayer.Stop();
+            // sm.playerMusicPlayer.clip = sm.selectSound(name);
+            // sm.playerMusicPlayer.loop = false;
+            // sm.playerMusicPlayer.time = 0;
+            // sm.playerMusicPlayer.Play();
+
+            sm.playerMusicPlayer.PlayOneShot(sm.selectSound(name));
         }
 
         private AudioClip selectSound(string name)

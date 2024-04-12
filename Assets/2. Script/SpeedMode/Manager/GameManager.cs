@@ -189,16 +189,29 @@ namespace SpeedMode
         {
             if (battleReport.result == BattleReport.Result.InputCorrect)
             {
-                if (battleReport.playerInput != Swordman.State.Skill)
-                    isTimerWaitingInput = false;
+                isTimerWaitingInput = false;
 
                 Timer += ModeData.TimerData.ADDITIONAL_TIME;
-
                 CurrentCombo += 1;
                 CurrentScore += (int)(10 * ScoreMultiplier);
 
                 if (battleReport.isEnemyDead)
                     KillCount += 1;
+            }
+            else if (battleReport.result == BattleReport.Result.SkillHit)
+            {
+                for (int i = 0; i < battleReport.damageDealt; i++)
+                {
+                    Timer += ModeData.TimerData.ADDITIONAL_TIME;
+                    CurrentCombo += 1;
+                    CurrentScore += (int)(10 * ScoreMultiplier);
+                }
+
+                KillCount += 1;
+            }
+            else if (battleReport.result == BattleReport.Result.SkillCast)
+            {
+                isTimerWaitingInput = true;
             }
             else
             {
@@ -208,11 +221,7 @@ namespace SpeedMode
 
         private void OnSwordmanTakeDamage(BattleReport.Result result)
         {
-            if (result == BattleReport.Result.SkillAutoCast)
-            {
-                isTimerWaitingInput = true;
-            }
-            else if (result == BattleReport.Result.SwordmanGroggy)
+            if (result == BattleReport.Result.SwordmanGroggy)
             {
                 isTimerWaitingInput = true;
                 StartCoroutine(RestoreTimer());
@@ -223,6 +232,10 @@ namespace SpeedMode
             {
                 isTimerStopped = true;
                 RaiseGameOverEvent();
+            }
+            else if (result == BattleReport.Result.SkillAutoCast)
+            {
+                isTimerWaitingInput = true;
             }
         }
 

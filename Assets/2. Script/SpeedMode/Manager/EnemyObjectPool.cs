@@ -6,6 +6,7 @@ namespace SpeedMode
 {
     public class EnemyObjectPool : MonoBehaviour
     {
+        private static EnemyObjectPool enemyObjectPool;
         private static Transform objectPoolTransform;
 
         [SerializeField] private SwordGoblin swordGoblin;
@@ -18,11 +19,12 @@ namespace SpeedMode
 
         private void Awake()
         {
+            enemyObjectPool = this;
             objectPoolTransform = transform;
 
-            enemyDict.Add(Enemy.Type.SwordGoblin, new EnemyPool(Enemy.Type.SwordGoblin, swordGoblin, 16));
-            enemyDict.Add(Enemy.Type.FireGoblin, new EnemyPool(Enemy.Type.FireGoblin, fireGoblin, 16));
-            enemyDict.Add(Enemy.Type.SpearGoblin, new EnemyPool(Enemy.Type.SpearGoblin, spearGoblin, 16));
+            enemyDict.Add(Enemy.Type.SwordGoblin, new EnemyPool(swordGoblin, 16));
+            enemyDict.Add(Enemy.Type.FireGoblin, new EnemyPool(fireGoblin, 16));
+            enemyDict.Add(Enemy.Type.SpearGoblin, new EnemyPool(spearGoblin, 16));
         }
 
         public Enemy GetEnemy(Enemy.Type enemyType, bool isObjectActive = true)
@@ -32,20 +34,18 @@ namespace SpeedMode
 
         public void ReturnEnemy(Enemy enemy)
         {
-            enemyDict[enemy.enemyType].ReturnEnemy(enemy);
+            enemyDict[enemy.EnemyType].ReturnEnemy(enemy);
         }
 
 
         private class EnemyPool
         {
-            private readonly Enemy.Type enemyType;
             private readonly Enemy enemyPrefab;
             private readonly Queue<Enemy> enemyQueue = new();
             private readonly int PreCreateNumber;
 
-            public EnemyPool(Enemy.Type enemyType, Enemy enemyPrefab, int preCreateNumber)
+            public EnemyPool(Enemy enemyPrefab, int preCreateNumber)
             {
-                this.enemyType = enemyType;
                 this.enemyPrefab = enemyPrefab;
                 this.PreCreateNumber = preCreateNumber;
 
@@ -82,7 +82,7 @@ namespace SpeedMode
             {
                 Enemy enemy = Instantiate(enemyPrefab, Vector3.zero, Quaternion.identity, objectPoolTransform);
                 enemy.gameObject.SetActive(false);
-                enemy.enemyType = enemyType;
+                enemy.objectPool = enemyObjectPool;
 
                 return enemy;
             }

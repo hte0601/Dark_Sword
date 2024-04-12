@@ -9,8 +9,7 @@ namespace SpeedMode
     {
         [SerializeField] private EnemyManager enemyManager;
         [SerializeField] private Swordman swordman;
-
-        private Enemy enemy;
+        [SerializeField] private float timeScale = 1f;
 
         private bool isTestMode = true;
 
@@ -29,13 +28,25 @@ namespace SpeedMode
 
         private void Update()
         {
-            if (Input.GetKey(KeyCode.Z))
-            {
-                enemy = enemyManager.GetHeadEnemy();
+            Time.timeScale = timeScale;
 
-                if (enemy != null)
-                    swordman.HandleInput(enemy.CorrectInput);
-            }
+            AutoInput();
+        }
+
+        private void AutoInput()
+        {
+            if (!Input.GetKey(KeyCode.Z))
+                return;
+
+            Enemy enemy = enemyManager.GetHeadEnemy();
+
+            if (enemy == null)
+                return;
+
+            if (enemy.CorrectInput == Swordman.State.Attack)
+                swordman.AttackButtonInput();
+            else if (enemy.CorrectInput == Swordman.State.Guard)
+                swordman.GuardButtonInput();
         }
     }
 }
