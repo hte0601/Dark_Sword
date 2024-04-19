@@ -48303,6 +48303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2549417690823212275}
   - component: {fileID: 2549417690823212274}
+  - component: {fileID: 2549417690823212278}
   m_Layer: 0
   m_Name: model
   m_TagString: Untagged
@@ -48310,6 +48311,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &2549417690823212278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2549417690823212277}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 789947d580b07ec438622ecb4c5ff0e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  swordman: {fileID: 2549417691061063426}
+  effect: {fileID: 941822970}
+  canSpearGoblinCombo: 0
 --- !u!4 &2549417690971056084
 Transform:
   m_ObjectHideFlags: 0
