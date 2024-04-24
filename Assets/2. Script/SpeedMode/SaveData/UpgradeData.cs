@@ -11,11 +11,12 @@ namespace SpeedMode
         public const string KEY = "SpeedModeUpgradeData";
 
         public int maxHealth = 3;
+        public int skillPower = 8;
         public int skillAutoCastNumber = 0;
 
         public void Save()
         {
-            SaveManager.Save(KEY, this);
+            GameSystem.SaveManager.Save(KEY, this);
         }
     }
 }

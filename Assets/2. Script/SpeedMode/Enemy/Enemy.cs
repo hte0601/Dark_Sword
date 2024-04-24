@@ -8,6 +8,7 @@ namespace SpeedMode
     {
         public enum Type
         {
+            CommonEnemy,
             SwordGoblin,
             FireGoblin,
             EliteEnemy,

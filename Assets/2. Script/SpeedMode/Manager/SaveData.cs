@@ -13,8 +13,8 @@ namespace SpeedMode
         private void Awake()
         {
             instance = this;
-            playData = SaveManager.Load<PlayData>(PlayData.KEY);
-            upgrades = SaveManager.Load<UpgradeData>(UpgradeData.KEY);
+            playData = GameSystem.SaveManager.Load<PlayData>(PlayData.KEY);
+            upgrades = GameSystem.SaveManager.Load<UpgradeData>(UpgradeData.KEY);
         }
     }
 }
