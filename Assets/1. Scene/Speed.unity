@@ -18535,7 +18535,7 @@ Transform:
   m_GameObject: {fileID: 941822968}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -1}
+  m_LocalPosition: {x: 0, y: 0, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -18557,6 +18557,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slashEffect: {fileID: 1988001596}
   pierceEffect: {fileID: 5536986}
+  skillSlashEffectPrefab: {fileID: 6599332176589630286, guid: 64cf1d1d84f43524fb05c198d880f46d,
+    type: 3}
 --- !u!1 &949840149
 GameObject:
   m_ObjectHideFlags: 0
@@ -48523,8 +48525,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0f929248d997d24fa80adaa46f30d2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slashEffect: {fileID: 4589568025060314168, guid: 4eaa5909098e70a47b2e47dd4c8e771a,
-    type: 3}
 --- !u!1 &2549417691061063429
 GameObject:
   m_ObjectHideFlags: 0

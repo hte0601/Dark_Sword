@@ -43,6 +43,7 @@ namespace SpeedMode
         private EnemyManager enemyManager;
         private UpgradeData upgrades;
         private SwordmanAnimationController animationController;
+        private SwordmanEffectController effectController;
 
         private float battleRange;
 
@@ -50,7 +51,6 @@ namespace SpeedMode
         private int skillGauge;
         private int skillAutoCastNumber;  // 임시
 
-        [SerializeField] private SlashEffect slashEffect;  // 임시
 
         public int CurrentHealth
         {
@@ -69,6 +69,7 @@ namespace SpeedMode
         {
             instance = this;
             animationController = transform.Find("model").GetComponent<SwordmanAnimationController>();
+            effectController = transform.Find("Effect").GetComponent<SwordmanEffectController>();
 
             battleRange = transform.position.x + ModeData.SwordmanData.MAX_BATTLE_RANGE;
         }
@@ -262,11 +263,11 @@ namespace SpeedMode
             };
 
             enemy.isStopped = true;
-            SlashEffect effect = Instantiate(slashEffect, enemy.transform.position + new Vector3(0, 0, -1), Quaternion.Euler(0f, 0f, -60f));
-            effect.Play(SlashEffect.Color.Purple);
+
+            effectController.PlaySkillEffect(enemy.transform.position);
             SoundManager.PlayerSound("slash");
 
-            yield return new WaitForSeconds(0.06f);
+            yield return new WaitForSeconds(0.1f);
 
             skillHitReport.damageDealt = enemy.HitBySkill();
             BattleEnemyEvent?.Invoke(skillHitReport);

@@ -8,7 +8,7 @@ namespace SpeedMode
     public class SwordmanAnimationController : MonoBehaviour
     {
         [SerializeField] private Swordman swordman;
-        [SerializeField] private SwordmanEffect effect;
+        [SerializeField] private SwordmanEffectController effectController;
         private Animator animator;
 
         private Coroutine nowAnimationCoroutine;
@@ -132,7 +132,7 @@ namespace SpeedMode
             while (WaitUntilFrame(2, animationLength))
                 yield return null;
 
-            effect.PlaySlashEffect();
+            effectController.PlaySlashEffect();
             SoundManager.PlayerSound("slash");
 
             // Enemy로 이동
@@ -157,7 +157,7 @@ namespace SpeedMode
             while (WaitUntilFrame(2, animationLength))
                 yield return null;
 
-            effect.PlayPierceEffect();
+            effectController.PlayPierceEffect();
             SoundManager.PlayerSound("slash");
 
             // Enemy로 이동
