@@ -6,17 +6,12 @@ using UnityEngine;
 namespace SpeedMode
 {
     [Serializable]
-    public class UpgradeData
+    public class UpgradeData : ISaveData
     {
-        public const string KEY = "SpeedModeUpgradeData";
-
         public int maxHealth = 3;
         public int skillPower = 8;
         public int skillAutoCastNumber = 0;
 
-        public void Save()
-        {
-            GameSystem.SaveManager.Save(KEY, this);
-        }
+        public void Save() => GameSystem.SaveManager.Save<UpgradeData>(this);
     }
 }

@@ -6,68 +6,61 @@ using UnityEngine;
 namespace GameSystem
 {
     [Serializable]
-    public class VolumeSetting
+    public class VolumeSetting : ISaveData
     {
-        public const string KEY = "VolumeSetting";
-        [SerializeField] private float masterVolume = 0.6f;
-        [SerializeField] private float bgmVolume = 0.6f;
-        [SerializeField] private float sfxVolume = 0.6f;
-        [SerializeField] private bool isMuted = false;
-        public event Action<bool> OnIsMutedValueChanged;
+        public event Action<float> OnMasterVolumeChanged;
+        public event Action<float> OnBGMVolumeChanged;
+        public event Action<float> OnSFXVolumeChanged;
+        public event Action<bool> OnMuteStateChanged;
+
+        [SerializeField] private float _masterVolume = 0.6f;
+        [SerializeField] private float _bgmVolume = 0.6f;
+        [SerializeField] private float _sfxVolume = 0.6f;
+        [SerializeField] private bool _isMuted = false;
 
         public float MasterVolume
         {
-            get => masterVolume;
+            get => _masterVolume;
             set
             {
-                masterVolume = value;
-                IsMuted = masterVolume == 0.0001f;
+                _masterVolume = value;
+                OnMasterVolumeChanged?.Invoke(_masterVolume);
             }
         }
 
         public float BGMVolume
         {
-            get => bgmVolume;
-            set => bgmVolume = value;
+            get => _bgmVolume;
+            set
+            {
+                _bgmVolume = value;
+                OnBGMVolumeChanged?.Invoke(_bgmVolume);
+            }
         }
 
         public float SFXVolume
         {
-            get => sfxVolume;
-            set => sfxVolume = value;
-        }
-
-        public float MasterMix
-        {
-            get => Mathf.Log10(masterVolume) * 20;
-        }
-
-        public float BGMMix
-        {
-            get => Mathf.Log10(bgmVolume) * 20;
-        }
-
-        public float SFXMix
-        {
-            get => Mathf.Log10(sfxVolume) * 20;
+            get => _sfxVolume;
+            set
+            {
+                _sfxVolume = value;
+                OnSFXVolumeChanged?.Invoke(_sfxVolume);
+            }
         }
 
         public bool IsMuted
         {
-            get => isMuted;
+            get => _isMuted;
             set
             {
-                if (isMuted != value)
+                if (_isMuted != value)
                 {
-                    isMuted = value;
-                    OnIsMutedValueChanged?.Invoke(isMuted);
+                    _isMuted = value;
+                    OnMuteStateChanged?.Invoke(_isMuted);
                 }
             }
         }
 
-        public void Save()
-        {
-            SaveManager.Save(KEY, this);
-        }
+        public void Save() => SaveManager.Save<VolumeSetting>(this);
     }
 }

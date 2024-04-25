@@ -2,17 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Audio;
-
-using GameSystem;
 
 namespace MainMenu
 {
     public class QuickButtonsUI : MonoBehaviour
     {
+        private GameSystem.VolumeSetting volumeSetting;
+
         [SerializeField] private GameObject soundButton;
 
-        private AudioMixer mainMixer;
         private Image soundButtonImage;
         private Sprite soundOnSprite;
         private Sprite soundOffSprite;
@@ -23,18 +21,15 @@ namespace MainMenu
             soundOnSprite = Resources.Load<Sprite>("UI/SoundON");
             soundOffSprite = Resources.Load<Sprite>("UI/SoundOFF");
 
-            GameSetting.volume.OnIsMutedValueChanged += ChangeSoundButtonSprite;
-            ChangeSoundButtonSprite(GameSetting.volume.IsMuted);
-        }
+            volumeSetting = GameSystem.GameSetting.volume;
 
-        private void Start()
-        {
-            mainMixer = VolumeManager.instance.mainMixer;
+            volumeSetting.OnMuteStateChanged += ChangeSoundButtonSprite;
+            ChangeSoundButtonSprite(volumeSetting.IsMuted);
         }
 
         private void OnDestroy()
         {
-            GameSetting.volume.OnIsMutedValueChanged -= ChangeSoundButtonSprite;
+            volumeSetting.OnMuteStateChanged -= ChangeSoundButtonSprite;
         }
 
         private void ChangeSoundButtonSprite(bool isMuted)
@@ -44,25 +39,8 @@ namespace MainMenu
 
         public void OnSoundButtonPointerDown()
         {
-            if (GameSetting.volume.IsMuted)
-            {
-                // 음소거 해제 시
-                if (GameSetting.volume.MasterVolume == 0.0001f)
-                {
-                    GameSetting.volume.MasterVolume = 0.2f;
-                }
-
-                mainMixer.SetFloat("MasterMix", GameSetting.volume.MasterMix);
-                GameSetting.volume.IsMuted = false;
-            }
-            else
-            {
-                // 음소거 시
-                mainMixer.SetFloat("MasterMix", -80);
-                GameSetting.volume.IsMuted = true;
-            }
-
-            GameSetting.volume.Save();
+            volumeSetting.IsMuted = !volumeSetting.IsMuted;
+            volumeSetting.Save();
         }
 
         public void OnInfoButtonPointerDown()

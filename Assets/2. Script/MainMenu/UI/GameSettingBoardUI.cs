@@ -2,75 +2,69 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Audio;
-
-using GameSystem;
 
 namespace MainMenu
 {
     public class GameSettingBoardUI : MonoBehaviour
     {
+        private GameSystem.VolumeSetting volumeSetting;
+
         [Header("Volume Slider")]
         [SerializeField] private Slider MasterVolumeSlider;
         [SerializeField] private Slider BGMVolumeSlider;
         [SerializeField] private Slider SFXVolumeSlider;
 
-        private AudioMixer mainMixer;
-
         private void Awake()
         {
-            mainMixer = VolumeManager.instance.mainMixer;
+            volumeSetting = GameSystem.GameSetting.volume;
 
-            MasterVolumeSlider.value = GameSetting.volume.MasterVolume;
-            BGMVolumeSlider.value = GameSetting.volume.BGMVolume;
-            SFXVolumeSlider.value = GameSetting.volume.SFXVolume;
+            MasterVolumeSlider.value = volumeSetting.MasterVolume;
+            BGMVolumeSlider.value = volumeSetting.BGMVolume;
+            SFXVolumeSlider.value = volumeSetting.SFXVolume;
 
-            GameSetting.volume.OnIsMutedValueChanged += MuteEventHandler;
-            MasterVolumeSlider.onValueChanged.AddListener(OnMasterSliderValueChanged);
-            BGMVolumeSlider.onValueChanged.AddListener(OnBGMSliderValueChanged);
-            SFXVolumeSlider.onValueChanged.AddListener(OnSFXSliderValueChanged);
+            volumeSetting.OnMuteStateChanged += HandleMuteEvent;
+            MasterVolumeSlider.onValueChanged.AddListener(ChangeMasterVolume);
+            BGMVolumeSlider.onValueChanged.AddListener(ChangeBGMVolume);
+            SFXVolumeSlider.onValueChanged.AddListener(ChangeSFXVolume);
         }
 
         private void OnDisable()
         {
-            GameSetting.volume.Save();
+            volumeSetting.Save();
         }
 
         private void OnDestroy()
         {
-            GameSetting.volume.OnIsMutedValueChanged -= MuteEventHandler;
+            volumeSetting.OnMuteStateChanged -= HandleMuteEvent;
         }
 
-        private void OnMasterSliderValueChanged(float value)
+        private void ChangeMasterVolume(float value)
         {
-            GameSetting.volume.MasterVolume = value;
-            mainMixer.SetFloat("MasterMix", GameSetting.volume.MasterMix);
+            volumeSetting.MasterVolume = value;
         }
 
-        private void OnBGMSliderValueChanged(float value)
+        private void ChangeBGMVolume(float value)
         {
-            GameSetting.volume.BGMVolume = value;
-            mainMixer.SetFloat("BGMMix", GameSetting.volume.BGMMix);
+            volumeSetting.BGMVolume = value;
         }
 
-        private void OnSFXSliderValueChanged(float value)
+        private void ChangeSFXVolume(float value)
         {
-            GameSetting.volume.SFXVolume = value;
-            mainMixer.SetFloat("SFXMix", GameSetting.volume.SFXMix);
+            volumeSetting.SFXVolume = value;
         }
 
-        private void MuteEventHandler(bool isMuted)
+        private void HandleMuteEvent(bool isMuted)
         {
             if (isMuted)
             {
-                // 슬라이더 흐릿하게 
+                // 슬라이더 흐릿하게
             }
             else
             {
                 // 슬라이더 원래대로
-                if (MasterVolumeSlider.value != GameSetting.volume.MasterVolume)
+                if (MasterVolumeSlider.value != volumeSetting.MasterVolume)
                 {
-                    MasterVolumeSlider.value = GameSetting.volume.MasterVolume;
+                    MasterVolumeSlider.value = volumeSetting.MasterVolume;
                 }
             }
         }

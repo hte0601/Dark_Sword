@@ -6,10 +6,8 @@ using UnityEngine;
 namespace SpeedMode
 {
     [Serializable]
-    public class PlayData
+    public class PlayData : ISaveData
     {
-        public const string KEY = "SpeedModePlayData";
-
         public event Action<int> OnBestScoreValueChanged;
 
         [SerializeField] private int _bestScore = 0;
@@ -31,9 +29,6 @@ namespace SpeedMode
             }
         }
 
-        public void Save()
-        {
-            GameSystem.SaveManager.Save(KEY, this);
-        }
+        public void Save() => GameSystem.SaveManager.Save<PlayData>(this);
     }
 }

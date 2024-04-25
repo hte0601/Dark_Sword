@@ -12,7 +12,7 @@ namespace GameSystem
         // 정적 생성자
         static GameSetting()
         {
-            volume = SaveManager.Load<VolumeSetting>(VolumeSetting.KEY);
+            volume = SaveManager.Load<VolumeSetting>();
         }
     }
 }
