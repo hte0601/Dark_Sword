@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SpeedMode
+namespace OldSpeedMode
 {
-    public class ObjectPoolOld : MonoBehaviour
+    public class ObjectPool : MonoBehaviour
     {
-        // public static ObjectPoolOld objectPool;
+        // public static ObjectPool objectPool;
 
         // //object polling
         // [SerializeField] private SwordGoblin swordGoblin;

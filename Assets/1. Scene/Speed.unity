@@ -47366,7 +47366,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2099983984}
   - component: {fileID: 2099983985}
-  - component: {fileID: 2099983983}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -47374,31 +47373,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2099983983
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2099983982}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e49d503bc0322f47bc1c356c6332d6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playData:
-    _bestScore: 0
-    playNumber: 0
-    totalKill: 0
-    commonEnemyKill: 0
-    swordGoblinKill: 0
-    fireGoblinKill: 0
-    eliteEnemyKill: 0
-    spearGoblinKill: 0
-  upgrades:
-    maxHealth: 2
-    skillPower: 8
-    skillAutoCastNumber: 0
 --- !u!4 &2099983984
 Transform:
   m_ObjectHideFlags: 0
@@ -58825,6 +58799,6 @@ SceneRoots:
   - {fileID: 849038547}
   - {fileID: 2143803349}
   - {fileID: 532865568}
-  - {fileID: 2099983984}
   - {fileID: 1557913905}
+  - {fileID: 2099983984}
   - {fileID: 94951558}

@@ -13,7 +13,7 @@ namespace SpeedMode
         private void OnEnable()
         {
             scoreText.text = GameManager.instance.CurrentScore.ToString();
-            bestScoreText.text = SaveData.instance.playData.BestScore.ToString();
+            bestScoreText.text = SaveDataManager.LoadData<PlayData>().BestScore.ToString();
         }
     }
 }

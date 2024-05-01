@@ -77,7 +77,7 @@ namespace SpeedMode
         private void Start()
         {
             enemyManager = EnemyManager.instance;
-            upgrades = SaveData.instance.upgrades;
+            upgrades = SaveDataManager.LoadData<UpgradeData>();
 
             GameManager.instance.RestartGameEvent += HandleRestartGameEvent;
 

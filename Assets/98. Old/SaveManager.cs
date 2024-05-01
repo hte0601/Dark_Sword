@@ -3,13 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameSystem
+namespace OldGameSystem
 {
     public static class SaveManager
     {
         private static Dictionary<Type, string> keyDict = new()
         {
-            {typeof(VolumeSetting), "VolumeSetting"},
+            {typeof(GameSystem.VolumeSetting), "VolumeSetting"},
             {typeof(SpeedMode.PlayData), "SpeedModePlayData"},
             {typeof(SpeedMode.UpgradeData), "SpeedModeUpgradeData"}
         };

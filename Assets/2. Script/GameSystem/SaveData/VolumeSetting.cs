@@ -6,7 +6,7 @@ using UnityEngine;
 namespace GameSystem
 {
     [Serializable]
-    public class VolumeSetting : ISaveData
+    public class VolumeSetting : ISystemSaveData
     {
         public event Action<float> OnMasterVolumeChanged;
         public event Action<float> OnBGMVolumeChanged;
@@ -61,6 +61,6 @@ namespace GameSystem
             }
         }
 
-        public void Save() => SaveManager.Save<VolumeSetting>(this);
+        public void Save() => SaveDataManager.SaveData(this);
     }
 }

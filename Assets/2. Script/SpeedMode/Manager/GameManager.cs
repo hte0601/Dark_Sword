@@ -102,7 +102,7 @@ namespace SpeedMode
 
             swordman = Swordman.instance;
             swordman.BattleEnemyEvent += HandleBattleEnemyEvent;
-            playdata = SaveData.instance.playData;
+            playdata = SaveDataManager.LoadData<PlayData>();
         }
 
         private void Update()
