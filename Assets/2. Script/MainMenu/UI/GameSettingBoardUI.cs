@@ -7,7 +7,7 @@ namespace MainMenu
 {
     public class GameSettingBoardUI : MonoBehaviour
     {
-        private GameSystem.VolumeSetting volumeSetting;
+        private GameSystem.VolumeManager volumeManager;
 
         [Header("Volume Slider")]
         [SerializeField] private Slider MasterVolumeSlider;
@@ -16,13 +16,13 @@ namespace MainMenu
 
         private void Awake()
         {
-            volumeSetting = GameSystem.GameSetting.volume;
+            volumeManager = GameSystem.VolumeManager.instance;
 
-            MasterVolumeSlider.value = volumeSetting.MasterVolume;
-            BGMVolumeSlider.value = volumeSetting.BGMVolume;
-            SFXVolumeSlider.value = volumeSetting.SFXVolume;
+            MasterVolumeSlider.value = volumeManager.MasterVolume;
+            BGMVolumeSlider.value = volumeManager.BGMVolume;
+            SFXVolumeSlider.value = volumeManager.SFXVolume;
 
-            volumeSetting.OnMuteStateChanged += HandleMuteEvent;
+            volumeManager.OnMuteStateChanged += HandleMuteEvent;
             MasterVolumeSlider.onValueChanged.AddListener(ChangeMasterVolume);
             BGMVolumeSlider.onValueChanged.AddListener(ChangeBGMVolume);
             SFXVolumeSlider.onValueChanged.AddListener(ChangeSFXVolume);
@@ -30,27 +30,27 @@ namespace MainMenu
 
         private void OnDisable()
         {
-            volumeSetting.Save();
+            volumeManager.SaveVolumeSetting();
         }
 
         private void OnDestroy()
         {
-            volumeSetting.OnMuteStateChanged -= HandleMuteEvent;
+            volumeManager.OnMuteStateChanged -= HandleMuteEvent;
         }
 
         private void ChangeMasterVolume(float value)
         {
-            volumeSetting.MasterVolume = value;
+            volumeManager.MasterVolume = value;
         }
 
         private void ChangeBGMVolume(float value)
         {
-            volumeSetting.BGMVolume = value;
+            volumeManager.BGMVolume = value;
         }
 
         private void ChangeSFXVolume(float value)
         {
-            volumeSetting.SFXVolume = value;
+            volumeManager.SFXVolume = value;
         }
 
         private void HandleMuteEvent(bool isMuted)
@@ -62,9 +62,9 @@ namespace MainMenu
             else
             {
                 // 슬라이더 원래대로
-                if (MasterVolumeSlider.value != volumeSetting.MasterVolume)
+                if (MasterVolumeSlider.value != volumeManager.MasterVolume)
                 {
-                    MasterVolumeSlider.value = volumeSetting.MasterVolume;
+                    MasterVolumeSlider.value = volumeManager.MasterVolume;
                 }
             }
         }

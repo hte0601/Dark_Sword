@@ -7,9 +7,8 @@ namespace MainMenu
 {
     public class QuickButtonsUI : MonoBehaviour
     {
-        private GameSystem.VolumeSetting volumeSetting;
-
         [SerializeField] private GameObject soundButton;
+        private GameSystem.VolumeManager volumeManager;
 
         private Image soundButtonImage;
         private Sprite soundOnSprite;
@@ -20,16 +19,19 @@ namespace MainMenu
             soundButtonImage = soundButton.GetComponent<Image>();
             soundOnSprite = Resources.Load<Sprite>("UI/SoundON");
             soundOffSprite = Resources.Load<Sprite>("UI/SoundOFF");
+        }
 
-            volumeSetting = GameSystem.GameSetting.volume;
+        private void Start()
+        {
+            volumeManager = GameSystem.VolumeManager.instance;
 
-            volumeSetting.OnMuteStateChanged += ChangeSoundButtonSprite;
-            ChangeSoundButtonSprite(volumeSetting.IsMuted);
+            volumeManager.OnMuteStateChanged += ChangeSoundButtonSprite;
+            ChangeSoundButtonSprite(volumeManager.IsMuted);
         }
 
         private void OnDestroy()
         {
-            volumeSetting.OnMuteStateChanged -= ChangeSoundButtonSprite;
+            volumeManager.OnMuteStateChanged -= ChangeSoundButtonSprite;
         }
 
         private void ChangeSoundButtonSprite(bool isMuted)
@@ -39,8 +41,7 @@ namespace MainMenu
 
         public void OnSoundButtonPointerDown()
         {
-            volumeSetting.IsMuted = !volumeSetting.IsMuted;
-            volumeSetting.Save();
+            volumeManager.IsMuted = !volumeManager.IsMuted;
         }
 
         public void OnInfoButtonPointerDown()
