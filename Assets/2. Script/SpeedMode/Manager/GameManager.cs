@@ -19,6 +19,7 @@ namespace SpeedMode
 
         public event Action<float> OnTimerValueChanged;
         public event Action<int> OnScoreValueChanged;
+        public event Action<int> OnBestScoreValueChanged;
         public event Action<int, float> OnComboValueChanged;
         public event Action<int> OnKillCountValueChanged;
 
@@ -62,6 +63,17 @@ namespace SpeedMode
             }
         }
 
+        public int BestScore
+        {
+            get => playdata.bestScore;
+            private set
+            {
+                playdata.bestScore = value;
+                playdata.Save();
+                OnBestScoreValueChanged?.Invoke(playdata.bestScore);
+            }
+        }
+
         public int CurrentCombo
         {
             get => _currentCombo;
@@ -93,6 +105,7 @@ namespace SpeedMode
         private void Awake()
         {
             instance = this;
+            playdata = SaveDataManager.LoadData<PlayData>();
         }
 
         private void Start()
@@ -102,7 +115,6 @@ namespace SpeedMode
 
             swordman = Swordman.instance;
             swordman.BattleEnemyEvent += HandleBattleEnemyEvent;
-            playdata = SaveDataManager.LoadData<PlayData>();
         }
 
         private void Update()
@@ -160,11 +172,8 @@ namespace SpeedMode
         {
             // Swordman.setPlayerState(4);
 
-            if (CurrentScore > playdata.BestScore)
-            {
-                playdata.BestScore = CurrentScore;
-                playdata.Save();
-            }
+            if (CurrentScore > BestScore)
+                BestScore = CurrentScore;
 
             SoundManager.PlayGameOverSound();
             ParticleManager.CreateBrokenHeartParticle();
@@ -241,7 +250,7 @@ namespace SpeedMode
 
         private void OnBestScoreBroken(int currentScore)
         {
-            if (currentScore > playdata.BestScore)
+            if (currentScore > BestScore)
             {
                 SoundManager.PlayBestScoreUpdate();
                 OnScoreValueChanged -= OnBestScoreBroken;

@@ -7,13 +7,20 @@ namespace SpeedMode
 {
     public class GameOverBoardUI : MonoBehaviour
     {
+        private GameManager gameManager;
+
         [SerializeField] private Text scoreText;
         [SerializeField] private Text bestScoreText;
 
+        private void Awake()
+        {
+            gameManager = GameManager.instance;
+        }
+
         private void OnEnable()
         {
-            scoreText.text = GameManager.instance.CurrentScore.ToString();
-            bestScoreText.text = SaveDataManager.LoadData<PlayData>().BestScore.ToString();
+            scoreText.text = gameManager.CurrentScore.ToString();
+            bestScoreText.text = gameManager.BestScore.ToString();
         }
     }
 }

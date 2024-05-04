@@ -71,13 +71,14 @@ namespace SpeedMode
             animationController = transform.Find("model").GetComponent<SwordmanAnimationController>();
             effectController = transform.Find("Effect").GetComponent<SwordmanEffectController>();
 
+            upgrades = SaveDataManager.LoadData<UpgradeData>();
+
             battleRange = transform.position.x + ModeData.SwordmanData.MAX_BATTLE_RANGE;
         }
 
         private void Start()
         {
             enemyManager = EnemyManager.instance;
-            upgrades = SaveDataManager.LoadData<UpgradeData>();
 
             GameManager.instance.RestartGameEvent += HandleRestartGameEvent;
 

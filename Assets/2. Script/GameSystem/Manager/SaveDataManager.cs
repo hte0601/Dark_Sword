@@ -10,10 +10,12 @@ public static class SaveDataManager
     {
         // ISystemSaveData
         {typeof(GameSystem.VolumeSetting), "VolumeSetting"},
+        {typeof(GameSystem.CurrencyData), "CurrencyData"},
         
         // IGameSaveData
-        {typeof(SpeedMode.PlayData), "SpeedModePlayData"},
-        {typeof(SpeedMode.UpgradeData), "SpeedModeUpgradeData"}
+        {typeof(SpeedMode.PlayData), "SpeedMode_PlayData"},
+        {typeof(SpeedMode.UpgradeData), "SpeedMode_UpgradeData"},
+        {typeof(SpeedMode.StatisticData), "SpeedMode_StatisticData"}
     };
 
     private static readonly Dictionary<Type, ISaveData> loadedSystemData = new();  // 씬 전환 시에도 유지

@@ -1,11 +1,11 @@
 using System;
 
-namespace SpeedMode
+namespace GameSystem
 {
     [Serializable]
-    public class PlayData : IGameSaveData
+    public class CurrencyData : ISystemSaveData
     {
-        public int bestScore = 0;
+        public int gold = 0;
 
         public void Save() => SaveDataManager.SaveData(this);
     }
