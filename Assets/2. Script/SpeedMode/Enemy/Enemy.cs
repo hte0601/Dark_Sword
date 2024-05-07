@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,13 +7,18 @@ namespace SpeedMode
 {
     public class Enemy : MonoBehaviour
     {
+        [Flags]
         public enum Type
         {
-            CommonEnemy,
-            SwordGoblin,
-            FireGoblin,
-            EliteEnemy,
-            SpearGoblin
+            None = 0,
+
+            SwordGoblin = 1 << 0,
+            FireGoblin = 1 << 1,
+            CommonEnemy = SwordGoblin | FireGoblin,
+
+            SpearGoblin = 1 << 2,
+            Elite2 = 1 << 3,
+            EliteEnemy = SpearGoblin | Elite2
         }
 
         public EnemyObjectPool objectPool;

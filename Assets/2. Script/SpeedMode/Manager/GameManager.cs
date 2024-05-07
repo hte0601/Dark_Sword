@@ -21,10 +21,10 @@ namespace SpeedMode
         public event Action<int> OnScoreValueChanged;
         public event Action<int> OnBestScoreValueChanged;
         public event Action<int, float> OnComboValueChanged;
-        public event Action<int> OnKillCountValueChanged;
 
-        [SerializeField] private GameObject gameOverBoard;
+        [SerializeField] private GameResultBoardUI gameResultBoard;
         private Swordman swordman;
+        private KillCounter killCounter;
         private PlayData playdata;
         private Wave currentWave;
 
@@ -35,7 +35,6 @@ namespace SpeedMode
         private int _currentScore = 0;
         private int _currentCombo = 0;
         private float _scoreMultiplier;
-        private int _killCount = 0;
 
         public float Timer
         {
@@ -91,16 +90,6 @@ namespace SpeedMode
             private set => _scoreMultiplier = 1 + (int)(value / 100) * 0.1f;
         }
 
-        public int KillCount
-        {
-            get => _killCount;
-            private set
-            {
-                _killCount = value;
-                OnKillCountValueChanged?.Invoke(_killCount);
-            }
-        }
-
 
         private void Awake()
         {
@@ -114,6 +103,8 @@ namespace SpeedMode
             StartCoroutine(TimerCoroutine());
 
             swordman = Swordman.instance;
+            killCounter = KillCounter.instance;
+
             swordman.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
 
@@ -129,7 +120,6 @@ namespace SpeedMode
             isTimerWaitingInput = true;
             CurrentScore = 0;
             CurrentCombo = 0;
-            KillCount = 0;
 
             // 베스트 스코어를 갱신하지 못 하고 게임이 다시 시작되면
             // OnBestScoreBroken이 두 번 등록되는 문제가 있음
@@ -170,22 +160,25 @@ namespace SpeedMode
 
         private void RaiseGameOverEvent()
         {
-            // Swordman.setPlayerState(4);
-
-            if (CurrentScore > BestScore)
+            if (BestScore < CurrentScore)
                 BestScore = CurrentScore;
+
+            int earnedGold = killCounter.GetKillCount(Enemy.Type.CommonEnemy) / 5
+                + killCounter.GetKillCount(Enemy.Type.EliteEnemy) / 2;
+
+            GameSystem.CurrencyManager.IncreaseGold(earnedGold);
 
             SoundManager.PlayGameOverSound();
             ParticleManager.CreateBrokenHeartParticle();
 
             GameOverEvent?.Invoke();
-            gameOverBoard.SetActive(true);
+            gameResultBoard.Show(CurrentScore, BestScore, earnedGold);
         }
 
         // 버튼 이벤트에 연결됨
         public void RaiseRestartGameEvent()
         {
-            gameOverBoard.SetActive(false);
+            gameResultBoard.Hide();
             // Swordman.setPlayerState(0);
             SoundManager.BGMStart();
             Initialize();
@@ -203,9 +196,6 @@ namespace SpeedMode
                 Timer += ModeData.TimerData.ADDITIONAL_TIME;
                 CurrentCombo += 1;
                 CurrentScore += (int)(10 * ScoreMultiplier);
-
-                if (battleReport.isEnemyDead)
-                    KillCount += 1;
             }
             else if (battleReport.result == BattleReport.Result.SkillHit)
             {
@@ -215,8 +205,6 @@ namespace SpeedMode
                     CurrentCombo += 1;
                     CurrentScore += (int)(10 * ScoreMultiplier);
                 }
-
-                KillCount += 1;
             }
             else if (battleReport.result == BattleReport.Result.SkillCast)
             {
@@ -298,11 +286,6 @@ namespace SpeedMode
         public void ExitGame()
         {
             SceneManager.LoadScene("Main");
-        }
-
-        public void HideGuide()
-        {
-            gameOverBoard.SetActive(false);
         }
     }
 }

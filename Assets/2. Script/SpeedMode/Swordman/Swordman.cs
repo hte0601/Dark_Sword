@@ -17,7 +17,7 @@ namespace SpeedMode
             SkillHit
         }
 
-        public Enemy.Type? enemyType;
+        public Enemy.Type enemyType;
         public Swordman.State? playerInput;
         public Result result;
         public int damageDealt;
@@ -158,7 +158,7 @@ namespace SpeedMode
 
                     BattleReport SkillCastReport = new()
                     {
-                        enemyType = null,
+                        enemyType = Enemy.Type.None,
                         playerInput = State.Skill,
                         result = BattleReport.Result.SkillCast,
                         damageDealt = 0,

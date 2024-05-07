@@ -14,17 +14,18 @@ namespace SpeedMode
         private void Start()
         {
             GameManager gameManager = GameManager.instance;
+            KillCounter killCounter = KillCounter.instance;
 
-            UpdateKillCountText(gameManager.KillCount);
             UpdateCurrentScoreText(gameManager.CurrentScore);
             UpdateBestScoreText(gameManager.BestScore);
+            UpdateKillCountText(killCounter.KillCount);
 
             gameManager.GameOverEvent += HandleGameOverEvent;
             gameManager.RestartGameEvent += HandleRestartGameEvent;
 
-            gameManager.OnKillCountValueChanged += UpdateKillCountText;
             gameManager.OnScoreValueChanged += UpdateCurrentScoreText;
             gameManager.OnBestScoreValueChanged += UpdateBestScoreText;
+            killCounter.OnKillCountValueChanged += UpdateKillCountText;
         }
 
         private void HandleGameOverEvent() => gameObject.SetActive(false);

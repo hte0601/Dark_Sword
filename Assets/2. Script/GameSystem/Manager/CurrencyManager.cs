@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace GameSystem
     public static class CurrencyManager
     {
         private static CurrencyData currencyData;
+
+        public static event Action<int> OnGoldValueChanged;
 
         static CurrencyManager()
         {
@@ -23,6 +26,7 @@ namespace GameSystem
         {
             currencyData.gold += amount;
             currencyData.Save();
+            OnGoldValueChanged?.Invoke(currencyData.gold);
         }
 
         public static bool DecreaseGold(int amount)
@@ -35,6 +39,7 @@ namespace GameSystem
             {
                 currencyData.gold -= amount;
                 currencyData.Save();
+                OnGoldValueChanged?.Invoke(currencyData.gold);
                 return true;
             }
         }
