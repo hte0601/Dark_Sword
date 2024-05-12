@@ -13,8 +13,9 @@ namespace SpeedMode
             SwordmanGroggy,
             GameOver,
             SkillCast,
-            SkillAutoCast,
             SkillHit
+
+            // SkillAutoCast,
         }
 
         public Enemy.Type enemyType;
@@ -39,6 +40,7 @@ namespace SpeedMode
         public static Swordman instance;
 
         public event Action<BattleReport> BattleEnemyEvent;
+        public event Action<int> OnCurrentHealthChanged;
 
         private EnemyManager enemyManager;
         private UpgradeData upgrades;
@@ -47,9 +49,8 @@ namespace SpeedMode
 
         private float battleRange;
 
-        private int _currentHealth;
+        private int _currentHealth = 0;
         private int skillGauge;
-        private int skillAutoCastNumber;  // 임시
 
 
         public int CurrentHealth
@@ -61,6 +62,8 @@ namespace SpeedMode
                     _currentHealth = 0;
                 else
                     _currentHealth = value;
+
+                OnCurrentHealthChanged?.Invoke(_currentHealth);
             }
         }
 
@@ -100,7 +103,6 @@ namespace SpeedMode
         private void Initialize()
         {
             CurrentHealth = upgrades.maxHealth;
-            skillAutoCastNumber = upgrades.skillAutoCastNumber;
 
             animationController.Initialize();
         }
@@ -216,11 +218,11 @@ namespace SpeedMode
         {
             animationController.StopAnimation();
 
-            if (skillAutoCastNumber > 0)
-            {
-                // 스킬 자동 시전 처리
-                return BattleReport.Result.SkillAutoCast;
-            }
+            // if (skillAutoCastNumber > 0)
+            // {
+            //     // 스킬 자동 시전 처리
+            //     return BattleReport.Result.SkillAutoCast;
+            // }
 
             CurrentHealth -= damage;
 

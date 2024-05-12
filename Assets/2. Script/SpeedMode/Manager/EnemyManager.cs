@@ -8,13 +8,28 @@ namespace SpeedMode
     public class EnemyManager : MonoBehaviour
     {
         public static EnemyManager instance;
+
+        public event Action<int> OnRemainingEnemyNumberChanged;
+
         [SerializeField] private EnemyObjectPool enemyObjectPool;
 
-        private List<Enemy> enemyList = new();
+        private readonly List<Enemy> enemyList = new();
         private Wave currentWave;
         private Enemy.Type currentEliteEnemy;
 
         private int createEnemyNumber;
+        private int _remainingEnemyNumber = 0;
+
+        public int RemainingEnemyNumber
+        {
+            get => _remainingEnemyNumber;
+            private set
+            {
+                _remainingEnemyNumber = value;
+                OnRemainingEnemyNumberChanged?.Invoke(_remainingEnemyNumber);
+            }
+        }
+
 
         private void Awake()
         {
@@ -35,6 +50,7 @@ namespace SpeedMode
         {
             currentWave = ModeData.WaveData.waves[wave];
             createEnemyNumber = currentWave.ENEMY_NUMBER;
+            RemainingEnemyNumber = currentWave.ENEMY_NUMBER;
         }
 
         private void HandleStartWaveEvent(int wave)
@@ -71,14 +87,17 @@ namespace SpeedMode
 
             for (int i = 0; i < Math.Min(number, enemyList.Count); i++)
                 enemies.Add(enemyList[i]);
-            
+
             return enemies;
         }
 
         private void HandleBattleEnemyEvent(BattleReport battleReport)
         {
             if (battleReport.isEnemyDead)
+            {
                 RemoveEnemy();
+                RemainingEnemyNumber -= 1;
+            }
         }
 
         private void CreateEnemy()
