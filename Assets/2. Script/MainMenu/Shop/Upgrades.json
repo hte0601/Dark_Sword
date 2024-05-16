@@ -1,0 +1,34 @@
+[
+  {
+    "name": "체력 증가",
+    "descrition": "최대 체력: {0}",
+    "maxLevel": 1,
+    "isphased" : true,
+    "levels": [
+      { "level": 0, "price": 0, "effect": 2 },
+      { "level": 1, "price": 100, "effect": 3 }
+    ]
+  },
+  {
+    "name": "스킬 위력 증가",
+    "descrition": "스킬 발동 시 최대 {0}마리의 적을 처치",
+    "maxLevel": 3,
+    "isphased" : true,
+    "levels": [
+      { "level": 0, "price": 0, "effect": 6 },
+      { "level": 1, "price": 100, "effect": 8 },
+      { "level": 2, "price": 200, "effect": 10 },
+      { "level": 3, "price": 300, "effect": 12 }
+    ]
+  },
+  {
+    "name": "반격",
+    "descrition": "그로기 상태에서 회복 시 게이지 소모 없이 스킬 발동",
+    "maxLevel": 1,
+    "isphased" : false,
+    "levels": [
+      { "level": 0, "price": 0, "effect": 0 },
+      { "level": 1, "price": 100, "effect": 1 }
+    ]
+  }
+]
