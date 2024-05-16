@@ -10,7 +10,7 @@ namespace SpeedMode
     {
         public static GameManager instance;
 
-        public event Action<int> ReadyWaveEvent;
+        public event Action<Wave> ReadyWaveEvent;
         public event Action<int> StartWaveEvent;
         public event Action<int> EndWaveEvent;
 
@@ -135,7 +135,7 @@ namespace SpeedMode
             Debug.Log(string.Format("{0}웨이브 준비", wave));
             currentWave = ModeData.WaveData.waves[wave];
 
-            ReadyWaveEvent?.Invoke(wave);
+            ReadyWaveEvent?.Invoke(currentWave);
             StartCoroutine(WaitAndInvoke(1f, RaiseStartWaveEvent, wave));
         }
 
@@ -160,6 +160,8 @@ namespace SpeedMode
 
         private void RaiseGameOverEvent()
         {
+            SoundManager.StopBGM();
+
             if (BestScore < CurrentScore)
                 BestScore = CurrentScore;
 
@@ -167,9 +169,6 @@ namespace SpeedMode
                 + killCounter.GetKillCount(Enemy.Type.EliteEnemy) / 2;
 
             GameSystem.CurrencyManager.IncreaseGold(earnedGold);
-
-            SoundManager.PlayGameOverSound();
-            ParticleManager.CreateBrokenHeartParticle();
 
             GameOverEvent?.Invoke();
             gameResultBoard.Show(CurrentScore, BestScore, earnedGold);
@@ -179,8 +178,8 @@ namespace SpeedMode
         public void RaiseRestartGameEvent()
         {
             gameResultBoard.Hide();
-            // Swordman.setPlayerState(0);
-            SoundManager.BGMStart();
+
+            SoundManager.StartBGM();
             Initialize();
 
             RestartGameEvent?.Invoke();

@@ -6,7 +6,7 @@ namespace SpeedMode
 {
     public class SoundManager : MonoBehaviour
     {
-        public static SoundManager sm;
+        private static SoundManager sm;
 
         //BGM source
         public AudioSource BGM;
@@ -26,7 +26,7 @@ namespace SpeedMode
         public AudioClip gameOverSound;
         public AudioClip BestScoreUpdateSound;
 
-        void Start()
+        private void Awake()
         {
             sm = this;
         }
@@ -68,7 +68,6 @@ namespace SpeedMode
         //Dead sound
         public static void PlayGameOverSound()
         {
-            BGMStop();
             sm.effectSoundPlayer.Stop();
             sm.effectSoundPlayer.clip = sm.gameOverSound;
             sm.effectSoundPlayer.loop = false;
@@ -87,14 +86,14 @@ namespace SpeedMode
         }
 
         //BGM sound
-        public static void BGMStop()
-        {
-            sm.BGM.Stop();
-        }
-
-        public static void BGMStart()
+        public static void StartBGM()
         {
             sm.BGM.Play();
+        }
+
+        public static void StopBGM()
+        {
+            sm.BGM.Stop();
         }
     }
 }

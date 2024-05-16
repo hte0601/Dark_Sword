@@ -46,9 +46,9 @@ namespace SpeedMode
             Swordman.instance.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
 
-        private void HandleReadyWaveEvent(int wave)
+        private void HandleReadyWaveEvent(Wave wave)
         {
-            currentWave = ModeData.WaveData.waves[wave];
+            currentWave = wave;
             createEnemyNumber = currentWave.ENEMY_NUMBER;
             RemainingEnemyNumber = currentWave.ENEMY_NUMBER;
         }
@@ -62,6 +62,7 @@ namespace SpeedMode
         private void HandleRestartGameEvent()
         {
             ClearEnemy();
+            RemainingEnemyNumber = 0;
         }
 
         public bool IsEnemyInRange(float battleRange)

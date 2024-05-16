@@ -224,6 +224,10 @@ namespace SpeedMode
             //     return BattleReport.Result.SkillAutoCast;
             // }
 
+            // 메소드 명 변경 필요
+            SoundManager.PlayGameOverSound();
+            ParticleManager.CreateBrokenHeartParticle();
+
             CurrentHealth -= damage;
 
             if (CurrentHealth > 0)

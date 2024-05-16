@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SpeedMode
 {
-    public readonly struct Wave
+    public class Wave
     {
         public readonly int WAVE;
         public readonly float TIMER_SPEED;
@@ -48,4 +48,3 @@ namespace SpeedMode
         }
     }
 }
-
