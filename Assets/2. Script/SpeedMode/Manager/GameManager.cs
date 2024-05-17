@@ -179,7 +179,7 @@ namespace SpeedMode
         {
             gameResultBoard.Hide();
 
-            SoundManager.StartBGM();
+            SoundManager.PlayBGM();
             Initialize();
 
             RestartGameEvent?.Invoke();
@@ -239,7 +239,7 @@ namespace SpeedMode
         {
             if (currentScore > BestScore)
             {
-                SoundManager.PlayBestScoreUpdate();
+                SoundManager.PlaySFX(SFX.Game.BestScoreUpdate);
                 OnScoreValueChanged -= OnBestScoreBroken;
             }
         }

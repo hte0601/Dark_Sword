@@ -18288,11 +18288,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 849038547}
+  - component: {fileID: 849038548}
   - component: {fileID: 849038546}
+  - component: {fileID: 849038551}
   - component: {fileID: 849038550}
   - component: {fileID: 849038549}
-  - component: {fileID: 849038551}
-  - component: {fileID: 849038548}
   m_Layer: 0
   m_Name: SoundManager
   m_TagString: Untagged
@@ -18405,12 +18405,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 849038545}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2099983984}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &849038548
 MonoBehaviour:
@@ -18424,17 +18424,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 256d351155eeefc4d911d3e871d9509b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BGM: {fileID: 849038546}
-  playerMusicPlayer: {fileID: 849038550}
-  slashSound: {fileID: 8300000, guid: e57a7a35789c5c54aac75b6a31068de2, type: 3}
-  defenseSound: {fileID: 8300000, guid: 3fd04a21f9316c64e88636b1f9204b45, type: 3}
-  pierceSound: {fileID: 8300000, guid: f2b1a635ad18de54597d87a85e074e1b, type: 3}
-  enemyMusicPlayer: {fileID: 849038549}
-  EnemyHittedSound: {fileID: 8300000, guid: 8b7b82b7003c23b49be5cf8ebcd48b47, type: 3}
-  effectSoundPlayer: {fileID: 849038551}
-  gameOverSound: {fileID: 8300000, guid: 7c3ff9bdc3c4c5c4e934adf1883c5749, type: 3}
-  BestScoreUpdateSound: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c,
+  BGMPlayer: {fileID: 849038546}
+  gameSFXPlayer: {fileID: 849038551}
+  bestScoreUpdateSound: {fileID: 8300000, guid: 7bd6b897eb5ca4b7d88a205c4a51640c,
     type: 3}
+  healthLossSound: {fileID: 8300000, guid: 7c3ff9bdc3c4c5c4e934adf1883c5749, type: 3}
+  swordmanSFXPlayer: {fileID: 849038550}
+  swordmanSlashSound: {fileID: 8300000, guid: e57a7a35789c5c54aac75b6a31068de2, type: 3}
+  swordmanGuardSound: {fileID: 8300000, guid: 3fd04a21f9316c64e88636b1f9204b45, type: 3}
+  swordmanAttackHitSound: {fileID: 8300000, guid: 8b7b82b7003c23b49be5cf8ebcd48b47,
+    type: 3}
+  enemySFXPlayer: {fileID: 849038549}
 --- !u!82 &849038549
 AudioSource:
   m_ObjectHideFlags: 0
@@ -18638,7 +18638,7 @@ AudioSource:
   m_GameObject: {fileID: 849038545}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -5360037454720337133, guid: acaa32f2f5f44b24882d5e8cf16be832,
+  OutputAudioMixerGroup: {fileID: 208322857772353163, guid: acaa32f2f5f44b24882d5e8cf16be832,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
@@ -48614,6 +48614,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 188447439}
+  - {fileID: 849038547}
   - {fileID: 2020432140}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59865,7 +59866,6 @@ SceneRoots:
   - {fileID: 2102915121}
   - {fileID: 1214001484}
   - {fileID: 436247346}
-  - {fileID: 849038547}
   - {fileID: 2143803349}
   - {fileID: 532865568}
   - {fileID: 2099983984}

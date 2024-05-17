@@ -69,7 +69,7 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 3753524744689214296}
-  m_UserColorIndex: 7
+  m_UserColorIndex: 0
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
@@ -174,9 +174,9 @@ AudioMixerController:
     - 04a33c36831185242bb76823b4df780d
     - 96e7c45e8eba1454ab27bb0b9062890f
     - 4b090a13cbad8494ca116ac61f966949
+    - 810ab94c0373eae40a268e8d0cac9ae6
     - 893f5e91738298a43a6407a01a82d1ba
     - 9feb9d2a447bb02499331702498c52bb
-    - 810ab94c0373eae40a268e8d0cac9ae6
     - d1177ce0339de304991a02dd6f6d0fc4
     - 56ac711b2af8b5e40802e81787b11149
     name: everything
@@ -251,7 +251,7 @@ AudioMixerSnapshotController:
     a1ab8f81280dd5043b0456276cb8ceee: -20.7
     8bd56591b3d5f814e93ad79e10daa40d: 1
     b2525fc1953a1264cb7eec16313353e9: 0.0817
-    6656f5d14ae444745bb6120e3e3b9a49: -0.08374883
+    6656f5d14ae444745bb6120e3e3b9a49: 0
     bc343fd11014ff1448edc641c0b54aeb: 0.286
     2238ad223fce628409f973601352381d: 1913
     90585072fee18464ba142f9d4c58ee30: 0.6
@@ -285,7 +285,7 @@ AudioMixerSnapshotController:
     ee4131565514f174681fda19438a47c5: 2204
     2ede4456f3f029b4e83defcf9875ecb8: -10000
     a13c8856a9feeb541a66c6a5b0c6f991: 29.4
-    105843768274ee545a6ddcd2d0f954ed: -0.1668526
+    105843768274ee545a6ddcd2d0f954ed: 0
     b673afb619989204aa2d5c8746cc50cd: 0
     36b7a0d62258a7e488224949e040a3de: 122
     ab263bd6958cf4e4d82edcc9f825a531: 2.14
@@ -308,7 +308,7 @@ AudioMixerSnapshotController:
     e3aafb4932088754db1ef469fee5cb2d: 0.292
     2b399789873da4b49a14de721fc18ed5: 0.463
     49ae140ae8d70cb439b59c22fbff3467: 0.684
-    0af7c07a81da20f449135fb844fdd636: -0.08374883
+    0af7c07a81da20f449135fb844fdd636: 0
     ee829aca95cd14846a0072433d330d59: 0.627
     ba235bda729ae7b40ad03c2b2fd179bf: 61
     6df66cda942b29b4c85ba3b11ac62619: 1.88
@@ -398,7 +398,7 @@ AudioMixerGroupController:
   m_Send: 00000000000000000000000000000000
   m_Effects:
   - {fileID: 6693745203151473077}
-  m_UserColorIndex: 0
+  m_UserColorIndex: 7
   m_Mute: 0
   m_Solo: 0
   m_BypassEffects: 0
@@ -412,11 +412,11 @@ AudioMixerGroupController:
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 04a33c36831185242bb76823b4df780d
   m_Children:
+  - {fileID: 208322857772353163}
   - {fileID: 8444217746295786077}
   - {fileID: -3623178838089466209}
   - {fileID: 40894454972005625}
   - {fileID: -5360037454720337133}
-  - {fileID: 208322857772353163}
   - {fileID: 2995425753021786945}
   - {fileID: 4118124920405105107}
   m_Volume: 91d9962916981ba43b998dd26ddf2444
@@ -583,7 +583,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: PlayerSFX
+  m_Name: SwordmanSFX
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 96e7c45e8eba1454ab27bb0b9062890f
   m_Children: []

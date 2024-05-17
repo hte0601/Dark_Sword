@@ -224,8 +224,7 @@ namespace SpeedMode
             //     return BattleReport.Result.SkillAutoCast;
             // }
 
-            // 메소드 명 변경 필요
-            SoundManager.PlayGameOverSound();
+            SoundManager.PlaySFX(SFX.Game.HealthLoss);
             ParticleManager.CreateBrokenHeartParticle();
 
             CurrentHealth -= damage;
@@ -272,7 +271,7 @@ namespace SpeedMode
             enemy.isStopped = true;
 
             effectController.PlaySkillEffect(enemy.transform.position);
-            SoundManager.PlayerSound("slash");
+            SoundManager.PlaySFX(SFX.Swordman.Slash);
 
             yield return new WaitForSeconds(0.1f);
 

@@ -4,96 +4,78 @@ using UnityEngine;
 
 namespace SpeedMode
 {
+    public static class SFX
+    {
+        public enum Game
+        {
+            BestScoreUpdate,
+            HealthLoss
+        }
+
+        public enum Swordman
+        {
+            Slash,
+            Guard,
+            AttackHit
+        }
+    }
+
     public class SoundManager : MonoBehaviour
     {
         private static SoundManager sm;
 
-        //BGM source
-        public AudioSource BGM;
+        [Header("BGM")]
+        [SerializeField] private AudioSource BGMPlayer;
 
-        //Player sound
-        public AudioSource playerMusicPlayer;
-        public AudioClip slashSound;
-        public AudioClip defenseSound;
-        public AudioClip pierceSound;
+        [Header("GameSFX")]
+        [SerializeField] private AudioSource gameSFXPlayer;
+        [SerializeField] private AudioClip bestScoreUpdateSound;
+        [SerializeField] private AudioClip healthLossSound;
 
-        //Enemy sound
-        public AudioSource enemyMusicPlayer;
-        public AudioClip EnemyHittedSound;
+        [Header("SwordmanSFX")]
+        [SerializeField] private AudioSource swordmanSFXPlayer;
+        [SerializeField] private AudioClip swordmanSlashSound;
+        [SerializeField] private AudioClip swordmanGuardSound;
+        [SerializeField] private AudioClip swordmanAttackHitSound;
 
-        //effect sound
-        public AudioSource effectSoundPlayer;
-        public AudioClip gameOverSound;
-        public AudioClip BestScoreUpdateSound;
+        [Header("EnemySFX")]
+        [SerializeField] private AudioSource enemySFXPlayer;
+
+        private readonly Dictionary<SFX.Game, AudioClip> gameSFXDict = new();
+        private readonly Dictionary<SFX.Swordman, AudioClip> swordmanSFXDict = new();
+
 
         private void Awake()
         {
             sm = this;
+
+            gameSFXDict.Add(SFX.Game.BestScoreUpdate, bestScoreUpdateSound);
+            gameSFXDict.Add(SFX.Game.HealthLoss, healthLossSound);
+
+            swordmanSFXDict.Add(SFX.Swordman.Slash, swordmanSlashSound);
+            swordmanSFXDict.Add(SFX.Swordman.Guard, swordmanGuardSound);
+            swordmanSFXDict.Add(SFX.Swordman.AttackHit, swordmanAttackHitSound);
         }
 
-        //Player sound
-        public static void PlayerSound(string name)
-        {
-            // sm.playerMusicPlayer.Stop();
-            // sm.playerMusicPlayer.clip = sm.selectSound(name);
-            // sm.playerMusicPlayer.loop = false;
-            // sm.playerMusicPlayer.time = 0;
-            // sm.playerMusicPlayer.Play();
 
-            sm.playerMusicPlayer.PlayOneShot(sm.selectSound(name));
-        }
-
-        private AudioClip selectSound(string name)
+        public static void PlayBGM()
         {
-            if (name == "slash")
-                return slashSound;
-            else if (name == "defense")
-                return defenseSound;
-            else if (name == "pierce")
-                return pierceSound;
-            else
-                return null;
-        }
-
-        //Enemy Sound
-        public static void EnemySound()
-        {
-            sm.enemyMusicPlayer.Stop();
-            sm.enemyMusicPlayer.clip = sm.EnemyHittedSound;
-            sm.enemyMusicPlayer.loop = false;
-            sm.enemyMusicPlayer.time = 0;
-            sm.enemyMusicPlayer.Play();
-        }
-
-        //Dead sound
-        public static void PlayGameOverSound()
-        {
-            sm.effectSoundPlayer.Stop();
-            sm.effectSoundPlayer.clip = sm.gameOverSound;
-            sm.effectSoundPlayer.loop = false;
-            sm.effectSoundPlayer.time = 0;
-            sm.effectSoundPlayer.Play();
-        }
-
-        //best Score sound
-        public static void PlayBestScoreUpdate()
-        {
-            sm.effectSoundPlayer.Stop();
-            sm.effectSoundPlayer.clip = sm.BestScoreUpdateSound;
-            sm.effectSoundPlayer.loop = false;
-            sm.effectSoundPlayer.time = 0;
-            sm.effectSoundPlayer.Play();
-        }
-
-        //BGM sound
-        public static void StartBGM()
-        {
-            sm.BGM.Play();
+            sm.BGMPlayer.Play();
         }
 
         public static void StopBGM()
         {
-            sm.BGM.Stop();
+            sm.BGMPlayer.Stop();
+        }
+
+        public static void PlaySFX(SFX.Game sound)
+        {
+            sm.gameSFXPlayer.PlayOneShot(sm.gameSFXDict[sound]);
+        }
+
+        public static void PlaySFX(SFX.Swordman sound)
+        {
+            sm.swordmanSFXPlayer.PlayOneShot(sm.swordmanSFXDict[sound]);
         }
     }
 }

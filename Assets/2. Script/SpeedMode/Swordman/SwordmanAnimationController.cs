@@ -133,7 +133,7 @@ namespace SpeedMode
                 yield return null;
 
             effectController.PlaySlashEffect();
-            SoundManager.PlayerSound("slash");
+            SoundManager.PlaySFX(SFX.Swordman.Slash);
 
             // Enemy로 이동
             if (isEnemyInRange)
@@ -158,7 +158,7 @@ namespace SpeedMode
                 yield return null;
 
             effectController.PlayPierceEffect();
-            SoundManager.PlayerSound("slash");
+            SoundManager.PlaySFX(SFX.Swordman.Slash);
 
             // Enemy로 이동
             if (isEnemyInRange)
@@ -185,7 +185,7 @@ namespace SpeedMode
             if (isEnemyInRange)
             {
                 ParticleManager.CreateDefenseParticle();
-                SoundManager.PlayerSound("defense");
+                SoundManager.PlaySFX(SFX.Swordman.Guard);
             }
 
             CanComboInput = true;

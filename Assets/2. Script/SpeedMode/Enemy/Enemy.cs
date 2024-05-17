@@ -119,7 +119,7 @@ namespace SpeedMode
 
         private void Die()
         {
-            SoundManager.EnemySound();
+            SoundManager.PlaySFX(SFX.Swordman.AttackHit);
             objectPool.ReturnEnemy(this);
         }
     }
