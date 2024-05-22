@@ -23,6 +23,11 @@ namespace SpeedMode
         public Result result;
         public int damageDealt;
         public bool isEnemyDead;
+
+        public bool IsInputIncorrect()
+        {
+            return result == Result.SwordmanGroggy || result == Result.GameOver;
+        }
     }
 
     public class Swordman : MonoBehaviour
@@ -191,15 +196,13 @@ namespace SpeedMode
                 enemyType = enemy.EnemyType,
                 playerInput = playerInput,
                 damageDealt = 0,
-                isEnemyDead = false
             };
 
             // 입력 성공
-            if (playerInput == enemy.CorrectInput)
+            if (enemy.Battle(playerInput, out battleReport.isEnemyDead))
             {
                 battleReport.result = BattleReport.Result.InputCorrect;
                 battleReport.damageDealt = 1;
-                battleReport.isEnemyDead = enemy.TakeDamage(1);
 
                 if (battleReport.enemyType == Enemy.Type.SpearGoblin)
                     if (battleReport.playerInput == State.Guard && !battleReport.isEnemyDead)
@@ -224,19 +227,18 @@ namespace SpeedMode
             //     return BattleReport.Result.SkillAutoCast;
             // }
 
-            SoundManager.PlaySFX(SFX.Game.HealthLoss);
-            ParticleManager.CreateBrokenHeartParticle();
-
             CurrentHealth -= damage;
 
             if (CurrentHealth > 0)
             {
                 animationController.RunGroggyAnimation();
+                effectController.PlayHealthLossEffect();
                 return BattleReport.Result.SwordmanGroggy;
             }
             else
             {
                 animationController.RunDieAnimation();
+                effectController.PlayHealthLossEffect();
                 return BattleReport.Result.GameOver;
             }
         }
@@ -271,7 +273,6 @@ namespace SpeedMode
             enemy.isStopped = true;
 
             effectController.PlaySkillEffect(enemy.transform.position);
-            SoundManager.PlaySFX(SFX.Swordman.Slash);
 
             yield return new WaitForSeconds(0.1f);
 

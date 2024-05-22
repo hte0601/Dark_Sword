@@ -5,10 +5,9 @@ using UnityEngine;
 
 namespace SpeedMode
 {
-    public class Enemy : MonoBehaviour
+    public class Enemy : MonoBehaviourExt
     {
-        [Flags]
-        public enum Type
+        [Flags] public enum Type
         {
             None = 0,
 
@@ -22,10 +21,11 @@ namespace SpeedMode
         }
 
         public EnemyObjectPool objectPool;
+        [SerializeField] protected GameObject model;
         [SerializeField] private Animator animator;
 
         private Type _enemyType;
-        protected Dictionary<int, Swordman.State> correctInput = new();
+        protected Dictionary<int, Swordman.State> correctInput;
 
         private float moveSpeed;
         protected int MAX_HEALTH;
@@ -77,7 +77,6 @@ namespace SpeedMode
             Move();
         }
 
-
         private void Move()
         {
             if (isStopped)
@@ -94,17 +93,32 @@ namespace SpeedMode
                 transform.position = Vector3.MoveTowards(transform.position, moveTargetPosition, moveSpeed * Time.deltaTime);
         }
 
-        public bool TakeDamage(int damage = 1)
-        {
-            CurrentHealth -= damage;
 
-            if (CurrentHealth == 0)
+        public bool Battle(Swordman.State playerInput, out bool isEnemyDead)
+        {
+            if (playerInput == CorrectInput)
             {
-                Die();
+                CurrentHealth -= 1;
+
+                if (CurrentHealth == 0)
+                {
+                    Die();
+                    isEnemyDead = true;
+                }
+                else
+                {
+                    // 피해를 입고 체력이 남았을 경우 처리가 필요하다면 여기에
+                    isEnemyDead = false;
+                }
+
                 return true;
             }
-
-            return false;
+            else
+            {
+                RunAway();
+                isEnemyDead = false;
+                return false;
+            }
         }
 
         public int HitBySkill()
@@ -117,9 +131,13 @@ namespace SpeedMode
             return damage;
         }
 
-        private void Die()
+        protected virtual void Die()
         {
-            SoundManager.PlaySFX(SFX.Swordman.AttackHit);
+            objectPool.ReturnEnemy(this);
+        }
+
+        protected virtual void RunAway()
+        {
             objectPool.ReturnEnemy(this);
         }
     }

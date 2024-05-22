@@ -133,11 +133,9 @@ namespace SpeedMode
                 yield return null;
 
             effectController.PlaySlashEffect();
-            SoundManager.PlaySFX(SFX.Swordman.Slash);
 
-            // Enemy로 이동
             if (isEnemyInRange)
-                ParticleManager.CreateHitParticle();
+                effectController.PlaySlashHitEffect();
 
             while (WaitUntilFrame(5, animationLength))
                 yield return null;
@@ -158,11 +156,9 @@ namespace SpeedMode
                 yield return null;
 
             effectController.PlayPierceEffect();
-            SoundManager.PlaySFX(SFX.Swordman.Slash);
 
-            // Enemy로 이동
             if (isEnemyInRange)
-                ParticleManager.CreateRedEnemyHitParticle();
+                effectController.PlayPierceHitEffect();
 
             while (WaitUntilFrame(5, animationLength))
                 yield return null;
@@ -184,7 +180,7 @@ namespace SpeedMode
 
             if (isEnemyInRange)
             {
-                ParticleManager.CreateDefenseParticle();
+                effectController.PlayGuardEffect();
                 SoundManager.PlaySFX(SFX.Swordman.Guard);
             }
 

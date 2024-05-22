@@ -9,8 +9,12 @@ namespace SpeedMode
 
             EnemyType = Type.SpearGoblin;
             MAX_HEALTH = 2;
-            correctInput.Add(2, Swordman.State.Guard);
-            correctInput.Add(1, Swordman.State.Attack);
+
+            correctInput = new()
+            {
+                {2, Swordman.State.Guard},
+                {1, Swordman.State.Attack}
+            };
         }
     }
 }

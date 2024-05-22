@@ -94,7 +94,8 @@ namespace SpeedMode
 
         private void HandleBattleEnemyEvent(BattleReport battleReport)
         {
-            if (battleReport.isEnemyDead)
+            // 적이 죽었거나 입력 실패인 경우
+            if (battleReport.isEnemyDead || battleReport.IsInputIncorrect())
             {
                 RemoveEnemy();
                 RemainingEnemyNumber -= 1;
