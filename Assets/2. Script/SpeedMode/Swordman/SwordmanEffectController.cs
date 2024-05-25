@@ -9,10 +9,10 @@ namespace SpeedMode
         [Header("Effect")]
         [SerializeField] private AttackSlashEffect slashEffect;
         [SerializeField] private AttackSlashEffect pierceEffect;
-        [SerializeField] private ParticleSystem slashHitParticle;
-        [SerializeField] private ParticleSystem pierceHitParticle;
-        [SerializeField] private ParticleSystem guardParticle;
-        [SerializeField] private ParticleSystem healthLossParticle;
+        [SerializeField] private ParticleEffect slashHitParticle;
+        [SerializeField] private ParticleEffect pierceHitParticle;
+        [SerializeField] private ParticleEffect guardParticle;
+        [SerializeField] private ParticleEffect healthLossParticle;
 
         [Header("Skill Effect Prefab")]
         [SerializeField] private SkillSlashEffect skillSlashEffectPrefab;
@@ -37,25 +37,21 @@ namespace SpeedMode
         public void PlaySlashEffect()
         {
             slashEffect.Play(effectColor);
-            SoundManager.PlaySFX(SFX.Swordman.Slash);
         }
 
         public void PlayPierceEffect()
         {
             pierceEffect.Play(effectColor);
-            SoundManager.PlaySFX(SFX.Swordman.Slash);
         }
 
         public void PlaySlashHitEffect()
         {
             slashHitParticle.Play();
-            SoundManager.PlaySFX(SFX.Swordman.AttackHit);
         }
 
         public void PlayPierceHitEffect()
         {
             pierceHitParticle.Play();
-            SoundManager.PlaySFX(SFX.Swordman.AttackHit);
         }
 
         public void PlayGuardEffect()
@@ -66,14 +62,12 @@ namespace SpeedMode
         public void PlayHealthLossEffect()
         {
             healthLossParticle.Play();
-            SoundManager.PlaySFX(SFX.Game.HealthLoss);
         }
 
         public void PlaySkillEffect(Vector3 position)
         {
             position.z = transform.position.z;
             skillSlashEffectPool.GetObject().Play(position, effectColor);
-            SoundManager.PlaySFX(SFX.Swordman.Slash);
         }
     }
 }

@@ -179,10 +179,7 @@ namespace SpeedMode
                 yield return null;
 
             if (isEnemyInRange)
-            {
                 effectController.PlayGuardEffect();
-                SoundManager.PlaySFX(SFX.Swordman.Guard);
-            }
 
             CanComboInput = true;
 
@@ -198,9 +195,7 @@ namespace SpeedMode
         {
             const int animationLength = 60;
 
-            yield return null;
-
-            while (animator.IsInTransition(0))
+            while (!IsAnimation("Skill"))
                 yield return null;
 
             while (WaitUntilFrame(33, animationLength))
@@ -216,9 +211,7 @@ namespace SpeedMode
 
         private IEnumerator GroggyAnimation()
         {
-            yield return null;
-
-            while (animator.IsInTransition(0))
+            while (!IsAnimation("Groggy"))
                 yield return null;
 
             while (IsAnimation("Groggy") && !animator.IsInTransition(0))

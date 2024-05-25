@@ -4,9 +4,17 @@ using UnityEngine;
 
 namespace SpeedMode
 {
-    public class AttackSlashEffect : SlashEffect
+    public class SlashEffect : AnimationEffect
     {
-        public void Play(Color effectColor = Color.Red)
+        public enum Color
+        {
+            Red,
+            Green,
+            Blue,
+            Purple
+        }
+
+        protected void PlaySlashAnimation(Color effectColor)
         {
             if (effectColor == Color.Red)
                 animator.Play("Red_Slash");
