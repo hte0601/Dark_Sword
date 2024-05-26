@@ -28,7 +28,7 @@ namespace SpeedMode
             killCounter.OnKillCountValueChanged += UpdateKillCountText;
         }
 
-        private void HandleGameOverEvent() => gameObject.SetActive(false);
+        private void HandleGameOverEvent(bool isGameClear) => gameObject.SetActive(false);
 
         private void HandleRestartGameEvent() => gameObject.SetActive(true);
 

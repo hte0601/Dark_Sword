@@ -7,7 +7,8 @@ namespace SpeedMode
 {
     public class Enemy : MonoBehaviourExt
     {
-        [Flags] public enum Type
+        [Flags]
+        public enum Type
         {
             None = 0,
 
@@ -136,9 +137,6 @@ namespace SpeedMode
             objectPool.ReturnEnemy(this);
         }
 
-        protected virtual void RunAway()
-        {
-            objectPool.ReturnEnemy(this);
-        }
+        protected virtual void RunAway() { }
     }
 }

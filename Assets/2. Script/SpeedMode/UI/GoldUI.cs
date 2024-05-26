@@ -15,7 +15,7 @@ namespace SpeedMode
             gameObject.SetActive(false);
         }
 
-        private void HandleGameOverEvent() => gameObject.SetActive(true);
+        private void HandleGameOverEvent(bool isGameClear) => gameObject.SetActive(true);
 
         private void HandleRestartGameEvent() => gameObject.SetActive(false);
     }

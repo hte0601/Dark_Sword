@@ -7,12 +7,14 @@ namespace SpeedMode
 {
     public class GameResultBoardUI : MonoBehaviour
     {
+        [SerializeField] private Text gameResultText;
         [SerializeField] private Text scoreText;
         [SerializeField] private Text bestScoreText;
         [SerializeField] private Text earnedGoldText;
 
-        public void Show(int Score, int BestScore, int EarnedGold)
+        public void Show(bool isGameClear, int Score, int BestScore, int EarnedGold)
         {
+            gameResultText.text = isGameClear ? "Game Clear" : "Game Over";
             scoreText.text = Score.ToString();
             bestScoreText.text = BestScore.ToString();
             earnedGoldText.text = string.Format("+ {0}", EarnedGold);

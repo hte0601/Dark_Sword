@@ -45,7 +45,7 @@ namespace SpeedMode
         }
 
 
-        private void HandleGameOverEvent()
+        private void HandleGameOverEvent(bool isGameClear)
         {
             // 통계 데이터 수정 및 저장 구현 필요
         }

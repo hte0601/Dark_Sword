@@ -6,7 +6,7 @@ using System;
 
 namespace SpeedMode
 {
-    public class GameManager : MonoBehaviour
+    public class GameManager : MonoBehaviourExt
     {
         public static GameManager instance;
 
@@ -14,7 +14,7 @@ namespace SpeedMode
         public event Action<int> StartWaveEvent;
         public event Action<int> EndWaveEvent;
 
-        public event Action GameOverEvent;
+        public event Action<bool> GameOverEvent;
         public event Action RestartGameEvent;
 
         public event Action<float> OnTimerValueChanged;
@@ -26,7 +26,7 @@ namespace SpeedMode
         private Swordman swordman;
         private KillCounter killCounter;
         private PlayData playdata;
-        private Wave currentWave;
+        private Wave currentWaveData;
 
         private float _timer;
         private bool isTimerWaitingInput = true;
@@ -126,22 +126,34 @@ namespace SpeedMode
             OnScoreValueChanged -= OnBestScoreBroken;
             OnScoreValueChanged += OnBestScoreBroken;
 
-            StartCoroutine(WaitAndInvoke(1f, RaiseReadyWaveEvent, 1));
+            DelayInvoke(1f, RaiseReadyWaveEvent, 1);
+        }
+
+        protected virtual bool LoadWaveData(int wave, out Wave waveData)
+        {
+            return ModeData.WaveData.waves.TryGetValue(wave, out waveData);
         }
 
 
         private void RaiseReadyWaveEvent(int wave)
         {
-            Debug.Log(string.Format("{0}웨이브 준비", wave));
-            currentWave = ModeData.WaveData.waves[wave];
+            if (LoadWaveData(wave, out currentWaveData))
+            {
+                Debug.Log(string.Format("{0}웨이브 준비", wave));
 
-            ReadyWaveEvent?.Invoke(currentWave);
-            StartCoroutine(WaitAndInvoke(1f, RaiseStartWaveEvent, wave));
+                ReadyWaveEvent?.Invoke(currentWaveData);
+                DelayInvoke(1f, RaiseStartWaveEvent, wave);
+            }
+            else
+            {
+                RaiseGameOverEvent(true);
+            }
         }
 
         private void RaiseStartWaveEvent(int wave)
         {
             Debug.Log(string.Format("{0}웨이브 시작", wave));
+
             isTimerStopped = false;
             isTimerWaitingInput = true;
             StartWaveEvent?.Invoke(wave);
@@ -151,14 +163,15 @@ namespace SpeedMode
         {
             // 코루틴으로 실행을 잠깐 지연시켜야 함
             Debug.Log(string.Format("{0}웨이브 종료", wave));
+
             isTimerStopped = true;
             StartCoroutine(RestoreTimer());
 
             EndWaveEvent?.Invoke(wave);
-            StartCoroutine(WaitAndInvoke(1f, RaiseReadyWaveEvent, wave + 1));
+            DelayInvoke(1f, RaiseReadyWaveEvent, wave + 1);
         }
 
-        private void RaiseGameOverEvent()
+        private void RaiseGameOverEvent(bool isGameClear)
         {
             SoundManager.StopBGM();
 
@@ -170,8 +183,8 @@ namespace SpeedMode
 
             GameSystem.CurrencyManager.IncreaseGold(earnedGold);
 
-            GameOverEvent?.Invoke();
-            gameResultBoard.Show(CurrentScore, BestScore, earnedGold);
+            GameOverEvent?.Invoke(isGameClear);
+            gameResultBoard.Show(isGameClear, CurrentScore, BestScore, earnedGold);
         }
 
         // 버튼 이벤트에 연결됨
@@ -179,8 +192,8 @@ namespace SpeedMode
         {
             gameResultBoard.Hide();
 
-            SoundManager.PlayBGM();
             Initialize();
+            SoundManager.PlayBGM();
 
             RestartGameEvent?.Invoke();
         }
@@ -227,7 +240,7 @@ namespace SpeedMode
             else if (result == BattleReport.Result.GameOver)
             {
                 isTimerStopped = true;
-                RaiseGameOverEvent();
+                RaiseGameOverEvent(false);
             }
             // else if (result == BattleReport.Result.SkillAutoCast)
             // {
@@ -254,7 +267,7 @@ namespace SpeedMode
                     yield return null;
                 }
 
-                Timer -= currentWave.TIMER_SPEED * Time.deltaTime;
+                Timer -= currentWaveData.TIMER_SPEED * Time.deltaTime;
 
                 if (Timer == 0)
                     OnSwordmanTakeDamage(swordman.TakeDamage());
@@ -272,13 +285,6 @@ namespace SpeedMode
                 Timer += ModeData.TimerData.MAX_TIME * Time.deltaTime;
                 yield return null;
             }
-        }
-
-        private IEnumerator WaitAndInvoke<T>(float waitSeconds, Action<T> function, T arg)
-        {
-            yield return new WaitForSeconds(waitSeconds);
-
-            function.Invoke(arg);
         }
 
         // 버튼 이벤트에 연결됨
