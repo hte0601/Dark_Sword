@@ -6,45 +6,36 @@ namespace SpeedMode
 {
     public class Wave
     {
-        public readonly int WAVE;
-        public readonly float TIMER_SPEED;
+        public readonly int wave;
+        public readonly float timerSpeed;
 
-        public readonly int ENEMY_NUMBER;
-        private readonly float SWORD_GOBLIN_RATE;
-        private readonly float FIRE_GOBLIN_RATE;
-        private readonly float ELITE_GOBLIN_RATE;
+        public readonly int enemyNumber;
+        public readonly Dictionary<Enemy.Type, float> enemyRateDict;
+        public readonly float enemyRateSum;
 
-        private readonly float GOBLIN_RATE_SUM;
+        public readonly float continuity;
 
-        public Wave(int wave, float timerSpeed, int enemyNumber, float swordGoblinRate, float fireGoblinRate, float eliteGoblinRate)
+
+        public Wave(
+            int wave, float timerSpeed, int enemyNumber,
+            float swordGoblinRate, float fireGoblinRate, float eliteGoblinRate,
+            float continuity = 0f)
         {
-            WAVE = wave;
-            TIMER_SPEED = timerSpeed;
+            this.wave = wave;
+            this.timerSpeed = timerSpeed;
 
-            ENEMY_NUMBER = enemyNumber;
-            SWORD_GOBLIN_RATE = swordGoblinRate;
-            FIRE_GOBLIN_RATE = fireGoblinRate;
-            ELITE_GOBLIN_RATE = eliteGoblinRate;
+            this.enemyNumber = enemyNumber;
 
-            GOBLIN_RATE_SUM = SWORD_GOBLIN_RATE + FIRE_GOBLIN_RATE + ELITE_GOBLIN_RATE;
-        }
-
-        public Enemy.Type RandomEnemy()
-        {
-            float random = Random.Range(0, GOBLIN_RATE_SUM);
-
-            if (random < SWORD_GOBLIN_RATE)
+            enemyRateDict = new()
             {
-                return Enemy.Type.SwordGoblin;
-            }
-            random -= SWORD_GOBLIN_RATE;
+                {Enemy.Type.SwordGoblin, swordGoblinRate},
+                {Enemy.Type.FireGoblin, fireGoblinRate},
+                {Enemy.Type.EliteEnemy, eliteGoblinRate}
+            };
 
-            if (random < FIRE_GOBLIN_RATE)
-            {
-                return Enemy.Type.FireGoblin;
-            }
+            enemyRateSum = swordGoblinRate + fireGoblinRate + eliteGoblinRate;
 
-            return Enemy.Type.EliteEnemy;
+            this.continuity = continuity;
         }
     }
 }

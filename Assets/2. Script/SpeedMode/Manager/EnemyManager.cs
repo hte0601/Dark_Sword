@@ -14,6 +14,7 @@ namespace SpeedMode
         [SerializeField] private EnemyObjectPool enemyObjectPool;
 
         private readonly List<Enemy> enemyList = new();
+        private ModeRule modeRule;
         private Wave currentWave;
         private Enemy.Type currentEliteEnemy;
 
@@ -40,17 +41,20 @@ namespace SpeedMode
 
         private void Start()
         {
-            GameManager.instance.ReadyWaveEvent += HandleReadyWaveEvent;
-            GameManager.instance.StartWaveEvent += HandleStartWaveEvent;
-            GameManager.instance.RestartGameEvent += HandleRestartGameEvent;
+            GameManager gameManager = GameManager.instance;
+
+            modeRule = GameMode.instance.modeRule;
+            gameManager.ReadyWaveEvent += HandleReadyWaveEvent;
+            gameManager.StartWaveEvent += HandleStartWaveEvent;
+            gameManager.RestartGameEvent += HandleRestartGameEvent;
             Swordman.instance.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
 
         private void HandleReadyWaveEvent(Wave wave)
         {
             currentWave = wave;
-            createEnemyNumber = currentWave.ENEMY_NUMBER;
-            RemainingEnemyNumber = currentWave.ENEMY_NUMBER;
+            createEnemyNumber = currentWave.enemyNumber;
+            RemainingEnemyNumber = currentWave.enemyNumber;
         }
 
         private void HandleStartWaveEvent(int wave)
@@ -109,7 +113,7 @@ namespace SpeedMode
 
             createEnemyNumber -= 1;
 
-            Enemy.Type enemyType = currentWave.RandomEnemy();
+            Enemy.Type enemyType = modeRule.RandomEnemy();
 
             if (enemyType == Enemy.Type.EliteEnemy)
                 enemyType = currentEliteEnemy;
@@ -143,7 +147,7 @@ namespace SpeedMode
             // 웨이브의 마지막 적이었다면
             else if (createEnemyNumber == 0)
             {
-                GameManager.instance.RaiseEndWaveEvent(currentWave.WAVE);
+                GameManager.instance.RaiseEndWaveEvent(currentWave.wave);
                 return;
             }
 

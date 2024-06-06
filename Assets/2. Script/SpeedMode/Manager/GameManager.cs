@@ -26,7 +26,8 @@ namespace SpeedMode
         private Swordman swordman;
         private KillCounter killCounter;
         private PlayData playdata;
-        private Wave currentWaveData;
+        private ModeRule modeRule;
+        private Wave currentWave;
 
         private float _timer;
         private bool isTimerWaitingInput = true;
@@ -104,6 +105,7 @@ namespace SpeedMode
 
             swordman = Swordman.instance;
             killCounter = KillCounter.instance;
+            modeRule = GameMode.instance.modeRule;
 
             swordman.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
@@ -129,19 +131,14 @@ namespace SpeedMode
             DelayInvoke(1f, RaiseReadyWaveEvent, 1);
         }
 
-        protected virtual bool LoadWaveData(int wave, out Wave waveData)
-        {
-            return ModeData.WaveData.waves.TryGetValue(wave, out waveData);
-        }
-
 
         private void RaiseReadyWaveEvent(int wave)
         {
-            if (LoadWaveData(wave, out currentWaveData))
+            if (modeRule.LoadWaveData(wave, out currentWave))
             {
                 Debug.Log(string.Format("{0}웨이브 준비", wave));
 
-                ReadyWaveEvent?.Invoke(currentWaveData);
+                ReadyWaveEvent?.Invoke(currentWave);
                 DelayInvoke(1f, RaiseStartWaveEvent, wave);
             }
             else
@@ -267,7 +264,7 @@ namespace SpeedMode
                     yield return null;
                 }
 
-                Timer -= currentWaveData.TIMER_SPEED * Time.deltaTime;
+                Timer -= currentWave.timerSpeed * Time.deltaTime;
 
                 if (Timer == 0)
                     OnSwordmanTakeDamage(swordman.TakeDamage());
