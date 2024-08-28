@@ -9,22 +9,23 @@ namespace SpeedMode
         private static EnemyObjectPool enemyObjectPool;
         private static Transform objectPoolTransform;
 
-        [SerializeField] private SwordGoblin swordGoblin;
-        [SerializeField] private FireGoblin fireGoblin;
-        [SerializeField] private SpearGoblin spearGoblin;
+        [SerializeField] private SwordGoblin swordGoblinPrefab;
+        [SerializeField] private FireGoblin fireGoblinPrefab;
+        [SerializeField] private SpearGoblin spearGoblinPrefab;
 
-        [SerializeField] private GameObject arrow;
+        // [SerializeField] private GameObject arrow;
 
         private Dictionary<Enemy.Type, EnemyPool> enemyDict = new();
+
 
         private void Awake()
         {
             enemyObjectPool = this;
             objectPoolTransform = transform;
 
-            enemyDict.Add(Enemy.Type.SwordGoblin, new EnemyPool(swordGoblin, 16));
-            enemyDict.Add(Enemy.Type.FireGoblin, new EnemyPool(fireGoblin, 16));
-            enemyDict.Add(Enemy.Type.SpearGoblin, new EnemyPool(spearGoblin, 16));
+            enemyDict.Add(Enemy.Type.SwordGoblin, new EnemyPool(swordGoblinPrefab, 16));
+            enemyDict.Add(Enemy.Type.FireGoblin, new EnemyPool(fireGoblinPrefab, 16));
+            enemyDict.Add(Enemy.Type.SpearGoblin, new EnemyPool(spearGoblinPrefab, 16));
         }
 
         public Enemy GetEnemy(Enemy.Type enemyType, bool isObjectActive = true)
@@ -42,14 +43,12 @@ namespace SpeedMode
         {
             private readonly Enemy enemyPrefab;
             private readonly Queue<Enemy> enemyQueue = new();
-            private readonly int PreCreateNumber;
 
             public EnemyPool(Enemy enemyPrefab, int preCreateNumber)
             {
                 this.enemyPrefab = enemyPrefab;
-                this.PreCreateNumber = preCreateNumber;
 
-                for (int i = 0; i < PreCreateNumber; i++)
+                for (int i = 0; i < preCreateNumber; i++)
                 {
                     enemyQueue.Enqueue(CreateEnemy());
                 }

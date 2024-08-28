@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -12659,13 +12658,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6e835d2ab1c3f147bd92071bf418ebf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swordGoblin: {fileID: 2729697488982929349, guid: 4ef76bdec78badd4ea31efe779be88fd,
+  swordGoblinPrefab: {fileID: 2729697488982929349, guid: 4ef76bdec78badd4ea31efe779be88fd,
     type: 3}
-  fireGoblin: {fileID: 1713176084668379879, guid: ef0cea3198b585541a43c04d95004cf3,
+  fireGoblinPrefab: {fileID: 1713176084668379879, guid: ef0cea3198b585541a43c04d95004cf3,
     type: 3}
-  spearGoblin: {fileID: 2153889790495122248, guid: d128b58df92d9be4884284539fa6a0c7,
+  spearGoblinPrefab: {fileID: 2153889790495122248, guid: d128b58df92d9be4884284539fa6a0c7,
     type: 3}
-  arrow: {fileID: 0}
 --- !u!1 &1782958834
 GameObject:
   m_ObjectHideFlags: 0
