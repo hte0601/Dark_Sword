@@ -38,7 +38,6 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -311,7 +310,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9d155774f1cd844f9978af0b323fe107, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6762e25a13373cf43a96d0f6b976f797, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2290,7 +2289,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9d155774f1cd844f9978af0b323fe107, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6762e25a13373cf43a96d0f6b976f797, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4946,7 +4945,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1314531743}
   - component: {fileID: 1336048471}
-  - component: {fileID: 1335794791}
   m_Layer: 5
   m_Name: BGMVolumeSlider
   m_TagString: Untagged
@@ -4954,27 +4952,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &1335794791
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1326374129}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 26429f1bb456f4ece9afe71701e3d4c7, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1336019329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5029,7 +5006,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6d5372022c03841b58c2b0d1d962d851, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0cbd24bb5431e4842b3bd9d97b932070, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7105,7 +7082,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1917328500}
   - component: {fileID: 1940934332}
-  - component: {fileID: 1938598284}
   m_Layer: 5
   m_Name: SFXVolumeSlider
   m_TagString: Untagged
@@ -7149,27 +7125,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!95 &1938598284
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931274522}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 26429f1bb456f4ece9afe71701e3d4c7, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &1940928534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7190,7 +7145,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6d5372022c03841b58c2b0d1d962d851, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0cbd24bb5431e4842b3bd9d97b932070, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7254,7 +7209,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9d155774f1cd844f9978af0b323fe107, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6762e25a13373cf43a96d0f6b976f797, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8151,7 +8106,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 6d5372022c03841b58c2b0d1d962d851, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0cbd24bb5431e4842b3bd9d97b932070, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8242,27 +8197,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!95 &6254071037163705913
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6254071037171062447}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 26429f1bb456f4ece9afe71701e3d4c7, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6254071037170814487
 GameObject:
   m_ObjectHideFlags: 0
@@ -8359,7 +8293,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6254071037193298881}
   - component: {fileID: 6254071037161337097}
-  - component: {fileID: 6254071037163705913}
   m_Layer: 5
   m_Name: MasterVolumeSlider
   m_TagString: Untagged
