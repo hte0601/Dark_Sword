@@ -7,15 +7,17 @@ namespace MainMenu
 {
     public class GameSettingBoardUI : MonoBehaviour
     {
-        private GameSystem.VolumeManager volumeManager;
-
         [Header("Volume Slider")]
         [SerializeField] private Slider MasterVolumeSlider;
         [SerializeField] private Slider BGMVolumeSlider;
         [SerializeField] private Slider SFXVolumeSlider;
 
-        private void Awake()
+        private BoardUIManager boardUIManager;
+        private GameSystem.VolumeManager volumeManager;
+
+        private void Start()
         {
+            boardUIManager = BoardUIManager.instance;
             volumeManager = GameSystem.VolumeManager.instance;
 
             MasterVolumeSlider.value = volumeManager.MasterVolume;
@@ -37,6 +39,7 @@ namespace MainMenu
         {
             volumeManager.OnMuteStateChanged -= HandleMuteEvent;
         }
+
 
         private void ChangeMasterVolume(float value)
         {
@@ -69,9 +72,9 @@ namespace MainMenu
             }
         }
 
-        public void OnExitButtonPointerDown()
+        public void OnExitButtonClick()
         {
-            BoardUIManager.instance.CloseBoardUI(gameObject);
+            boardUIManager.CloseBoardUI(gameObject);
         }
     }
 }

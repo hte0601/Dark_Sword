@@ -6,71 +6,90 @@ namespace MainMenu
 {
     public enum BoardUI
     {
-        None,
+        Title,
         Info,
         GameSetting,
-        Battle
+        SpeedMode
     }
 
     public class BoardUIManager : MonoBehaviour
     {
         public static BoardUIManager instance;
+
+        [SerializeField] private GameObject titleBoard;
         [SerializeField] private GameObject infoBoard;
         [SerializeField] private GameObject gameSettingBoard;
-        [SerializeField] private GameObject battleBoard;
-        
+        [SerializeField] private GameObject speedModeBoard;
+
         private Dictionary<BoardUI, GameObject> boardUIDict = new();
-        private BoardUI currentBoard = BoardUI.None;
+        private BoardUI currentBoard;
 
         private void Awake()
         {
             instance = this;
 
+            boardUIDict.Add(BoardUI.Title, titleBoard);
             boardUIDict.Add(BoardUI.Info, infoBoard);
             boardUIDict.Add(BoardUI.GameSetting, gameSettingBoard);
-            boardUIDict.Add(BoardUI.Battle, battleBoard);
+            boardUIDict.Add(BoardUI.SpeedMode, speedModeBoard);
+
+            currentBoard = BoardUI.Title;
+
+            foreach (var item in boardUIDict)
+            {
+                if (item.Key == BoardUI.Title)
+                    item.Value.SetActive(true);
+                else
+                    item.Value.SetActive(false);
+            }
         }
 
         public void OpenBoardUI(BoardUI board, bool isToggle = false)
         {
-            if (currentBoard == BoardUI.None)
+            if (currentBoard == BoardUI.Title)
             {
-                currentBoard = board;
+                boardUIDict[BoardUI.Title].SetActive(false);
                 boardUIDict[board].SetActive(true);
+
+                currentBoard = board;
             }
             else if (currentBoard == board)
             {
                 if (!isToggle) return;
 
-                currentBoard = BoardUI.None;
                 boardUIDict[board].SetActive(false);
+                boardUIDict[BoardUI.Title].SetActive(true);
+
+                currentBoard = BoardUI.Title;
             }
             else
             {
                 boardUIDict[currentBoard].SetActive(false);
-                currentBoard = board;
                 boardUIDict[board].SetActive(true);
+
+                currentBoard = board;
             }
         }
 
-        public void CloseBoardUI(BoardUI board)
+        public void CloseBoardUI(GameObject boardObj)
         {
-            if (currentBoard == board)
-            {
-                currentBoard = BoardUI.None;
-            }
+            boardObj.SetActive(false);
 
-            boardUIDict[board].SetActive(false);
+            if (boardUIDict[currentBoard] == boardObj)
+            {
+                boardUIDict[BoardUI.Title].SetActive(true);
+                currentBoard = BoardUI.Title;
+            }
         }
 
-        public void CloseBoardUI(GameObject board)
-        {
-            if (boardUIDict[currentBoard] == board)
-            {
-                currentBoard = BoardUI.None;
-            }
+        // public void CloseBoardUI(BoardUI board)
+        // {
+        //     if (currentBoard == board)
+        //     {
+        //         currentBoard = BoardUI.None;
+        //     }
 
-            board.SetActive(false);
-        }
+        //     boardUIDict[board].SetActive(false);
+        // }
     }
 }

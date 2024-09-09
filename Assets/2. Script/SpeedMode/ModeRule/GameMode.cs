@@ -14,9 +14,8 @@ namespace SpeedMode
             Infinite,
 
             // Challenge
-            C_Harder,
-            C_Vanilla,
-            C_Discontinuous,
+            C_OneLife,
+            C_Faster,
         }
 
 

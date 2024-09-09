@@ -14,7 +14,7 @@ namespace MainMenu
 
         public void OnBattleModeButtonPointerDown()
         {
-            BoardUIManager.instance.OpenBoardUI(BoardUI.Battle, true);
+            // BoardUIManager.instance.OpenBoardUI(BoardUI.Battle, true);
         }
     }
 }
