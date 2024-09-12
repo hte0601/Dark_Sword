@@ -10,8 +10,10 @@ namespace SpeedMode
 
         private void Start()
         {
-            UpdateSwordmanHealthUI(Swordman.instance.CurrentHealth);
-            Swordman.instance.OnCurrentHealthChanged += UpdateSwordmanHealthUI;
+            Swordman swordman = Swordman.instance;
+
+            UpdateSwordmanHealthUI(swordman.CurrentHealth);
+            swordman.OnCurrentHealthValueChanged += UpdateSwordmanHealthUI;
         }
 
         private void UpdateSwordmanHealthUI(int swordmanHealth)

@@ -45,17 +45,18 @@ namespace SpeedMode
         public static Swordman instance;
 
         public event Action<BattleReport> BattleEnemyEvent;
-        public event Action<int> OnCurrentHealthChanged;
+        public event Action<int> OnCurrentHealthValueChanged;
+        public event Action<int> OnSkillGaugeValueChanged;
 
         private EnemyManager enemyManager;
-        private UpgradeData upgrades;
+        private SwordmanStatus status;
         private SwordmanAnimationController animationController;
         private SwordmanEffectController effectController;
 
         private float battleRange;
 
         private int _currentHealth = 0;
-        private int skillGauge;
+        private int _skillGauge = 0;
 
 
         public int CurrentHealth
@@ -68,7 +69,21 @@ namespace SpeedMode
                 else
                     _currentHealth = value;
 
-                OnCurrentHealthChanged?.Invoke(_currentHealth);
+                OnCurrentHealthValueChanged?.Invoke(_currentHealth);
+            }
+        }
+
+        public int SkillGauge
+        {
+            get => _skillGauge;
+            private set
+            {
+                if (value > status.maxSkillGauge)
+                    return;
+                
+                _skillGauge = value;
+
+                OnSkillGaugeValueChanged?.Invoke(_skillGauge);
             }
         }
 
@@ -79,14 +94,13 @@ namespace SpeedMode
             animationController = transform.Find("model").GetComponent<SwordmanAnimationController>();
             effectController = transform.Find("Effect").GetComponent<SwordmanEffectController>();
 
-            upgrades = SaveDataManager.LoadData<UpgradeData>();
-
             battleRange = transform.position.x + ModeData.SwordmanData.MAX_BATTLE_RANGE;
         }
 
         private void Start()
         {
             enemyManager = EnemyManager.instance;
+            status = GameMode.instance.modeRule.LoadSwordmanStatus();
 
             GameManager.instance.RestartGameEvent += HandleRestartGameEvent;
 
@@ -107,7 +121,8 @@ namespace SpeedMode
 
         private void Initialize()
         {
-            CurrentHealth = upgrades.maxHealth;
+            CurrentHealth = status.maxHealth;
+            SkillGauge = 0;
 
             animationController.Initialize();
         }
@@ -161,7 +176,10 @@ namespace SpeedMode
                 }
                 else if (input == State.Skill)
                 {
-                    // 스킬이 준비가 안 됐다면 return
+                    if (SkillGauge != status.maxSkillGauge)
+                        return;
+                    
+                    SkillGauge = 0;
 
                     BattleReport SkillCastReport = new()
                     {
@@ -201,6 +219,8 @@ namespace SpeedMode
             // 입력 성공
             if (enemy.Battle(playerInput, out battleReport.isEnemyDead))
             {
+                SkillGauge += 1;
+
                 battleReport.result = BattleReport.Result.InputCorrect;
                 battleReport.damageDealt = 1;
 

@@ -46,6 +46,10 @@ namespace SpeedMode
             {
                 modeRule = new HardModeRule();
             }
+            else if (currentMode == Mode.C_OneLife)
+            {
+                modeRule = new C_OneLifeModeRule();
+            }
 #if UNITY_EDITOR
             else
             {

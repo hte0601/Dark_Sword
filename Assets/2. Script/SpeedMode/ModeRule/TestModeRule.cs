@@ -1,14 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 namespace SpeedMode
 {
     public class TestModeRule : ModeRule
     {
-        public TestModeRule()
+        public TestModeRule() : base()
         {
-            waveDict = new()
+            waveDataDict = new()
             {
                 {01, new Wave(01, 2.8f, 250, 0.52f, 0.42f, 0.06f)},
                 {02, new Wave(02, 3.0f, 250, 0.51f, 0.42f, 0.07f)},
