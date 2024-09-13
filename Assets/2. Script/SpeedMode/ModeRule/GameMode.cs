@@ -46,9 +46,17 @@ namespace SpeedMode
             {
                 modeRule = new HardModeRule();
             }
+            else if (currentMode == Mode.Infinite)
+            {
+                modeRule = new InfiniteModeRule();
+            }
             else if (currentMode == Mode.C_OneLife)
             {
                 modeRule = new C_OneLifeModeRule();
+            }
+            else if (currentMode == Mode.C_Faster)
+            {
+                modeRule = new C_FasterModeRule();
             }
 #if UNITY_EDITOR
             else

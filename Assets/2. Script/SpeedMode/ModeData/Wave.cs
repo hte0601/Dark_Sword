@@ -6,7 +6,7 @@ namespace SpeedMode
 {
     public class Wave
     {
-        public readonly int wave;
+        public int wave;  // 무한 모드를 위해 임시로 readonly 제거
         public readonly float timerSpeed;
 
         public readonly int enemyNumber;
