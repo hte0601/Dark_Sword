@@ -13,7 +13,7 @@ namespace SpeedMode
 
         [Header("Test Setting")]
         [SerializeField] private bool isTestMode = false;
-        [SerializeField] private GameMode.Mode gameMode = GameMode.Mode.Normal;
+        [SerializeField] private GameMode.Mode gameMode = GameMode.Mode.Test;
 
         [Header("Runtime Setting")]
         [SerializeField] private int frameRate = 60;

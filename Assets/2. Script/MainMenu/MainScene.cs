@@ -6,23 +6,7 @@ namespace MainMenu
 {
     public class MainScene : MonoBehaviour
     {
-        private void Awake()
-        {
-#if UNITY_ANDROID
-        Application.targetFrameRate = 60;
-#endif
-
-#if UNITY_EDITOR
-            Application.targetFrameRate = 75;
-#endif
-        }
-
-        void Update()
-        {
-            QuitGame();
-        }
-
-        void QuitGame()
+        private void Update()
         {
             if (Input.GetKey(KeyCode.Escape))
                 Application.Quit();

@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/1. Scene/Speed.unity
     guid: d2c05ebb4fde5004e8cd53b9e63d48c6
-  - enabled: 1
+  - enabled: 0
     path: Assets/1. Scene/Battle_1.unity
     guid: f2d6b6708a026b84f8b3f666668f3c8c
   m_configObjects: {}

@@ -28,6 +28,13 @@ namespace SpeedMode
             enemyDict.Add(Enemy.Type.SpearGoblin, new EnemyPool(spearGoblinPrefab, 16));
         }
 
+        private void OnDestroy()
+        {
+            enemyObjectPool = null;
+            objectPoolTransform = null;
+        }
+
+
         public Enemy GetEnemy(Enemy.Type enemyType, bool isObjectActive = true)
         {
             return enemyDict[enemyType].GetEnemy(isObjectActive);
