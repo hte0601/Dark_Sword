@@ -18,7 +18,7 @@ namespace SpeedMode
             // SkillAutoCast,
         }
 
-        public Enemy.Type enemyType;
+        public Enemy.Types enemyType;
         public Swordman.State? playerInput;
         public Result result;
         public int damageDealt;
@@ -183,7 +183,7 @@ namespace SpeedMode
 
                     BattleReport SkillCastReport = new()
                     {
-                        enemyType = Enemy.Type.None,
+                        enemyType = Enemy.Types.None,
                         playerInput = State.Skill,
                         result = BattleReport.Result.SkillCast,
                         damageDealt = 0,
@@ -224,7 +224,7 @@ namespace SpeedMode
                 battleReport.result = BattleReport.Result.InputCorrect;
                 battleReport.damageDealt = 1;
 
-                if (battleReport.enemyType == Enemy.Type.SpearGoblin)
+                if (battleReport.enemyType == Enemy.Types.SpearGoblin)
                     if (battleReport.playerInput == State.Guard && !battleReport.isEnemyDead)
                         animationController.canSpearGoblinCombo = true;
             }

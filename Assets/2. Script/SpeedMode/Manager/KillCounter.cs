@@ -12,7 +12,7 @@ namespace SpeedMode
 
         public event Action<int> OnKillCountValueChanged;
 
-        private readonly Dictionary<Enemy.Type, int> killCountDict = new();
+        private readonly Dictionary<Enemy.Types, int> killCountDict = new();
         private int _killCount = 0;
 
         public int KillCount
@@ -30,9 +30,9 @@ namespace SpeedMode
         {
             instance = this;
 
-            foreach (Enemy.Type enemyType in Enum.GetValues(typeof(Enemy.Type)))
+            foreach (Enemy.Types enemyType in Enum.GetValues(typeof(Enemy.Types)))
             {
-                if (enemyType != Enemy.Type.None)
+                if (enemyType != Enemy.Types.None)
                     killCountDict.Add(enemyType, 0);
             }
         }
@@ -67,11 +67,11 @@ namespace SpeedMode
             KillCount += 1;
             killCountDict[battleReport.enemyType] += 1;
 
-            if (Enemy.Type.CommonEnemy.HasFlag(battleReport.enemyType))
-                killCountDict[Enemy.Type.CommonEnemy] += 1;
+            if (Enemy.Types.CommonEnemy.HasFlag(battleReport.enemyType))
+                killCountDict[Enemy.Types.CommonEnemy] += 1;
 
-            if (Enemy.Type.EliteEnemy.HasFlag(battleReport.enemyType))
-                killCountDict[Enemy.Type.EliteEnemy] += 1;
+            if (Enemy.Types.EliteEnemy.HasFlag(battleReport.enemyType))
+                killCountDict[Enemy.Types.EliteEnemy] += 1;
         }
 
         private void ResetKillCount()
@@ -82,7 +82,7 @@ namespace SpeedMode
             }
         }
 
-        public int GetKillCount(Enemy.Type enemyType)
+        public int GetKillCount(Enemy.Types enemyType)
         {
             return killCountDict[enemyType];
         }

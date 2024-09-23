@@ -15,7 +15,7 @@ namespace SpeedMode
 
         // [SerializeField] private GameObject arrow;
 
-        private Dictionary<Enemy.Type, EnemyPool> enemyDict = new();
+        private Dictionary<Enemy.Types, EnemyPool> enemyDict = new();
 
 
         private void Awake()
@@ -23,9 +23,9 @@ namespace SpeedMode
             enemyObjectPool = this;
             objectPoolTransform = transform;
 
-            enemyDict.Add(Enemy.Type.SwordGoblin, new EnemyPool(swordGoblinPrefab, 16));
-            enemyDict.Add(Enemy.Type.FireGoblin, new EnemyPool(fireGoblinPrefab, 16));
-            enemyDict.Add(Enemy.Type.SpearGoblin, new EnemyPool(spearGoblinPrefab, 16));
+            enemyDict.Add(Enemy.Types.SwordGoblin, new EnemyPool(swordGoblinPrefab, 16));
+            enemyDict.Add(Enemy.Types.FireGoblin, new EnemyPool(fireGoblinPrefab, 16));
+            enemyDict.Add(Enemy.Types.SpearGoblin, new EnemyPool(spearGoblinPrefab, 16));
         }
 
         private void OnDestroy()
@@ -35,7 +35,7 @@ namespace SpeedMode
         }
 
 
-        public Enemy GetEnemy(Enemy.Type enemyType, bool isObjectActive = true)
+        public Enemy GetEnemy(Enemy.Types enemyType, bool isObjectActive = true)
         {
             return enemyDict[enemyType].GetEnemy(isObjectActive);
         }

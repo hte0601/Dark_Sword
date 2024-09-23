@@ -15,9 +15,6 @@ namespace SpeedMode
             infiniteWaveData.wave = wave;
             waveData = infiniteWaveData;
 
-            currentWaveData = waveData;
-            previousEnemy = Enemy.Type.None;
-
             return true;
         }
     }

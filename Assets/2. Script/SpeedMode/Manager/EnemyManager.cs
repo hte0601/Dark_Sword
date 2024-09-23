@@ -14,9 +14,9 @@ namespace SpeedMode
         [SerializeField] private EnemyObjectPool enemyObjectPool;
 
         private readonly List<Enemy> enemyList = new();
-        private ModeRule modeRule;
-        private Wave currentWave;
-        private Enemy.Type currentEliteEnemy;
+        private Wave currentWaveData;
+        private Enemy.Types currentEliteEnemy;
+        private Enemy.Types previousEnemy;
 
         private int createEnemyNumber;
         private int _remainingEnemyNumber = 0;
@@ -36,25 +36,26 @@ namespace SpeedMode
         {
             instance = this;
 
-            currentEliteEnemy = Enemy.Type.SpearGoblin;
+            currentEliteEnemy = Enemy.Types.SpearGoblin;
         }
 
         private void Start()
         {
             GameManager gameManager = GameManager.instance;
 
-            modeRule = GameMode.instance.modeRule;
             gameManager.ReadyWaveEvent += HandleReadyWaveEvent;
             gameManager.StartWaveEvent += HandleStartWaveEvent;
             gameManager.RestartGameEvent += HandleRestartGameEvent;
             Swordman.instance.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
 
-        private void HandleReadyWaveEvent(Wave wave)
+
+        private void HandleReadyWaveEvent(Wave waveData)
         {
-            currentWave = wave;
-            createEnemyNumber = currentWave.enemyNumber;
-            RemainingEnemyNumber = currentWave.enemyNumber;
+            currentWaveData = waveData;
+            createEnemyNumber = currentWaveData.enemyNumber;
+            RemainingEnemyNumber = currentWaveData.enemyNumber;
+            previousEnemy = Enemy.Types.None;
         }
 
         private void HandleStartWaveEvent(int wave)
@@ -66,8 +67,17 @@ namespace SpeedMode
         private void HandleRestartGameEvent()
         {
             ClearEnemy();
-            RemainingEnemyNumber = 0;
         }
+
+        private void HandleBattleEnemyEvent(BattleReport battleReport)
+        {
+            // 적이 죽었거나 적이 FireGoblin인 경우
+            if (battleReport.isEnemyDead || battleReport.enemyType == Enemy.Types.FireGoblin)
+            {
+                RemoveEnemy();
+            }
+        }
+
 
         public bool IsEnemyInRange(float battleRange)
         {
@@ -96,15 +106,6 @@ namespace SpeedMode
             return enemies;
         }
 
-        private void HandleBattleEnemyEvent(BattleReport battleReport)
-        {
-            // 적이 죽었거나 적이 FireGoblin인 경우
-            if (battleReport.isEnemyDead || battleReport.enemyType == Enemy.Type.FireGoblin)
-            {
-                RemoveEnemy();
-                RemainingEnemyNumber -= 1;
-            }
-        }
 
         private void CreateEnemy()
         {
@@ -113,9 +114,9 @@ namespace SpeedMode
 
             createEnemyNumber -= 1;
 
-            Enemy.Type enemyType = modeRule.RandomEnemy();
+            Enemy.Types enemyType = RandomEnemy();
 
-            if (enemyType == Enemy.Type.EliteEnemy)
+            if (enemyType == Enemy.Types.EliteEnemy)
                 enemyType = currentEliteEnemy;
 
             Enemy enemy = enemyObjectPool.GetEnemy(enemyType);
@@ -138,6 +139,7 @@ namespace SpeedMode
         private void RemoveEnemy()
         {
             enemyList.RemoveAt(0);
+            RemainingEnemyNumber -= 1;
 
             if (enemyList.Count > 0)
             {
@@ -147,7 +149,7 @@ namespace SpeedMode
             // 웨이브의 마지막 적이었다면
             else if (createEnemyNumber == 0)
             {
-                GameManager.instance.RaiseEndWaveEvent(currentWave.wave);
+                GameManager.instance.RaiseEndWaveEvent(currentWaveData.wave);
                 return;
             }
 
@@ -160,6 +162,56 @@ namespace SpeedMode
                 enemyObjectPool.ReturnEnemy(enemyList[i]);
 
             enemyList.Clear();
+            RemainingEnemyNumber = 0;
+        }
+
+
+        private Enemy.Types RandomEnemy()
+        {
+            if (Enemy.Types.CommonEnemy.HasFlag(previousEnemy) && previousEnemy != Enemy.Types.None)
+            {
+                // 연속성이 양수이고 확률이 발동한 경우
+                if (currentWaveData.continuity > Tool.Random.Value())
+                {
+                    return previousEnemy;
+                }
+                // 연속성이 음수이고 확률이 발동한 경우
+                else if (-currentWaveData.continuity > Tool.Random.Value())
+                {
+                    previousEnemy = ChooseRandomEnemy(previousEnemy);
+                    return previousEnemy;
+                }
+            }
+
+            previousEnemy = ChooseRandomEnemy();
+            return previousEnemy;
+        }
+
+        private Enemy.Types ChooseRandomEnemy(Enemy.Types exceptEnemyType = Enemy.Types.None)
+        {
+            float max = currentWaveData.enemyRateSum;
+
+            if (exceptEnemyType != Enemy.Types.None)
+                max -= currentWaveData.enemyRateDict[exceptEnemyType];
+
+            float randomValue = Tool.Random.Range(0f, max);
+
+            foreach (var item in currentWaveData.enemyRateDict)
+            {
+                if (item.Key == exceptEnemyType)
+                    continue;
+
+                if (randomValue < item.Value)
+                    return item.Key;
+
+                randomValue -= item.Value;
+            }
+
+#if UNITY_EDITOR
+            Debug.Log("RandomEnemyType() 확률 오류");
+#endif
+
+            return Enemy.Types.EliteEnemy;
         }
     }
 }

@@ -7,7 +7,7 @@ namespace SpeedMode
         {
             base.Awake();
 
-            EnemyType = Type.SwordGoblin;
+            EnemyType = Types.SwordGoblin;
             MAX_HEALTH = 1;
 
             correctInput = new()

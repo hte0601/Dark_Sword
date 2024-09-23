@@ -175,8 +175,8 @@ namespace SpeedMode
             if (BestScore < CurrentScore)
                 BestScore = CurrentScore;
 
-            int earnedGold = killCounter.GetKillCount(Enemy.Type.CommonEnemy) / 5
-                + killCounter.GetKillCount(Enemy.Type.EliteEnemy) / 2;
+            int earnedGold = killCounter.GetKillCount(Enemy.Types.CommonEnemy) / 5
+                + killCounter.GetKillCount(Enemy.Types.EliteEnemy) / 2;
 
             GameSystem.CurrencyManager.IncreaseGold(earnedGold);
 

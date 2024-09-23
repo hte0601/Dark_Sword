@@ -7,7 +7,7 @@ namespace SpeedMode
         {
             base.Awake();
 
-            EnemyType = Type.SpearGoblin;
+            EnemyType = Types.SpearGoblin;
             MAX_HEALTH = 2;
 
             correctInput = new()

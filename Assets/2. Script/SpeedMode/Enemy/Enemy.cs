@@ -8,7 +8,7 @@ namespace SpeedMode
     public class Enemy : MonoBehaviourExt
     {
         [Flags]
-        public enum Type
+        public enum Types
         {
             None = 0,
 
@@ -25,7 +25,7 @@ namespace SpeedMode
         [SerializeField] protected GameObject model;
         [SerializeField] private Animator animator;
 
-        private Type _enemyType;
+        private Types _enemyType;
         protected Dictionary<int, Swordman.State> correctInput;
 
         private float moveSpeed;
@@ -41,7 +41,7 @@ namespace SpeedMode
             get => correctInput[CurrentHealth];
         }
 
-        public Type EnemyType
+        public Types EnemyType
         {
             get => _enemyType;
             protected set => _enemyType = value;

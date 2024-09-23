@@ -10,7 +10,7 @@ namespace SpeedMode
         public readonly float timerSpeed;
 
         public readonly int enemyNumber;
-        public readonly Dictionary<Enemy.Type, float> enemyRateDict;
+        public readonly Dictionary<Enemy.Types, float> enemyRateDict;
         public readonly float enemyRateSum;
 
         public readonly float continuity;
@@ -28,9 +28,9 @@ namespace SpeedMode
 
             enemyRateDict = new()
             {
-                {Enemy.Type.SwordGoblin, swordGoblinRate},
-                {Enemy.Type.FireGoblin, fireGoblinRate},
-                {Enemy.Type.EliteEnemy, eliteGoblinRate}
+                {Enemy.Types.SwordGoblin, swordGoblinRate},
+                {Enemy.Types.FireGoblin, fireGoblinRate},
+                {Enemy.Types.EliteEnemy, eliteGoblinRate}
             };
 
             enemyRateSum = swordGoblinRate + fireGoblinRate + eliteGoblinRate;
