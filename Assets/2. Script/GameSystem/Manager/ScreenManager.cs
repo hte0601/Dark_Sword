@@ -26,7 +26,7 @@ namespace GameSystem
 
         private void InitScreen()
         {
-            Debug.Log(Screen.currentResolution.refreshRateRatio);
+            // Debug.Log(Screen.currentResolution.refreshRateRatio);
 
             // Android
 #if UNITY_ANDROID

@@ -7,15 +7,16 @@ namespace SpeedMode
     {
         public enum Mode
         {
-            Test,
+            Test = -1,
 
-            Normal,
-            Hard,
-            Infinite,
+            Normal = 0,
+            Hard = 1,
+
+            Infinite = 10,
 
             // Challenge
-            C_OneLife,
-            C_Faster,
+            C_OneLife = 20,
+            C_Faster = 21,
         }
 
 

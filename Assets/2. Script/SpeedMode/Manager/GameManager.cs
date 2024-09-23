@@ -25,7 +25,7 @@ namespace SpeedMode
         [SerializeField] private GameResultBoardUI gameResultBoard;
         private Swordman swordman;
         private KillCounter killCounter;
-        private PlayData playdata;
+        private ModeStatisticData statisticData;
         private ModeRule modeRule;
         private Wave currentWave;
 
@@ -65,12 +65,12 @@ namespace SpeedMode
 
         public int BestScore
         {
-            get => playdata.bestScore;
+            get => statisticData.bestScore;
             private set
             {
-                playdata.bestScore = value;
-                playdata.Save();
-                OnBestScoreValueChanged?.Invoke(playdata.bestScore);
+                statisticData.bestScore = value;
+                statisticData.Save();
+                OnBestScoreValueChanged?.Invoke(statisticData.bestScore);
             }
         }
 
@@ -95,7 +95,7 @@ namespace SpeedMode
         private void Awake()
         {
             instance = this;
-            playdata = SaveDataManager.LoadData<PlayData>();
+            statisticData = SaveDataManager.LoadData<ModeStatisticData>((int)GameMode.currentMode);
         }
 
         private void Start()

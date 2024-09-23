@@ -12,14 +12,15 @@ public static class SaveDataManager
         {typeof(GameSystem.VolumeSetting), "VolumeSetting"},
         {typeof(GameSystem.CurrencyData), "CurrencyData"},
         
-        // IGameSaveData
-        {typeof(SpeedMode.PlayData), "SpeedMode_PlayData"},
+        // ISingleGameSaveData
         {typeof(SpeedMode.UpgradeData), "SpeedMode_UpgradeData"},
-        {typeof(SpeedMode.StatisticData), "SpeedMode_StatisticData"}
+        
+        // IMultipleGameSaveData
+        {typeof(SpeedMode.ModeStatisticData), "SpeedMode_ModeStatisticData"}
     };
 
-    private static readonly Dictionary<Type, ISaveData> loadedSystemData = new();  // 씬 전환 시에도 유지
-    private static readonly Dictionary<Type, ISaveData> loadedGameData = new();  // 씬 전환 시 해제
+    private static readonly Dictionary<string, ISaveData> loadedSystemData = new();  // 씬 전환 시에도 유지
+    private static readonly Dictionary<string, ISaveData> loadedGameData = new();  // 씬 전환 시 해제
 
 
     static SaveDataManager()
@@ -38,34 +39,28 @@ public static class SaveDataManager
     }
 
 
-    public static T LoadData<T>() where T : ISaveData, new()
+    public static T LoadData<T>() where T : ISingleSaveData, new()
     {
-        Type dataType = typeof(T);
+        string key = saveKeyDict[typeof(T)];
 
         // 이미 로드된 데이터인 경우
-        if (loadedGameData.ContainsKey(dataType))
-            return (T)loadedGameData[dataType];
+        if (loadedGameData.ContainsKey(key))
+            return (T)loadedGameData[key];
 
-        if (loadedSystemData.ContainsKey(dataType))
-            return (T)loadedSystemData[dataType];
+        if (loadedSystemData.ContainsKey(key))
+            return (T)loadedSystemData[key];
 
         // 아직 로드되지 않은 데이터인 경우
-        T data;
-        string key = saveKeyDict[dataType];
-
-        if (PlayerPrefs.HasKey(key))
-            data = JsonUtility.FromJson<T>(PlayerPrefs.GetString(key));
-        else
-            data = new T();
+        T data = LoadPlayerPrefs<T>(key);
 
         // 타입에 따라 딕셔너리에 저장
-        if (typeof(IGameSaveData).IsAssignableFrom(dataType))
+        if (data is ISingleGameSaveData)
         {
-            loadedGameData.Add(dataType, data);
+            loadedGameData.Add(key, data);
         }
-        else if (typeof(ISystemSaveData).IsAssignableFrom(dataType))
+        else if (data is ISystemSaveData)
         {
-            loadedSystemData.Add(dataType, data);
+            loadedSystemData.Add(key, data);
         }
 #if UNITY_EDITOR
         else
@@ -77,10 +72,53 @@ public static class SaveDataManager
         return data;
     }
 
-    public static void SaveData<T>(T data) where T : ISaveData
+    public static T LoadData<T>(int dataID) where T : IMultipleSaveData, new()
     {
-        Type dataType = typeof(T);
-        string key = saveKeyDict[dataType];
+        string key = saveKeyDict[typeof(T)] + "_" + dataID.ToString();
+
+        // 이미 로드된 데이터인 경우
+        if (loadedGameData.ContainsKey(key))
+            return (T)loadedGameData[key];
+
+        // 아직 로드되지 않은 데이터인 경우
+        T data = LoadPlayerPrefs<T>(key);
+        data.DataID = dataID;
+
+        // 타입에 따라 딕셔너리에 저장
+        if (data is IMultipleGameSaveData)
+        {
+            loadedGameData.Add(key, data);
+        }
+#if UNITY_EDITOR
+        else
+        {
+            Debug.Log("LoadData 타입 오류");
+        }
+#endif
+
+        return data;
+    }
+
+    private static T LoadPlayerPrefs<T>(string key) where T : ISaveData, new()
+    {
+        if (PlayerPrefs.HasKey(key))
+            return JsonUtility.FromJson<T>(PlayerPrefs.GetString(key));
+        else
+            return new T();
+    }
+
+
+    public static void SaveData<T>(T data) where T : ISingleSaveData
+    {
+        string key = saveKeyDict[typeof(T)];
+
+        PlayerPrefs.SetString(key, JsonUtility.ToJson(data));
+        PlayerPrefs.Save();
+    }
+
+    public static void SaveData<T>(T data, int dataID) where T : IMultipleSaveData
+    {
+        string key = saveKeyDict[typeof(T)] + "_" + dataID.ToString();
 
         PlayerPrefs.SetString(key, JsonUtility.ToJson(data));
         PlayerPrefs.Save();
