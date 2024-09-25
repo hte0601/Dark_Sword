@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWeapon : MonoBehaviour
+namespace BattleMode
 {
-    void OnTriggerStay2D(Collider2D other)
+    public class PlayerWeapon : MonoBehaviour
     {
-        if(other.gameObject.tag == "Boss")
+        void OnTriggerStay2D(Collider2D other)
         {
-            BattleSwordman.AttackTrigger(other);
+            if (other.gameObject.tag == "Boss")
+            {
+                Swordman.AttackTrigger(other);
+            }
         }
     }
 }

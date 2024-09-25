@@ -9,7 +9,7 @@ namespace MainMenu
     {
         public void OnNewBattleButtonPointerDown()
         {
-            BattleGameManager.DebuffReset();
+            BattleMode.GameManager.DebuffReset();
             SceneManager.LoadScene("Battle_1");
         }
 

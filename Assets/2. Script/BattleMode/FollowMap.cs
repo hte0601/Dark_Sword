@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowMap : MonoBehaviour
+namespace BattleMode
 {
-    public float mapTypeValue;
-
-    void FixedUpdate()
+    public class FollowMap : MonoBehaviour
     {
-        transform.Translate(BattleSwordman.getVelocity() * Time.deltaTime * mapTypeValue, 0, 0);
+        public float mapTypeValue;
+
+        void FixedUpdate()
+        {
+            transform.Translate(Swordman.getVelocity() * Time.deltaTime * mapTypeValue, 0, 0);
+        }
     }
 }

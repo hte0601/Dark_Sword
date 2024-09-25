@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PropView : MonoBehaviour
+namespace BattleMode
 {
-    void Update()
+    public class PropView : MonoBehaviour
     {
-        if(-1 < transform.position.x && transform.position.x < 89)
-            gameObject.GetComponent<SpriteRenderer>().enabled = true;
-        else
-            gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        void Update()
+        {
+            if (-1 < transform.position.x && transform.position.x < 89)
+                gameObject.GetComponent<SpriteRenderer>().enabled = true;
+            else
+                gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
     }
 }

@@ -2,21 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpearWeapon : MonoBehaviour
+namespace BattleMode
 {
-    public SpearBoss boss;
-    void OnTriggerStay2D(Collider2D other)
+    public class SpearWeapon : MonoBehaviour
     {
-        if(other.tag == "Player")
+        public SpearBoss boss;
+        void OnTriggerStay2D(Collider2D other)
         {
-            if(gameObject.name == "GreenGoblin_Leg_L")
-                boss.GiveImpulse(other);
-            boss.AttackTrigger(other);
-            boss.SetWeaponGroundTouch(true);
-        }
-        else if(other.tag == "Ground")
-        {
-            boss.SetWeaponGroundTouch(true);
+            if (other.tag == "Player")
+            {
+                if (gameObject.name == "GreenGoblin_Leg_L")
+                    boss.GiveImpulse(other);
+                boss.AttackTrigger(other);
+                boss.SetWeaponGroundTouch(true);
+            }
+            else if (other.tag == "Ground")
+            {
+                boss.SetWeaponGroundTouch(true);
+            }
         }
     }
 }
