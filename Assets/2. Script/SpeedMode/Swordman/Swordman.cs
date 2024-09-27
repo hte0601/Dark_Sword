@@ -5,31 +5,6 @@ using UnityEngine;
 
 namespace SpeedMode
 {
-    public struct BattleReport
-    {
-        public enum Result
-        {
-            InputCorrect,
-            SwordmanGroggy,
-            GameOver,
-            SkillCast,
-            SkillHit
-
-            // SkillAutoCast,
-        }
-
-        public Enemy.Types enemyType;
-        public Swordman.State? playerInput;
-        public Result result;
-        public int damageDealt;
-        public bool isEnemyDead;
-
-        public bool IsInputIncorrect()
-        {
-            return result == Result.SwordmanGroggy || result == Result.GameOver;
-        }
-    }
-
     public class Swordman : MonoBehaviour
     {
         public enum State
@@ -80,7 +55,7 @@ namespace SpeedMode
             {
                 if (value > status.maxSkillGauge)
                     return;
-                
+
                 _skillGauge = value;
 
                 OnSkillGaugeValueChanged?.Invoke(_skillGauge);
@@ -178,16 +153,16 @@ namespace SpeedMode
                 {
                     if (SkillGauge != status.maxSkillGauge)
                         return;
-                    
+
                     SkillGauge = 0;
 
                     BattleReport SkillCastReport = new()
                     {
-                        enemyType = Enemy.Types.None,
-                        playerInput = State.Skill,
                         result = BattleReport.Result.SkillCast,
-                        damageDealt = 0,
-                        isEnemyDead = false
+                        playerInput = State.Skill,
+                        enemyType = Enemy.Types.None,
+                        enemyState = BattleReport.EnemyState.Alive,
+                        damageDealt = 0
                     };
 
                     BattleEnemyEvent?.Invoke(SkillCastReport);
@@ -211,13 +186,13 @@ namespace SpeedMode
 
             BattleReport battleReport = new()
             {
-                enemyType = enemy.EnemyType,
                 playerInput = playerInput,
+                enemyType = enemy.EnemyType,
                 damageDealt = 0,
             };
 
             // 입력 성공
-            if (enemy.Battle(playerInput, out battleReport.isEnemyDead))
+            if (enemy.Battle(playerInput, out battleReport.enemyState))
             {
                 SkillGauge += 1;
 
@@ -225,8 +200,9 @@ namespace SpeedMode
                 battleReport.damageDealt = 1;
 
                 if (battleReport.enemyType == Enemy.Types.SpearGoblin)
-                    if (battleReport.playerInput == State.Guard && !battleReport.isEnemyDead)
-                        animationController.canSpearGoblinCombo = true;
+                    if (battleReport.playerInput == State.Guard)
+                        if (battleReport.enemyState == BattleReport.EnemyState.Alive)
+                            animationController.canSpearGoblinCombo = true;
             }
             else
             {
@@ -240,12 +216,6 @@ namespace SpeedMode
         public BattleReport.Result TakeDamage(int damage = 1)
         {
             animationController.StopAnimation();
-
-            // if (skillAutoCastNumber > 0)
-            // {
-            //     // 스킬 자동 시전 처리
-            //     return BattleReport.Result.SkillAutoCast;
-            // }
 
             CurrentHealth -= damage;
 
@@ -284,14 +254,13 @@ namespace SpeedMode
         {
             BattleReport skillHitReport = new()
             {
-                enemyType = enemy.EnemyType,
-                playerInput = null,
                 result = BattleReport.Result.SkillHit,
-                isEnemyDead = true
+                playerInput = null,
+                enemyType = enemy.EnemyType,
+                enemyState = BattleReport.EnemyState.Killed
             };
 
             enemy.isStopped = true;
-
             effectController.PlaySkillEffect(enemy.transform.position);
 
             yield return new WaitForSeconds(0.1f);

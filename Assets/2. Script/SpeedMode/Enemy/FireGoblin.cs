@@ -12,7 +12,8 @@ namespace SpeedMode
             base.Awake();
 
             EnemyType = Types.FireGoblin;
-            MAX_HEALTH = 1;
+            maxHealth = 1;
+            canEscape = true;
 
             correctInput = new()
             {
@@ -32,7 +33,7 @@ namespace SpeedMode
             Explode();
         }
 
-        protected override void RunAway()
+        protected override void Escape()
         {
             Explode();
         }

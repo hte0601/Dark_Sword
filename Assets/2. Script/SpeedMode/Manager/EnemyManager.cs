@@ -71,8 +71,8 @@ namespace SpeedMode
 
         private void HandleBattleEnemyEvent(BattleReport battleReport)
         {
-            // 적이 죽었거나 적이 FireGoblin인 경우
-            if (battleReport.isEnemyDead || battleReport.enemyType == Enemy.Types.FireGoblin)
+            // 적이 죽었거나 도망간 경우
+            if (battleReport.IsEnemyRemoved())
             {
                 RemoveEnemy();
             }

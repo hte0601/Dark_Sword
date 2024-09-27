@@ -21,30 +21,33 @@ namespace SpeedMode
             EliteEnemy = SpearGoblin | Elite2
         }
 
-        public EnemyObjectPool objectPool;
         [SerializeField] protected GameObject model;
         [SerializeField] private Animator animator;
+
+        public EnemyObjectPool objectPool;
+        public Transform frontEnemyTransform;
 
         private Types _enemyType;
         protected Dictionary<int, Swordman.State> correctInput;
 
         private float moveSpeed;
-        protected int MAX_HEALTH;
-        private int _currentHealth;
+        protected int maxHealth;
+        protected bool canEscape;
 
+        private int _currentHealth;
         public bool isStopped;
         public bool isHead;
-        public Transform frontEnemyTransform;
 
-        public Swordman.State CorrectInput
-        {
-            get => correctInput[CurrentHealth];
-        }
 
         public Types EnemyType
         {
             get => _enemyType;
             protected set => _enemyType = value;
+        }
+
+        public Swordman.State CorrectInput
+        {
+            get => correctInput[CurrentHealth];
         }
 
         public int CurrentHealth
@@ -69,7 +72,7 @@ namespace SpeedMode
 
         protected virtual void OnEnable()
         {
-            CurrentHealth = MAX_HEALTH;
+            CurrentHealth = maxHealth;
             isStopped = false;
         }
 
@@ -95,7 +98,8 @@ namespace SpeedMode
         }
 
 
-        public bool Battle(Swordman.State playerInput, out bool isEnemyDead)
+        // 플레이어가 올바른 입력을 했는지 여부 반환
+        public bool Battle(Swordman.State playerInput, out BattleReport.EnemyState enemyState)
         {
             if (playerInput == CorrectInput)
             {
@@ -104,20 +108,28 @@ namespace SpeedMode
                 if (CurrentHealth == 0)
                 {
                     Die();
-                    isEnemyDead = true;
+                    enemyState = BattleReport.EnemyState.Killed;
                 }
+                // 피해를 입고 체력이 남았을 경우
                 else
                 {
-                    // 피해를 입고 체력이 남았을 경우 처리가 필요하다면 여기에
-                    isEnemyDead = false;
+                    enemyState = BattleReport.EnemyState.Alive;
                 }
 
                 return true;
             }
             else
             {
-                RunAway();
-                isEnemyDead = false;
+                if (canEscape)
+                {
+                    Escape();
+                    enemyState = BattleReport.EnemyState.Escaped;
+                }
+                else
+                {
+                    enemyState = BattleReport.EnemyState.Alive;
+                }
+
                 return false;
             }
         }
@@ -137,6 +149,6 @@ namespace SpeedMode
             objectPool.ReturnEnemy(this);
         }
 
-        protected virtual void RunAway() { }
+        protected virtual void Escape() { }
     }
 }

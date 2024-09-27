@@ -61,7 +61,7 @@ namespace SpeedMode
 
         private void CountKill(BattleReport battleReport)
         {
-            if (!battleReport.isEnemyDead)
+            if (battleReport.enemyState != BattleReport.EnemyState.Killed)
                 return;
 
             KillCount += 1;

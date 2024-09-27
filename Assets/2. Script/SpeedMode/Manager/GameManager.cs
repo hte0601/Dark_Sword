@@ -239,10 +239,6 @@ namespace SpeedMode
                 isTimerStopped = true;
                 RaiseGameOverEvent(false);
             }
-            // else if (result == BattleReport.Result.SkillAutoCast)
-            // {
-            //     isTimerWaitingInput = true;
-            // }
         }
 
         private void OnBestScoreBroken(int currentScore)
