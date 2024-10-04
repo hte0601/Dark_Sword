@@ -17,7 +17,7 @@ namespace SpeedMode
 
         private void Start()
         {
-            GameManager.instance.OnTimerValueChanged += UpdateTimeSlider;
+            GameManager.instance.OnTimerChanged += UpdateTimeSlider;
         }
 
         private void UpdateTimeSlider(float timer)

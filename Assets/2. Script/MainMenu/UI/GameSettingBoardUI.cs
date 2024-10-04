@@ -24,7 +24,7 @@ namespace MainMenu
             BGMVolumeSlider.value = volumeManager.BGMVolume;
             SFXVolumeSlider.value = volumeManager.SFXVolume;
 
-            volumeManager.OnMuteStateChanged += HandleMuteEvent;
+            volumeManager.OnIsMutedChanged += HandleMuteEvent;
             MasterVolumeSlider.onValueChanged.AddListener(ChangeMasterVolume);
             BGMVolumeSlider.onValueChanged.AddListener(ChangeBGMVolume);
             SFXVolumeSlider.onValueChanged.AddListener(ChangeSFXVolume);
@@ -37,7 +37,7 @@ namespace MainMenu
 
         private void OnDestroy()
         {
-            volumeManager.OnMuteStateChanged -= HandleMuteEvent;
+            volumeManager.OnIsMutedChanged -= HandleMuteEvent;
         }
 
 

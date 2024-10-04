@@ -10,7 +10,7 @@ namespace SpeedMode
     {
         public static KillCounter instance;
 
-        public event Action<int> OnKillCountValueChanged;
+        public event Action<int> OnKillCountChanged;
 
         private readonly Dictionary<Enemy.Types, int> killCountDict = new();
         private int _killCount = 0;
@@ -21,7 +21,7 @@ namespace SpeedMode
             private set
             {
                 _killCount = value;
-                OnKillCountValueChanged?.Invoke(_killCount);
+                OnKillCountChanged?.Invoke(_killCount);
             }
         }
 

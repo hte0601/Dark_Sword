@@ -12,7 +12,7 @@ namespace SpeedMode
 
         private void Start()
         {
-            GameManager.instance.OnComboValueChanged += UpdateComboText;
+            GameManager.instance.OnComboChanged += UpdateComboText;
         }
 
         private void UpdateComboText(int currentCombo, float scoreMultiplier)

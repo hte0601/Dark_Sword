@@ -13,7 +13,7 @@ namespace GameSystem
         // public event Action<float> OnMasterVolumeChanged;
         // public event Action<float> OnBGMVolumeChanged;
         // public event Action<float> OnSFXVolumeChanged;
-        public event Action<bool> OnMuteStateChanged;
+        public event Action<bool> OnIsMutedChanged;
 
         [SerializeField] private AudioMixer mainMixer;
         private VolumeSetting volumeSetting;
@@ -76,7 +76,7 @@ namespace GameSystem
                         SetMasterVolume(MasterVolume);
                 }
 
-                OnMuteStateChanged?.Invoke(value);
+                OnIsMutedChanged?.Invoke(value);
             }
         }
 

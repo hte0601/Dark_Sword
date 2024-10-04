@@ -17,10 +17,10 @@ namespace SpeedMode
         public event Action<bool> GameOverEvent;
         public event Action RestartGameEvent;
 
-        public event Action<float> OnTimerValueChanged;
-        public event Action<int> OnScoreValueChanged;
-        public event Action<int> OnBestScoreValueChanged;
-        public event Action<int, float> OnComboValueChanged;
+        public event Action<float> OnTimerChanged;
+        public event Action<int> OnScoreChanged;
+        public event Action<int> OnBestScoreChanged;
+        public event Action<int, float> OnComboChanged;
 
         [SerializeField] private GameResultBoardUI gameResultBoard;
         private Swordman swordman;
@@ -49,7 +49,7 @@ namespace SpeedMode
                 else
                     _timer = value;
 
-                OnTimerValueChanged?.Invoke(_timer);
+                OnTimerChanged?.Invoke(_timer);
             }
         }
 
@@ -59,7 +59,7 @@ namespace SpeedMode
             private set
             {
                 _currentScore = value;
-                OnScoreValueChanged?.Invoke(_currentScore);
+                OnScoreChanged?.Invoke(_currentScore);
             }
         }
 
@@ -70,7 +70,7 @@ namespace SpeedMode
             {
                 statisticData.bestScore = value;
                 statisticData.Save();
-                OnBestScoreValueChanged?.Invoke(statisticData.bestScore);
+                OnBestScoreChanged?.Invoke(statisticData.bestScore);
             }
         }
 
@@ -81,7 +81,7 @@ namespace SpeedMode
             {
                 _currentCombo = value;
                 ScoreMultiplier = _currentCombo;
-                OnComboValueChanged?.Invoke(_currentCombo, ScoreMultiplier);
+                OnComboChanged?.Invoke(_currentCombo, ScoreMultiplier);
             }
         }
 
@@ -125,8 +125,8 @@ namespace SpeedMode
 
             // 베스트 스코어를 갱신하지 못 하고 게임이 다시 시작되면
             // OnBestScoreBroken이 두 번 등록되는 문제가 있음
-            OnScoreValueChanged -= OnBestScoreBroken;
-            OnScoreValueChanged += OnBestScoreBroken;
+            OnScoreChanged -= OnBestScoreBroken;
+            OnScoreChanged += OnBestScoreBroken;
 
             DelayInvoke(1f, RaiseReadyWaveEvent, 1);
         }
@@ -246,7 +246,7 @@ namespace SpeedMode
             if (currentScore > BestScore)
             {
                 SoundManager.PlaySFX(SFX.Game.BestScoreUpdate);
-                OnScoreValueChanged -= OnBestScoreBroken;
+                OnScoreChanged -= OnBestScoreBroken;
             }
         }
 

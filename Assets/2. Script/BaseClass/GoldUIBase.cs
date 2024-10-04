@@ -12,12 +12,12 @@ public class GoldUIBase : MonoBehaviour
         goldText = transform.Find("GoldText").GetComponent<Text>();
 
         UpdateGoldText(GameSystem.CurrencyManager.GetGold());
-        GameSystem.CurrencyManager.OnGoldValueChanged += UpdateGoldText;
+        GameSystem.CurrencyManager.OnGoldChanged += UpdateGoldText;
     }
 
     protected virtual void OnDestroy()
     {
-        GameSystem.CurrencyManager.OnGoldValueChanged -= UpdateGoldText;
+        GameSystem.CurrencyManager.OnGoldChanged -= UpdateGoldText;
     }
 
     protected virtual void UpdateGoldText(int gold)

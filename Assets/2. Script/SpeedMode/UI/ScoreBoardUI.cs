@@ -23,9 +23,9 @@ namespace SpeedMode
             gameManager.GameOverEvent += HandleGameOverEvent;
             gameManager.RestartGameEvent += HandleRestartGameEvent;
 
-            gameManager.OnScoreValueChanged += UpdateCurrentScoreText;
-            gameManager.OnBestScoreValueChanged += UpdateBestScoreText;
-            killCounter.OnKillCountValueChanged += UpdateKillCountText;
+            gameManager.OnScoreChanged += UpdateCurrentScoreText;
+            gameManager.OnBestScoreChanged += UpdateBestScoreText;
+            killCounter.OnKillCountChanged += UpdateKillCountText;
         }
 
         private void HandleGameOverEvent(bool isGameClear) => gameObject.SetActive(false);

@@ -25,7 +25,7 @@ namespace SpeedMode
             Swordman swordman = Swordman.instance;
 
             UpdateSkillGaugeSlider(swordman.SkillGauge);
-            swordman.OnSkillGaugeValueChanged += UpdateSkillGaugeSlider;
+            swordman.OnSkillGaugeChanged += UpdateSkillGaugeSlider;
         }
 
         private void UpdateSkillGaugeSlider(int skillGauge)

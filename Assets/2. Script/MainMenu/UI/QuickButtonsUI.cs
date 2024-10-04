@@ -28,13 +28,13 @@ namespace MainMenu
             boardUIManager = BoardUIManager.instance;
             volumeManager = GameSystem.VolumeManager.instance;
 
-            volumeManager.OnMuteStateChanged += ChangeSoundButtonSprite;
+            volumeManager.OnIsMutedChanged += ChangeSoundButtonSprite;
             ChangeSoundButtonSprite(volumeManager.IsMuted);
         }
 
         private void OnDestroy()
         {
-            volumeManager.OnMuteStateChanged -= ChangeSoundButtonSprite;
+            volumeManager.OnIsMutedChanged -= ChangeSoundButtonSprite;
         }
 
 

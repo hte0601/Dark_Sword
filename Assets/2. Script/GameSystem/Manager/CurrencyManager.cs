@@ -9,7 +9,7 @@ namespace GameSystem
     {
         private static CurrencyData currencyData;
 
-        public static event Action<int> OnGoldValueChanged;
+        public static event Action<int> OnGoldChanged;
 
         static CurrencyManager()
         {
@@ -26,7 +26,7 @@ namespace GameSystem
         {
             currencyData.gold += amount;
             currencyData.Save();
-            OnGoldValueChanged?.Invoke(currencyData.gold);
+            OnGoldChanged?.Invoke(currencyData.gold);
         }
 
         public static bool DecreaseGold(int amount)
@@ -39,7 +39,7 @@ namespace GameSystem
             {
                 currencyData.gold -= amount;
                 currencyData.Save();
-                OnGoldValueChanged?.Invoke(currencyData.gold);
+                OnGoldChanged?.Invoke(currencyData.gold);
                 return true;
             }
         }

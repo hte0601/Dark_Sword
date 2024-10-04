@@ -20,8 +20,8 @@ namespace SpeedMode
         public static Swordman instance;
 
         public event Action<BattleReport> BattleEnemyEvent;
-        public event Action<int> OnCurrentHealthValueChanged;
-        public event Action<int> OnSkillGaugeValueChanged;
+        public event Action<int> OnCurrentHealthChanged;
+        public event Action<int> OnSkillGaugeChanged;
 
         private EnemyManager enemyManager;
         private SwordmanStatus status;
@@ -44,7 +44,7 @@ namespace SpeedMode
                 else
                     _currentHealth = value;
 
-                OnCurrentHealthValueChanged?.Invoke(_currentHealth);
+                OnCurrentHealthChanged?.Invoke(_currentHealth);
             }
         }
 
@@ -58,7 +58,7 @@ namespace SpeedMode
 
                 _skillGauge = value;
 
-                OnSkillGaugeValueChanged?.Invoke(_skillGauge);
+                OnSkillGaugeChanged?.Invoke(_skillGauge);
             }
         }
 
