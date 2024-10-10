@@ -23,47 +23,48 @@ namespace SpeedMode
         public static GameMode instance;
         public static Mode? currentMode = null;
 
-        public ModeRule modeRule;
+        public ModeData modeData;
 
 
         private void Awake()
         {
             instance = this;
 
-            SetModeRule();
+            SetModeData();
         }
 
-        private void SetModeRule()
+        private void SetModeData()
         {
             if (currentMode == Mode.Test)
             {
-                modeRule = new TestModeRule();
+                modeData = new TestModeData();
             }
             else if (currentMode == Mode.Normal)
             {
-                modeRule = new NormalModeRule();
+                modeData = new NormalModeData();
             }
             else if (currentMode == Mode.Hard)
             {
-                modeRule = new HardModeRule();
+                modeData = new HardModeData();
             }
             else if (currentMode == Mode.Infinite)
             {
-                modeRule = new InfiniteModeRule();
+                modeData = new InfiniteModeData();
             }
             else if (currentMode == Mode.C_OneLife)
             {
-                modeRule = new C_OneLifeModeRule();
+                modeData = new C_OneLifeModeData();
             }
             else if (currentMode == Mode.C_Faster)
             {
-                modeRule = new C_FasterModeRule();
+                modeData = new C_FasterModeData();
             }
 #if UNITY_EDITOR
             else
             {
-                modeRule = null;
-                Debug.Log("modeRule 초기화 오류");
+                Debug.Log(currentMode);
+                Debug.Log("modeData 초기화 오류");
+                modeData = null;
             }
 #endif
         }

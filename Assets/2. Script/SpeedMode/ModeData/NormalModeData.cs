@@ -1,9 +1,9 @@
 
 namespace SpeedMode
 {
-    public class NormalModeRule : ModeRule
+    public class NormalModeData : ModeData
     {
-        public NormalModeRule() : base()
+        public NormalModeData() : base()
         {
             swordmanStatus.maxSkillGauge = 120;
 

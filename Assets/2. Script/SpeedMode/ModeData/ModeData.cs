@@ -4,13 +4,13 @@ using UnityEngine;
 
 namespace SpeedMode
 {
-    public class ModeRule
+    public class ModeData
     {
         protected SwordmanStatus swordmanStatus;
         protected Dictionary<int, Wave> waveDataDict;
 
 
-        protected ModeRule()
+        protected ModeData()
         {
             swordmanStatus = new();
         }

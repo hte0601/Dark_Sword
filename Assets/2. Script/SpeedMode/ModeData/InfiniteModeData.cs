@@ -1,11 +1,11 @@
 
 namespace SpeedMode
 {
-    public class InfiniteModeRule : ModeRule
+    public class InfiniteModeData : ModeData
     {
         Wave infiniteWaveData;
 
-        public InfiniteModeRule() : base()
+        public InfiniteModeData() : base()
         {
             infiniteWaveData = new(0, 4.0f, 250, 0.49f, 0.39f, 0.12f);
         }

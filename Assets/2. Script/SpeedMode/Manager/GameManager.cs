@@ -26,7 +26,7 @@ namespace SpeedMode
         private Swordman swordman;
         private KillCounter killCounter;
         private ModeStatisticData statisticData;
-        private ModeRule modeRule;
+        private ModeData modeData;
         private Wave currentWaveData;
 
         private float _timer;
@@ -105,7 +105,7 @@ namespace SpeedMode
 
             swordman = Swordman.instance;
             killCounter = KillCounter.instance;
-            modeRule = GameMode.instance.modeRule;
+            modeData = GameMode.instance.modeData;
 
             swordman.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
@@ -134,7 +134,7 @@ namespace SpeedMode
 
         private void RaiseReadyWaveEvent(int wave)
         {
-            if (modeRule.LoadWaveData(wave, out currentWaveData))
+            if (modeData.LoadWaveData(wave, out currentWaveData))
             {
                 Debug.Log(string.Format("{0}웨이브 준비", wave));
 

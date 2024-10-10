@@ -1,12 +1,13 @@
 
 namespace SpeedMode
 {
-    public class TestModeRule : ModeRule
+    public class HardModeData : ModeData
     {
-        public TestModeRule() : base()
+        public HardModeData() : base()
         {
             waveDataDict = new()
             {
+                // 총 2000마리
                 {01, new Wave(01, 2.8f, 250, 0.52f, 0.42f, 0.06f)},
                 {02, new Wave(02, 3.0f, 250, 0.51f, 0.42f, 0.07f)},
                 {03, new Wave(03, 3.2f, 250, 0.51f, 0.41f, 0.08f)},

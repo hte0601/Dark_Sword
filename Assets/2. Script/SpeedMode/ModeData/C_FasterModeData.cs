@@ -1,9 +1,9 @@
 
 namespace SpeedMode
 {
-    public class C_FasterModeRule : ModeRule
+    public class C_FasterModeData : ModeData
     {
-        public C_FasterModeRule() : base()
+        public C_FasterModeData() : base()
         {
             waveDataDict = new()
             {

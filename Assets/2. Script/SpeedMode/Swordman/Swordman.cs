@@ -75,7 +75,7 @@ namespace SpeedMode
         private void Start()
         {
             enemyManager = EnemyManager.instance;
-            status = GameMode.instance.modeRule.LoadSwordmanStatus();
+            status = GameMode.instance.modeData.LoadSwordmanStatus();
 
             GameManager.instance.RestartGameEvent += HandleRestartGameEvent;
 
