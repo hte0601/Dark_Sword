@@ -67,7 +67,7 @@ namespace SpeedMode
 
         protected virtual void Awake()
         {
-            moveSpeed = ModeData.EnemyData.ENEMY_MOVE_SPEED;
+            moveSpeed = GameData.EnemyData.ENEMY_MOVE_SPEED;
         }
 
         protected virtual void OnEnable()
@@ -89,9 +89,9 @@ namespace SpeedMode
             Vector3 moveTargetPosition;
 
             if (isHead)
-                moveTargetPosition = ModeData.EnemyData.ENEMY_MOVE_TARGET_POSITION;
+                moveTargetPosition = GameData.EnemyData.ENEMY_MOVE_TARGET_POSITION;
             else
-                moveTargetPosition = frontEnemyTransform.position + ModeData.EnemyData.ENEMY_ENEMY_GAP;
+                moveTargetPosition = frontEnemyTransform.position + GameData.EnemyData.ENEMY_ENEMY_GAP;
 
             if (transform.position.x > moveTargetPosition.x)
                 transform.position = Vector3.MoveTowards(transform.position, moveTargetPosition, moveSpeed * Time.deltaTime);

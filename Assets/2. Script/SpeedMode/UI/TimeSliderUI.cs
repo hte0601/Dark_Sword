@@ -11,8 +11,8 @@ namespace SpeedMode
 
         private void Awake()
         {
-            timeSlider.maxValue = ModeData.TimerData.MAX_TIME;
-            timeSlider.value = ModeData.TimerData.MAX_TIME;
+            timeSlider.maxValue = GameData.TimerData.MAX_TIME;
+            timeSlider.value = GameData.TimerData.MAX_TIME;
         }
 
         private void Start()

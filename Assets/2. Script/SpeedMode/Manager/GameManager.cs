@@ -27,7 +27,7 @@ namespace SpeedMode
         private KillCounter killCounter;
         private ModeStatisticData statisticData;
         private ModeRule modeRule;
-        private Wave currentWave;
+        private Wave currentWaveData;
 
         private float _timer;
         private bool isTimerWaitingInput = true;
@@ -42,8 +42,8 @@ namespace SpeedMode
             get => _timer;
             private set
             {
-                if (value > ModeData.TimerData.MAX_TIME)
-                    _timer = ModeData.TimerData.MAX_TIME;
+                if (value > GameData.TimerData.MAX_TIME)
+                    _timer = GameData.TimerData.MAX_TIME;
                 else if (value < 0f)
                     _timer = 0f;
                 else
@@ -118,7 +118,7 @@ namespace SpeedMode
 
         private void Initialize()
         {
-            Timer = ModeData.TimerData.MAX_TIME;
+            Timer = GameData.TimerData.MAX_TIME;
             isTimerWaitingInput = true;
             CurrentScore = 0;
             CurrentCombo = 0;
@@ -134,11 +134,11 @@ namespace SpeedMode
 
         private void RaiseReadyWaveEvent(int wave)
         {
-            if (modeRule.LoadWaveData(wave, out currentWave))
+            if (modeRule.LoadWaveData(wave, out currentWaveData))
             {
                 Debug.Log(string.Format("{0}웨이브 준비", wave));
 
-                ReadyWaveEvent?.Invoke(currentWave);
+                ReadyWaveEvent?.Invoke(currentWaveData);
                 DelayInvoke(1f, RaiseStartWaveEvent, wave);
             }
             else
@@ -202,15 +202,15 @@ namespace SpeedMode
             {
                 isTimerWaitingInput = false;
 
-                Timer += ModeData.TimerData.ADDITIONAL_TIME;
+                Timer += GameData.TimerData.ADDITIONAL_TIME;
                 CurrentCombo += 1;
                 CurrentScore += (int)(10 * ScoreMultiplier);
             }
             else if (battleReport.result == BattleReport.Result.SkillHit)
             {
-                for (int i = 0; i < battleReport.damageDealt; i++)
+                for (int i = 0; i < battleReport.dealtDamage; i++)
                 {
-                    Timer += ModeData.TimerData.ADDITIONAL_TIME;
+                    Timer += GameData.TimerData.ADDITIONAL_TIME;
                     CurrentCombo += 1;
                     CurrentScore += (int)(10 * ScoreMultiplier);
                 }
@@ -260,7 +260,7 @@ namespace SpeedMode
                     yield return null;
                 }
 
-                Timer -= currentWave.timerSpeed * Time.deltaTime;
+                Timer -= currentWaveData.timerSpeed * Time.deltaTime;
 
                 if (Timer == 0)
                     OnSwordmanTakeDamage(swordman.TakeDamage());
@@ -273,9 +273,9 @@ namespace SpeedMode
         {
             yield return new WaitForSeconds(1f);
 
-            while (Timer < ModeData.TimerData.MAX_TIME)
+            while (Timer < GameData.TimerData.MAX_TIME)
             {
-                Timer += ModeData.TimerData.MAX_TIME * Time.deltaTime;
+                Timer += GameData.TimerData.MAX_TIME * Time.deltaTime;
                 yield return null;
             }
         }

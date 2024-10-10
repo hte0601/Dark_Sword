@@ -23,7 +23,7 @@ namespace SpeedMode
         public Swordman.State? playerInput;
         public Enemy.Types enemyType;
         public EnemyState enemyState;
-        public int damageDealt;
+        public int dealtDamage;
 
         public bool IsEnemyRemoved()
         {

@@ -69,7 +69,7 @@ namespace SpeedMode
             animationController = transform.Find("model").GetComponent<SwordmanAnimationController>();
             effectController = transform.Find("Effect").GetComponent<SwordmanEffectController>();
 
-            battleRange = transform.position.x + ModeData.SwordmanData.MAX_BATTLE_RANGE;
+            battleRange = transform.position.x + GameData.SwordmanData.MAX_BATTLE_RANGE;
         }
 
         private void Start()
@@ -162,7 +162,7 @@ namespace SpeedMode
                         playerInput = State.Skill,
                         enemyType = Enemy.Types.None,
                         enemyState = BattleReport.EnemyState.Alive,
-                        damageDealt = 0
+                        dealtDamage = 0
                     };
 
                     BattleEnemyEvent?.Invoke(SkillCastReport);
@@ -188,7 +188,7 @@ namespace SpeedMode
             {
                 playerInput = playerInput,
                 enemyType = enemy.EnemyType,
-                damageDealt = 0,
+                dealtDamage = 0,
             };
 
             // 입력 성공
@@ -197,7 +197,7 @@ namespace SpeedMode
                 SkillGauge += 1;
 
                 battleReport.result = BattleReport.Result.InputCorrect;
-                battleReport.damageDealt = 1;
+                battleReport.dealtDamage = 1;
 
                 if (battleReport.enemyType == Enemy.Types.SpearGoblin)
                     if (battleReport.playerInput == State.Guard)
@@ -265,7 +265,7 @@ namespace SpeedMode
 
             yield return new WaitForSeconds(0.1f);
 
-            skillHitReport.damageDealt = enemy.HitBySkill();
+            skillHitReport.dealtDamage = enemy.HitBySkill();
             BattleEnemyEvent?.Invoke(skillHitReport);
         }
     }

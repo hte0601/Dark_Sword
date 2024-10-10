@@ -60,7 +60,7 @@ namespace SpeedMode
 
         private void HandleStartWaveEvent(int wave)
         {
-            for (int i = 0; i < ModeData.EnemyData.MAX_ENEMY_NUMBER; i++)
+            for (int i = 0; i < GameData.EnemyData.MAX_ENEMY_NUMBER; i++)
                 CreateEnemy();
         }
 
@@ -120,7 +120,7 @@ namespace SpeedMode
                 enemyType = currentEliteEnemy;
 
             Enemy enemy = enemyObjectPool.GetEnemy(enemyType);
-            enemy.transform.position = ModeData.EnemyData.ENEMY_CREATE_POSITION;
+            enemy.transform.position = GameData.EnemyData.ENEMY_CREATE_POSITION;
 
             if (enemyList.Count == 0)
             {
