@@ -7,7 +7,6 @@ namespace SpeedMode
 {
     public class SwordmanAnimationController : MonoBehaviour
     {
-        [SerializeField] private Swordman swordman;
         [SerializeField] private SwordmanEffectController effectController;
         private Animator animator;
 

@@ -23,10 +23,9 @@ namespace SpeedMode
         public event Action<int> OnCurrentHealthChanged;
         public event Action<int> OnSkillGaugeChanged;
 
-        private EnemyManager enemyManager;
-        private SwordmanStatus status;
         private SwordmanAnimationController animationController;
         private SwordmanEffectController effectController;
+        private SwordmanStatus status;
 
         private float battleRange;
 
@@ -74,7 +73,6 @@ namespace SpeedMode
 
         private void Start()
         {
-            enemyManager = EnemyManager.instance;
             status = GameMode.instance.modeData.LoadSwordmanStatus();
 
             GameManager.instance.RestartGameEvent += HandleRestartGameEvent;
@@ -131,7 +129,7 @@ namespace SpeedMode
             {
                 if (input == State.Attack || input == State.Guard)
                 {
-                    bool isEnemyInRange = enemyManager.IsEnemyInRange(battleRange);
+                    bool isEnemyInRange = EnemyManager.instance.IsEnemyInRange(battleRange);
 
                     if (isEnemyInRange)
                     {
@@ -182,7 +180,7 @@ namespace SpeedMode
 
         private BattleReport BattleEnemy(State playerInput)
         {
-            Enemy enemy = enemyManager.GetHeadEnemy();
+            Enemy enemy = EnemyManager.instance.GetHeadEnemy();
 
             BattleReport battleReport = new()
             {
@@ -241,7 +239,7 @@ namespace SpeedMode
 
         private IEnumerator SkillCoroutine()
         {
-            List<Enemy> enemies = enemyManager.GetEnemies(8);
+            List<Enemy> enemies = EnemyManager.instance.GetEnemies(8);
 
             for (int i = 0; i < enemies.Count; i++)
             {

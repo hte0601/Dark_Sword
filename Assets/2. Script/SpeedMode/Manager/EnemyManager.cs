@@ -41,11 +41,9 @@ namespace SpeedMode
 
         private void Start()
         {
-            GameManager gameManager = GameManager.instance;
-
-            gameManager.ReadyWaveEvent += HandleReadyWaveEvent;
-            gameManager.StartWaveEvent += HandleStartWaveEvent;
-            gameManager.RestartGameEvent += HandleRestartGameEvent;
+            GameManager.instance.ReadyWaveEvent += HandleReadyWaveEvent;
+            GameManager.instance.StartWaveEvent += HandleStartWaveEvent;
+            GameManager.instance.RestartGameEvent += HandleRestartGameEvent;
             Swordman.instance.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
 

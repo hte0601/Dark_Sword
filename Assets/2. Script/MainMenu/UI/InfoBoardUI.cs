@@ -9,22 +9,15 @@ namespace MainMenu
     {
         [SerializeField] private Text versionText;
 
-        private BoardUIManager boardUIManager;
-
         private void Awake()
         {
             versionText.text = string.Format("버전 : {0}", Application.version);
         }
 
-        private void Start()
-        {
-            boardUIManager = BoardUIManager.instance;
-        }
-
 
         public void OnExitButtonClick()
         {
-            boardUIManager.CloseBoardUI(gameObject);
+            BoardUIManager.instance.CloseBoardUI(gameObject);
         }
     }
 }

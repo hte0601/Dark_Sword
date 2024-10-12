@@ -22,10 +22,8 @@ namespace SpeedMode
             maxSkillGauge = GameMode.instance.modeData.LoadSwordmanStatus().maxSkillGauge;
             skillGaugeSlider.maxValue = maxSkillGauge;
 
-            Swordman swordman = Swordman.instance;
-
-            UpdateSkillGaugeSlider(swordman.SkillGauge);
-            swordman.OnSkillGaugeChanged += UpdateSkillGaugeSlider;
+            UpdateSkillGaugeSlider(Swordman.instance.SkillGauge);
+            Swordman.instance.OnSkillGaugeChanged += UpdateSkillGaugeSlider;
         }
 
         private void UpdateSkillGaugeSlider(int skillGauge)

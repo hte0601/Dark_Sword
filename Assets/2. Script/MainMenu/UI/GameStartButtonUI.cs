@@ -6,17 +6,9 @@ namespace MainMenu
 {
     public class GameStartButtonUI : MonoBehaviour
     {
-        private BoardUIManager boardUIManager;
-
-        private void Start()
-        {
-            boardUIManager = BoardUIManager.instance;
-        }
-
-
         public void OnGameStartButtonClick()
         {
-            boardUIManager.OpenBoardUI(BoardUI.SpeedMode, false);
+            BoardUIManager.instance.OpenBoardUI(BoardUI.SpeedMode, false);
         }
     }
 }

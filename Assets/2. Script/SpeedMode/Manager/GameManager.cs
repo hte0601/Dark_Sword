@@ -23,10 +23,8 @@ namespace SpeedMode
         public event Action<int, float> OnComboChanged;
 
         [SerializeField] private GameResultBoardUI gameResultBoard;
-        private Swordman swordman;
-        private KillCounter killCounter;
+
         private ModeStatisticData statisticData;
-        private ModeData modeData;
         private Wave currentWaveData;
 
         private float _timer;
@@ -103,11 +101,7 @@ namespace SpeedMode
             Initialize();
             StartCoroutine(TimerCoroutine());
 
-            swordman = Swordman.instance;
-            killCounter = KillCounter.instance;
-            modeData = GameMode.instance.modeData;
-
-            swordman.BattleEnemyEvent += HandleBattleEnemyEvent;
+            Swordman.instance.BattleEnemyEvent += HandleBattleEnemyEvent;
         }
 
         private void Update()
@@ -134,7 +128,7 @@ namespace SpeedMode
 
         private void RaiseReadyWaveEvent(int wave)
         {
-            if (modeData.LoadWaveData(wave, out currentWaveData))
+            if (GameMode.instance.modeData.LoadWaveData(wave, out currentWaveData))
             {
                 Debug.Log(string.Format("{0}웨이브 준비", wave));
 
@@ -175,8 +169,8 @@ namespace SpeedMode
             if (BestScore < CurrentScore)
                 BestScore = CurrentScore;
 
-            int earnedGold = killCounter.GetKillCount(Enemy.Types.CommonEnemy) / 5
-                + killCounter.GetKillCount(Enemy.Types.EliteEnemy) / 2;
+            int earnedGold = KillCounter.instance.GetKillCount(Enemy.Types.CommonEnemy) / 5
+                + KillCounter.instance.GetKillCount(Enemy.Types.EliteEnemy) / 2;
 
             GameSystem.CurrencyManager.IncreaseGold(earnedGold);
 
@@ -263,7 +257,7 @@ namespace SpeedMode
                 Timer -= currentWaveData.timerSpeed * Time.deltaTime;
 
                 if (Timer == 0)
-                    OnSwordmanTakeDamage(swordman.TakeDamage());
+                    OnSwordmanTakeDamage(Swordman.instance.TakeDamage());
 
                 yield return null;
             }

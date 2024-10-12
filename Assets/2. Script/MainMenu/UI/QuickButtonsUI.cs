@@ -9,7 +9,6 @@ namespace MainMenu
     {
         [SerializeField] private GameObject soundButton;
 
-        private BoardUIManager boardUIManager;
         private GameSystem.VolumeManager volumeManager;
 
         private Image soundButtonImage;
@@ -25,7 +24,6 @@ namespace MainMenu
 
         private void Start()
         {
-            boardUIManager = BoardUIManager.instance;
             volumeManager = GameSystem.VolumeManager.instance;
 
             volumeManager.OnIsMutedChanged += ChangeSoundButtonSprite;
@@ -50,12 +48,12 @@ namespace MainMenu
 
         public void OnInfoButtonClick()
         {
-            boardUIManager.OpenBoardUI(BoardUI.Info, true);
+            BoardUIManager.instance.OpenBoardUI(BoardUI.Info, true);
         }
 
         public void OnGameSettingButtonClick()
         {
-            boardUIManager.OpenBoardUI(BoardUI.GameSetting, true);
+            BoardUIManager.instance.OpenBoardUI(BoardUI.GameSetting, true);
         }
     }
 }

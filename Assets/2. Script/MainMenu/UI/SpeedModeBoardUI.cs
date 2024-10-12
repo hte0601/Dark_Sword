@@ -8,14 +8,6 @@ namespace MainMenu
 {
     public class SpeedModeBoardUI : MonoBehaviour
     {
-        private BoardUIManager boardUIManager;
-
-        private void Start()
-        {
-            boardUIManager = BoardUIManager.instance;
-        }
-
-
         public void LoadSpeedScene(GameMode.Mode gameMode)
         {
             GameMode.currentMode = gameMode;
@@ -24,7 +16,7 @@ namespace MainMenu
 
         public void OnExitButtonClick()
         {
-            boardUIManager.CloseBoardUI(gameObject);
+            BoardUIManager.instance.CloseBoardUI(gameObject);
         }
     }
 }

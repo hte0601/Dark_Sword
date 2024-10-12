@@ -12,12 +12,10 @@ namespace MainMenu
         [SerializeField] private Slider BGMVolumeSlider;
         [SerializeField] private Slider SFXVolumeSlider;
 
-        private BoardUIManager boardUIManager;
         private GameSystem.VolumeManager volumeManager;
 
         private void Start()
         {
-            boardUIManager = BoardUIManager.instance;
             volumeManager = GameSystem.VolumeManager.instance;
 
             MasterVolumeSlider.value = volumeManager.MasterVolume;
@@ -74,7 +72,7 @@ namespace MainMenu
 
         public void OnExitButtonClick()
         {
-            boardUIManager.CloseBoardUI(gameObject);
+            BoardUIManager.instance.CloseBoardUI(gameObject);
         }
     }
 }
