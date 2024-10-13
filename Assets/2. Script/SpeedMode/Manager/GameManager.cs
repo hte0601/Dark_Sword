@@ -93,7 +93,7 @@ namespace SpeedMode
         private void Awake()
         {
             instance = this;
-            statisticData = SaveDataManager.LoadData<ModeStatisticData>((int)GameMode.currentMode);
+            statisticData = GameSystem.SaveDataManager.LoadData<ModeStatisticData>((int)GameMode.currentMode);
         }
 
         private void Start()
@@ -128,13 +128,13 @@ namespace SpeedMode
 
         private void RaiseReadyWaveEvent(int wave)
         {
+            // 웨이브가 남은 경우
             if (GameMode.instance.modeData.LoadWaveData(wave, out currentWaveData))
             {
-                Debug.Log(string.Format("{0}웨이브 준비", wave));
-
                 ReadyWaveEvent?.Invoke(currentWaveData);
                 DelayInvoke(1f, RaiseStartWaveEvent, wave);
             }
+            // 웨이브를 모두 클리어한 경우
             else
             {
                 RaiseGameOverEvent(true);
@@ -143,8 +143,6 @@ namespace SpeedMode
 
         private void RaiseStartWaveEvent(int wave)
         {
-            Debug.Log(string.Format("{0}웨이브 시작", wave));
-
             isTimerStopped = false;
             isTimerWaitingInput = true;
             StartWaveEvent?.Invoke(wave);
@@ -152,9 +150,6 @@ namespace SpeedMode
 
         public void RaiseEndWaveEvent(int wave)
         {
-            // 코루틴으로 실행을 잠깐 지연시켜야 함
-            Debug.Log(string.Format("{0}웨이브 종료", wave));
-
             isTimerStopped = true;
             StartCoroutine(RestoreTimer());
 
@@ -164,18 +159,16 @@ namespace SpeedMode
 
         private void RaiseGameOverEvent(bool isGameClear)
         {
-            SoundManager.StopBGM();
+            SoundManager.instance.StopBGM();
 
             if (BestScore < CurrentScore)
                 BestScore = CurrentScore;
 
-            int earnedGold = KillCounter.instance.GetKillCount(Enemy.Types.CommonEnemy) / 5
-                + KillCounter.instance.GetKillCount(Enemy.Types.EliteEnemy) / 2;
-
-            GameSystem.CurrencyManager.IncreaseGold(earnedGold);
+            int goldReward = CalcGoldReward();
+            GameSystem.CurrencyManager.IncreaseGold(goldReward);
 
             GameOverEvent?.Invoke(isGameClear);
-            gameResultBoard.Show(isGameClear, CurrentScore, BestScore, earnedGold);
+            gameResultBoard.Show(isGameClear, CurrentScore, BestScore, goldReward);
         }
 
         // 버튼 이벤트에 연결됨
@@ -184,9 +177,18 @@ namespace SpeedMode
             gameResultBoard.Hide();
 
             Initialize();
-            SoundManager.PlayBGM();
+            SoundManager.instance.PlayBGM();
 
             RestartGameEvent?.Invoke();
+        }
+
+
+        private int CalcGoldReward()
+        {
+            int commonEnemyReward = KillCounter.instance.GetKillCount(Enemy.Types.CommonEnemy) / 5;
+            int eliteEnemyReward = KillCounter.instance.GetKillCount(Enemy.Types.EliteEnemy) / 2;
+
+            return commonEnemyReward + eliteEnemyReward;
         }
 
 
@@ -239,7 +241,7 @@ namespace SpeedMode
         {
             if (currentScore > BestScore)
             {
-                SoundManager.PlaySFX(SFX.Game.BestScoreUpdate);
+                SoundManager.instance.PlaySFX(SFX.Game.BestScoreUpdate);
                 OnScoreChanged -= OnBestScoreBroken;
             }
         }

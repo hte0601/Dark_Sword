@@ -13,8 +13,6 @@ namespace SpeedMode
         [SerializeField] private FireGoblin fireGoblinPrefab;
         [SerializeField] private SpearGoblin spearGoblinPrefab;
 
-        // [SerializeField] private GameObject arrow;
-
         private Dictionary<Enemy.Types, EnemyPool> enemyDict = new();
 
 

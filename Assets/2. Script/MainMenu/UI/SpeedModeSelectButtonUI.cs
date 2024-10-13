@@ -15,7 +15,7 @@ namespace MainMenu
             if (!transform.parent.TryGetComponent(out speedModeBoardUI))
             {
 #if UNITY_EDITOR
-                Debug.Log("SpeedModeBoardUI의 스크립트 컴포넌트를 찾을 수 없음");
+                Debug.LogError("SpeedModeBoardUI의 스크립트 컴포넌트를 찾을 수 없음");
 #endif
             }
         }

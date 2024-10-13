@@ -60,10 +60,14 @@ namespace SpeedMode
                 modeData = new C_FasterModeData();
             }
 #if UNITY_EDITOR
+            else if (currentMode == null)
+            {
+                Debug.LogError($"modeData 초기화 오류, currentMode: null");
+                modeData = null;
+            }
             else
             {
-                Debug.Log(currentMode);
-                Debug.Log("modeData 초기화 오류");
+                Debug.LogError($"modeData 초기화 오류, currentMode: {currentMode}");
                 modeData = null;
             }
 #endif

@@ -206,7 +206,7 @@ namespace SpeedMode
             }
 
 #if UNITY_EDITOR
-            Debug.Log("RandomEnemyType() 확률 오류");
+            Debug.LogError("RandomEnemyType() 확률 오류");
 #endif
 
             return Enemy.Types.EliteEnemy;

@@ -23,6 +23,6 @@ namespace SpeedMode
             set => _dataID = value;
         }
 
-        public void Save() => SaveDataManager.SaveData(this, DataID);
+        public void Save() => GameSystem.SaveDataManager.SaveData(this, DataID);
     }
 }

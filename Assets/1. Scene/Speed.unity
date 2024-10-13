@@ -45320,7 +45320,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 789947d580b07ec438622ecb4c5ff0e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swordman: {fileID: 2549417691061063426}
   effectController: {fileID: 941822970}
   canSpearGoblinCombo: 0
 --- !u!4 &2549417690971056084

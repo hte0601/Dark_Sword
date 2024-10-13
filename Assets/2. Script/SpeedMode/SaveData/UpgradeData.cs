@@ -9,6 +9,6 @@ namespace SpeedMode
         public int maxHealth = 0;
         public int skillPower = 0;
 
-        public void Save() => SaveDataManager.SaveData(this);
+        public void Save() => GameSystem.SaveDataManager.SaveData(this);
     }
 }

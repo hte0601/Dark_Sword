@@ -14,7 +14,7 @@ namespace SpeedMode
 
     public class SoundManager : MonoBehaviour
     {
-        private static SoundManager sm;
+        public static SoundManager instance;
 
         [Header("BGM")]
         [SerializeField] private AudioSource BGMPlayer;
@@ -28,25 +28,25 @@ namespace SpeedMode
 
         private void Awake()
         {
-            sm = this;
+            instance = this;
 
             gameSFXDict.Add(SFX.Game.BestScoreUpdate, bestScoreUpdateSound);
         }
 
 
-        public static void PlayBGM()
+        public void PlayBGM()
         {
-            sm.BGMPlayer.Play();
+            BGMPlayer.Play();
         }
 
-        public static void StopBGM()
+        public void StopBGM()
         {
-            sm.BGMPlayer.Stop();
+            BGMPlayer.Stop();
         }
 
-        public static void PlaySFX(SFX.Game sound)
+        public void PlaySFX(SFX.Game sound)
         {
-            sm.gameSFXPlayer.PlayOneShot(sm.gameSFXDict[sound]);
+            gameSFXPlayer.PlayOneShot(gameSFXDict[sound]);
         }
     }
 }
