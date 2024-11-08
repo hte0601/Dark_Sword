@@ -3038,8 +3038,8 @@ MonoBehaviour:
   enemyManager: {fileID: 532865567}
   swordman: {fileID: 2549417691061063426}
   isTestMode: 1
-  gameMode: 1
-  frameRate: 90
+  gameMode: -1
+  frameRate: 120
   timeScale: 1
 --- !u!4 &94951558
 Transform:
