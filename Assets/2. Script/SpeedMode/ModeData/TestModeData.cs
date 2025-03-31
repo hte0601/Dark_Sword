@@ -5,9 +5,12 @@ namespace SpeedMode
     {
         public TestModeData() : base()
         {
+            swordmanStatus.maxSkillGauge = 50;
+
             waveDataDict = new()
             {
-                {01, new Wave(01, 4.0f, 160, 0.49f, 0.39f, 0.12f)}
+                {01, new Wave(01, 2.8f, 50, 0.49f, 0.40f, 0.11f)},
+                {02, new Wave(02, 3.0f, 50, 0.49f, 0.39f, 0.12f)}
 
                 // {01, new Wave(01, 2.8f, 250, 0.52f, 0.42f, 0.06f)},
                 // {02, new Wave(02, 3.0f, 250, 0.51f, 0.42f, 0.07f)},
